@@ -1,0 +1,2 @@
+`verilator_config
+public_flat_rw -module "t80sv_core" -var "WZ"

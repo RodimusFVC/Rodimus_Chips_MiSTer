@@ -9,6 +9,10 @@ T80 (c) 2001-2002 Daniel Wallner; T80(b) MikeJ, TobiFlex, Sean Riddle; T80(c) So
   `t80sv_T80a`, `t80sv_T80as`, `t80sv_T80`; Phoenix: `t80sv_T80pa_phx`.
 - `rtl/t80sv_fleet.sv`: wrappers on the fleet's `chip_pool_pkg` bus types (needs that package).
 - `verify/`: Verilator lockstep harness against GHDL models of the VHDL; ZEXDOC / ZEXALL logs. `REPORT.md`: results.
+- `verify/sst/`: SingleStepTests/z80 bench (all 1,604,000 cases incl. WZ, Q, bus order and strobe timing). Four fixes
+  found with it (DD/FD INC/DEC DE, SCF/CCF Q, MEMPTR, block-repeat flags) are in `rtl/`; with them t80sv passes every
+  case, stays cycle-identical to the equally patched VHDL (`verify/sst/vhdl/`), and Modes 2 / 3 are unchanged.
+  See `verify/sst/README.md`.
 
 Hardware-verified (2026-10-29): `T80s` (Arabian, BluePrint, CrazyClimber, ChampionBaseball), `T80se` x3 (Galaga),
 `T80pa` incl. BUSRQ / BUSAK (Nintendo), Phoenix 8080 / 8085.
