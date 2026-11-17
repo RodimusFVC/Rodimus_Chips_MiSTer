@@ -1,0 +1,8 @@
+C02=0 C02_FIXED=0 NO_DECIMAL=0: equivalent (Of those cells 626 are proven)
+C02=1 C02_FIXED=0 NO_DECIMAL=0: equivalent (Of those cells 651 are proven)
+C02=2 C02_FIXED=0 NO_DECIMAL=0: equivalent (Of those cells 651 are proven)
+C02=3 C02_FIXED=0 NO_DECIMAL=0: equivalent (Of those cells 651 are proven)
+C02=0 C02_FIXED=0 NO_DECIMAL=1: equivalent (Of those cells 626 are proven)
+C02=1 C02_FIXED=1 NO_DECIMAL=0: equivalent (Of those cells 612 are proven)
+C02=2 C02_FIXED=1 NO_DECIMAL=0: equivalent (Of those cells 612 are proven)
+C02=3 C02_FIXED=1 NO_DECIMAL=0: equivalent (Of those cells 612 are proven)

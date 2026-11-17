@@ -1,0 +1,25 @@
+
+8. Printing statistics.
+
+=== s2650sv ===
+
+   Number of wires:                667
+   Number of wire bits:           2425
+   Number of public wires:         667
+   Number of public wire bits:    2425
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:               1180
+     MISTRAL_ALUT2                  71
+     MISTRAL_ALUT3                 115
+     MISTRAL_ALUT4                 118
+     MISTRAL_ALUT5                 289
+     MISTRAL_ALUT6                  87
+     MISTRAL_ALUT_ARITH            143
+     MISTRAL_CLKBUF                  1
+     MISTRAL_FF                    301
+     MISTRAL_IB                     21
+     MISTRAL_NOT                     2
+     MISTRAL_OB                     32
+

@@ -1,0 +1,12 @@
+qix             MEASURED qix video ROM table                     clocks   10349984 frames  30 reads     0 resets 0  dut-vs-fixed mismatches 0  stock-vs-fixed diffs 0
+qix2            assumed = qix table                              clocks    3183904 frames  10 reads     0 resets 0  dut-vs-fixed mismatches 0  stock-vs-fixed diffs 0
+slither         MEASURED (R0 first)                              clocks   10366048 frames  30 reads     0 resets 0  dut-vs-fixed mismatches 0  stock-vs-fixed diffs 0
+elecyoyo        MEASURED + per-frame R12/R13                     clocks    9633120 frames  30 reads     0 resets 0  dut-vs-fixed mismatches 0  stock-vs-fixed diffs 0
+elecyoyo_flip   MEASURED, cocktail flip $3FE0                    clocks    9631808 frames  30 reads     0 resets 0  dut-vs-fixed mismatches 0  stock-vs-fixed diffs 0
+zookeeper       MEASURED (trace)                                 clocks    9620672 frames  30 reads     0 resets 0  dut-vs-fixed mismatches 0  stock-vs-fixed diffs 0
+vanguard        R0 R1 R6 R9 R12/13 MEASURED, rest DERIVED/guess  clocks    5449632 frames  30 reads     0 resets 0  dut-vs-fixed mismatches 0  stock-vs-fixed diffs 0
+fantasy         DERIVED (= vanguard table)                       clocks    1676832 frames  10 reads     0 resets 0  dut-vs-fixed mismatches 0  stock-vs-fixed diffs 0
+sasuke          MEASURED start $0000, rest = vanguard            clocks    3563248 frames  20 reads     0 resets 0  dut-vs-fixed mismatches 0  stock-vs-fixed diffs 0
+docastle        DERIVED from MAME set_raw (HD6845S)              clocks    9144768 frames  30 reads     0 resets 1  dut-vs-fixed mismatches 0  stock-vs-fixed diffs 0
+docastle_r4_31  DERIVED alt R4=31 R5=8                           clocks    2559072 frames  10 reads     0 resets 1  dut-vs-fixed mismatches 0  stock-vs-fixed diffs 0
+cosmicg         R4/R5 DOCUMENTED, rest DERIVED (MC6845)          clocks    8729600 frames  30 reads   203 resets 2  dut-vs-fixed mismatches 0  stock-vs-fixed diffs 419328

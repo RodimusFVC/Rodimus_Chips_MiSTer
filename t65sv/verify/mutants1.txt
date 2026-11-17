@@ -1,0 +1,12 @@
+xaa_magic@8'hEE) \& DI;@8'hEF) \& DI;
+baquirk_and@2'b01: BAH <= (BAH + 8'd1) \& DO_r;@2'b01: BAH <= (BAH + 8'd1) | DO_r;
+rdy_mod_cycle@(MCycle == 3'd3 \&\& IR != 8'h93)@(MCycle == 3'd2 \&\& IR != 8'h93)
+nmi_entered@(NMICycle || NMIAct || NMI_entered)@(NMICycle || NMIAct)
+irq_branch_delay@Jump != 2'b01 || !really_rdy) IRQ_n_o@Jump != 2'b01) IRQ_n_o
+brk_b_flag@(P \& 8'hEF) : P;@P : P;
+arr_v@P_Out\[6\] = q_t\[5\] ^ q_t\[6\];@P_Out[6] = q_t[5] ^ q_t[7];
+sbc_dec_borrow@{1'b0, BusB\[7:4\], al\[6\]}@{1'b0, BusB[7:4], al[5]}
+rst_dec_s@if (Dec_S \&\& !RstCycle) S@if (Dec_S) S
+so_edge@if (SO_n_o \&\& !SO_n) P\[6\]@if (!SO_n_o \&\& SO_n) P[6]
+bah_copy@2'b10: BAH <= DO_r;@2'b10: BAH <= BAH;
+shx_rdy@(IR\[4:2\] == 3'b111 \&\& !rdy_mod) ? WD_XB : WD_X;@(IR[4:2] == 3'b111) ? WD_XB : WD_X;

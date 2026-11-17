@@ -1,0 +1,8 @@
+# The long Lorenz / VICE runs used c64flat_ls / c64_lockstep binaries built before the 65C816 integration (that RTL is
+# formally equivalent to the final t65sv with C816 = 0, see synth/equiv_c816.txt). Rebuilt from the final rtl/ and
+# re-run on samples (build/c64flat_final, build/c64_final): identical results and cycle counts.
+PASS adca.prg d7ff=00 cycles=20852001 lockstep_comparisons=41704000 mismatches=0 (flat, final RTL)
+PASS shaay.prg d7ff=00 cycles=67796435 lockstep_comparisons=135592868 mismatches=0 (flat, final RTL)
+PASS cia1pb6.prg d7ff=00 cpu_cycles=42220 mismatches=0 (mini-C64, final RTL)
+PASS trap4.prg d7ff=00 cpu_cycles=319210 mismatches=0 (mini-C64, final RTL)
+PASS cputiming.prg d7ff=00 cpu_cycles=2756145 mismatches=0 (mini-C64, final RTL)

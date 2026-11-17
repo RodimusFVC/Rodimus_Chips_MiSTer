@@ -1,0 +1,12 @@
+MUT 1 xaa_magic: detected by random stream
+MUT 2 baquirk_and: detected by random stream
+MUT 3 rdy_mod_cycle: detected by random stream
+MUT 4 nmi_entered: NOT DETECTED
+MUT 5 irq_branch_delay: detected by directed sweep
+MUT 6 brk_b_flag: detected by random stream
+MUT 7 arr_v: detected by random stream
+MUT 8 sbc_dec_borrow: detected by random stream
+MUT 9 rst_dec_s: detected by random stream
+MUT 10 so_edge: detected by random stream
+MUT 11 bah_copy: detected by random stream
+MUT 12 shx_rdy: detected by random stream

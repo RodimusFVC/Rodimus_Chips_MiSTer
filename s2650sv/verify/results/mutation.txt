@@ -1,0 +1,13 @@
+Mutation check (tb/mutate.sh): each mutant built in place of s2650sv, run 1) directed sweep, 2) random lockstep
+3M cycles, 3) exerciser with s2650sv alone driving the bus (DUTBUS=1). NONE = the program never reported (crashed).
+
+m4_str_r0_quirk_fixed: sweep CAUGHT, random CAUGHT, exerciser result FAIL
+m2_rel_off_by_one: sweep CAUGHT, random CAUGHT, exerciser result FAIL
+m1_com_signed_fixed: sweep CAUGHT, random CAUGHT, exerciser result FAIL
+m6_dar_idc: sweep CAUGHT, random CAUGHT, exerciser result FAIL
+m5_intack_early: sweep CAUGHT, random CAUGHT, exerciser result PASS
+m3_ene_bit: sweep CAUGHT, random CAUGHT, exerciser result NONE
+m8_mio_on_wait: sweep CAUGHT, random CAUGHT, exerciser result PASS
+m9_halt_ret_plus1: sweep CAUGHT, random CAUGHT, exerciser result FAIL
+m10_idc_true_carry: sweep CAUGHT, random CAUGHT, exerciser result FAIL
+m7_ras_read_sp: sweep CAUGHT, random CAUGHT, exerciser result NONE

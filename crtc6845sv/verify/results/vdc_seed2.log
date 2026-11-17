@@ -1,0 +1,23 @@
+RESULT scenarios 400 clocks 2913267956 chars 30710292 frames 8009 lines 335951 pixels 45451769 reads 5148411 (status reads while busy 1423) r31_ops 3085 blocks 1095 8568_vs_8563_mismatches 0 intr_checks 2912900750 intr_low 5274171 intr_mismatches 0
+RUN [all knobs]      sync_mismatches 0 line_mismatches 0 read_mismatches 0 vram_mismatches 0
+RUN -r5e0            sync_mismatches 0 line_mismatches 0 read_mismatches 95992 vram_mismatches 0
+RUN -cursor_vice     sync_mismatches 0 line_mismatches 982 read_mismatches 0 vram_mismatches 0
+RUN -blink_fast      sync_mismatches 0 line_mismatches 31604 read_mismatches 0 vram_mismatches 0
+RUN -status_busy     sync_mismatches 0 line_mismatches 0 read_mismatches 888 vram_mismatches 0
+RUN -version_8568    sync_mismatches 0 line_mismatches 0 read_mismatches 1289918 vram_mismatches 0
+RUN -no_r37_8563     sync_mismatches 0 line_mismatches 0 read_mismatches 72269 vram_mismatches 0
+COVERAGE lines with 32-byte_cells    69432
+COVERAGE lines with R22!=0x78        125902
+COVERAGE lines with R23<R9           62516
+COVERAGE lines with R27!=0           92557
+COVERAGE lines with attributes       165020
+COVERAGE lines with bitmap           79556
+COVERAGE lines with cursor_blink     184941
+COVERAGE lines with hscroll!=0       135600
+COVERAGE lines with interlace_R8=3   19977
+COVERAGE lines with pixel_double     64198
+COVERAGE lines with ram_4416_map     176428
+COVERAGE lines with reverse_screen   114263
+COVERAGE lines with semigraphics     58986
+COVERAGE lines with text             256395
+COVERAGE lines with vscroll!=0       118390

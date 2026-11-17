@@ -1,0 +1,21 @@
+PASS reset: vector 00FFFC fetched within 10 cycles, first opcode at 008000
+PASS reset: VPB asserted on the vector reads
+PASS reset: E=1, M=X=1, I=1, D=0, D=0000, DBR=PBR=00, SH=01
+PASS IRQ (emulation): vectors through 00FFFE
+PASS IRQ (emulation): 3 bytes pushed in page 1
+PASS IRQ (emulation): pushed P has B clear
+PASS IRQ: I set on entry
+PASS NMI (emulation): vectors through 00FFFA with I=1
+PASS NMI: a held-low NMI is taken once (edge triggered)
+PASS native: XCE / REP #$30 / LDA #$1234
+PASS IRQ (native): vectors through 00FFEE, PBR=00
+PASS IRQ (native): 4 bytes pushed, PBR first
+PASS ABORT (native): vectors through 00FFE8
+PASS ABORT: the aborted INX did not modify X
+PASS ABORT: pushed return address is the aborted opcode (05:A001)
+PASS WAI: waiting, next instruction not executed
+PASS WAI + IRQ with I=1: continues with the next instruction
+PASS WAI + IRQ with I=0: interrupt taken
+PASS STP: IRQ / NMI do not restart
+PASS STP: reset restarts
+PASS: 0 failure(s)

@@ -1,0 +1,157 @@
+
+scenarios 426, characters per model 67261520
+
+== V0 fleet  vs MAME hd6845s
+  [all knobs]            chars   67261520 frames   90101 mismatches         0  reads 425315 read-mismatches     0
+  -hsw0_none             chars   67261520 frames   90101 mismatches   1207372  reads 425315 read-mismatches     0  HSYNC :1207372
+  -blink_ds              chars   67261520 frames   90101 mismatches      1784  reads 425315 read-mismatches     0  CURSOR :1784
+  -cursor_fleet          chars   67261520 frames   90101 mismatches      2203  reads 425315 read-mismatches     0  CURSOR :2203
+  -engine_t0             chars   67261520 frames   88656 mismatches   8089696  reads 425315 read-mismatches  1027  DE :12  DO:766  DO(status):261  MA :2045510  MA CURSOR :39  MA DE :360318  MA DE CURSOR :39  MA DE VSYNC :53489  MA DE VSYNC CURSOR :8  MA RA :3318050  MA RA CURSOR :122  MA RA DE :443567  MA RA DE CURSOR :126  MA RA DE VSYNC :30287  MA RA DE VSYNC CURSOR :16  MA RA VSYNC :637785  MA VSYNC :383253  RA :360214  RA CURSOR :15  RA DE :765  RA VSYNC :163293  VSYNC :292788
+  -de_fleet              chars   67261520 frames   90101 mismatches    635247  reads 425315 read-mismatches     0  DE :635247
+  -vs_r2                 chars   67261520 frames   90101 mismatches   1319031  reads 425315 read-mismatches     0  VSYNC :1319031
+  -il_fleet              chars   67261520 frames   85476 mismatches   9263942  reads 425315 read-mismatches  1292  CURSOR :2  DE :2  DO:986  DO(status):306  MA :1333853  MA CURSOR :35  MA DE :174303  MA DE CURSOR :19  MA DE VSYNC :10257  MA DE VSYNC CURSOR :6  MA RA :5120100  MA RA CURSOR :193  MA RA DE :688456  MA RA DE CURSOR :172  MA RA DE VSYNC :36165  MA RA DE VSYNC CURSOR :17  MA RA VSYNC :538020  MA VSYNC :151726  RA :935406  RA CURSOR :34  RA DE :1820  RA VSYNC :254547  VSYNC :18809
+  -hs_cont               chars   67261520 frames   90101 mismatches   1726043  reads 425315 read-mismatches     0  HSYNC :1726043
+  -vs_hdl                chars   67261520 frames   90101 mismatches    177651  reads 425315 read-mismatches     0  VSYNC :177651
+  -lp_now                chars   67261520 frames   90101 mismatches         0  reads 425315 read-mismatches  6182  DO:4674  DO(status):1508
+  -skew                  chars   67261520 frames   90101 mismatches   1859923  reads 425315 read-mismatches     0  CURSOR :640  DE :1856483  DE CURSOR :2800
+  -rd_rs0_reg            chars   67261520 frames   90101 mismatches         0  reads 425315 read-mismatches  9160  DO(status):9160
+  -first_ma0             chars   67261520 frames   90101 mismatches   2124572  reads 425315 read-mismatches   407  DO:311  DO(status):96  MA :2124561  MA CURSOR :11
+
+== V0 fleet  vs MAME mc6845 
+  [all knobs]            chars   67261520 frames   90101 mismatches         0  reads 425315 read-mismatches     0
+  -hsw0_none             chars   67261520 frames   90101 mismatches   1207372  reads 425315 read-mismatches     0  HSYNC :1207372
+  -blink_ds              chars   67261520 frames   90101 mismatches      1784  reads 425315 read-mismatches     0  CURSOR :1784
+  -cursor_fleet          chars   67261520 frames   90101 mismatches      2480  reads 425315 read-mismatches     0  CURSOR :2480
+  -engine_t0             chars   67261520 frames   88656 mismatches   8089696  reads 425315 read-mismatches  1027  DE :12  DO:766  DO(status):261  MA :2045510  MA CURSOR :39  MA DE :360318  MA DE CURSOR :39  MA DE VSYNC :53489  MA DE VSYNC CURSOR :8  MA RA :3318050  MA RA CURSOR :122  MA RA DE :443567  MA RA DE CURSOR :126  MA RA DE VSYNC :30287  MA RA DE VSYNC CURSOR :16  MA RA VSYNC :637785  MA VSYNC :383253  RA :360214  RA CURSOR :15  RA DE :765  RA VSYNC :163293  VSYNC :292788
+  -de_fleet              chars   67261520 frames   90101 mismatches    635247  reads 425315 read-mismatches     0  DE :635247
+  -vs_r2                 chars   67261520 frames   90101 mismatches   1319031  reads 425315 read-mismatches     0  VSYNC :1319031
+  -il_fleet              chars   67261520 frames   85476 mismatches   9263942  reads 425315 read-mismatches  1292  CURSOR :2  DE :2  DO:986  DO(status):306  MA :1333853  MA CURSOR :35  MA DE :174303  MA DE CURSOR :19  MA DE VSYNC :10257  MA DE VSYNC CURSOR :6  MA RA :5120100  MA RA CURSOR :193  MA RA DE :688456  MA RA DE CURSOR :172  MA RA DE VSYNC :36165  MA RA DE VSYNC CURSOR :17  MA RA VSYNC :538020  MA VSYNC :151726  RA :935406  RA CURSOR :34  RA DE :1820  RA VSYNC :254547  VSYNC :18809
+  -hs_cont               chars   67261520 frames   90101 mismatches   1726043  reads 425315 read-mismatches     0  HSYNC :1726043
+  -vs_hdl                chars   67261520 frames   90101 mismatches    177651  reads 425315 read-mismatches     0  VSYNC :177651
+  -lp_now                chars   67261520 frames   90101 mismatches         0  reads 425315 read-mismatches  6182  DO:4674  DO(status):1508
+  -skew                  chars   67261520 frames   90101 mismatches   1859923  reads 425315 read-mismatches     0  CURSOR :640  DE :1856483  DE CURSOR :2800
+  -rd_rs0_reg            chars   67261520 frames   90101 mismatches         0  reads 425315 read-mismatches  9160  DO(status):9160
+  -first_ma0             chars   67261520 frames   90101 mismatches   2124572  reads 425315 read-mismatches   407  DO:311  DO(status):96  MA :2124561  MA CURSOR :11
+  -vsw_prog              chars   67261520 frames   90101 mismatches   1605234  reads 425315 read-mismatches     0  VSYNC :1605234
+  -rd_r12                chars   67261520 frames   90101 mismatches         0  reads 425315 read-mismatches 12251  DO:9145  DO(status):3106
+
+== V1 MC6845 vs MAME mc6845 
+  [all knobs]            chars   67261520 frames   88656 mismatches         0  reads 425315 read-mismatches     0
+  -blink_ds              chars   67261520 frames   88656 mismatches      1784  reads 425315 read-mismatches     0  CURSOR :1784
+  -cursor_line           chars   67261520 frames   88656 mismatches      2167  reads 425315 read-mismatches     0  CURSOR :2167
+  -first_off             chars   67261520 frames   88656 mismatches    656656  reads 425315 read-mismatches     0  DE :656567  DE CURSOR :89
+  -frame_match           chars   67261520 frames   88656 mismatches    994884  reads 425315 read-mismatches     0  DE :991223  DE CURSOR :3661
+  -il_fleet              chars   67261520 frames   85476 mismatches   8967708  reads 425315 read-mismatches   991  CURSOR :3  DO:991  MA :1289636  MA CURSOR :27  MA DE :180055  MA DE CURSOR :14  MA DE VSYNC :54277  MA DE VSYNC CURSOR :24  MA RA :4577256  MA RA CURSOR :151  MA RA DE :665758  MA RA DE CURSOR :106  MA RA DE VSYNC :180748  MA RA DE VSYNC CURSOR :136  MA RA VSYNC :1033781  MA RA VSYNC CURSOR :102  MA VSYNC :431449  MA VSYNC CURSOR :16  RA :428835  RA CURSOR :8  RA DE :4  RA VSYNC :88945  RA VSYNC CURSOR :12  VSYNC :36363  VSYNC CURSOR :2
+  -hs_cont               chars   67261520 frames   88656 mismatches   1917450  reads 425315 read-mismatches     0  HSYNC :1917450
+  -vs_hdl                chars   67261520 frames   88656 mismatches    691475  reads 425315 read-mismatches     0  VSYNC :691475
+  -lp_now                chars   67261520 frames   88656 mismatches         0  reads 425315 read-mismatches  4670  DO:4670
+  -first_ma0             chars   67261520 frames   88656 mismatches   2139579  reads 425315 read-mismatches   319  DO:319  MA :2139579
+
+== V2 HD6845S vs MAME hd6845s
+  [all knobs]            chars   67261520 frames   90101 mismatches         0  reads 425315 read-mismatches     0
+  -blink_ds              chars   67261520 frames   90101 mismatches      1784  reads 425315 read-mismatches     0  CURSOR :1784
+  -cursor_line           chars   67261520 frames   90101 mismatches      2796  reads 425315 read-mismatches     0  CURSOR :2796
+  -first_off             chars   67261520 frames   90101 mismatches    612447  reads 425315 read-mismatches     0  CURSOR :4  DE :612362  DE CURSOR :81
+  -engine_t0             chars   67261520 frames   88656 mismatches   8103145  reads 425315 read-mismatches   766  DE :12  DO:766  MA :1990588  MA CURSOR :52  MA DE :299581  MA DE CURSOR :57  MA DE VSYNC :67091  MA DE VSYNC CURSOR :8  MA RA :3153368  MA RA CURSOR :161  MA RA DE :368800  MA RA DE CURSOR :165  MA RA DE VSYNC :72087  MA RA DE VSYNC CURSOR :24  MA RA VSYNC :835348  MA VSYNC :485279  RA :353448  RA DE :354  RA DE VSYNC :2  RA VSYNC :170483  VSYNC :306237
+  -hsw0_none             chars   67261520 frames   90101 mismatches   1207372  reads 425315 read-mismatches     0  HSYNC :1207372
+  -il_fleet              chars   67261520 frames   85476 mismatches   9267820  reads 425315 read-mismatches   986  CURSOR :2  DE :3  DO:986  MA :1321097  MA CURSOR :51  MA DE :150897  MA DE CURSOR :37  MA DE VSYNC :14377  MA DE VSYNC CURSOR :3  MA RA :5033519  MA RA CURSOR :248  MA RA DE :594857  MA RA DE CURSOR :215  MA RA DE VSYNC :53373  MA RA DE VSYNC CURSOR :28  MA RA VSYNC :700883  MA VSYNC :183737  RA :899644  RA CURSOR :24  RA DE :384  RA DE VSYNC :66  RA VSYNC :291689  VSYNC :22686
+  -hs_cont               chars   67261520 frames   90101 mismatches   1726043  reads 425315 read-mismatches     0  HSYNC :1726043
+  -vs_hdl                chars   67261520 frames   90101 mismatches    213366  reads 425315 read-mismatches     0  VSYNC :213366
+  -lp_now                chars   67261520 frames   90101 mismatches         0  reads 425315 read-mismatches  4674  DO:4674
+  -skew                  chars   67261520 frames   90101 mismatches   2147509  reads 425315 read-mismatches     0  CURSOR :624  DE :2144089  DE CURSOR :2796
+  -first_ma0             chars   67261520 frames   90101 mismatches   2124572  reads 425315 read-mismatches   311  DO:311  MA :2124572
+
+== V3 UM6845R vs MAME mc6845 
+  [all knobs]            chars   67261520 frames   88656 mismatches         0  reads 425315 read-mismatches     0
+  -blink_ds              chars   67261520 frames   88656 mismatches      1784  reads 425315 read-mismatches     0  CURSOR :1784
+  -cursor_line           chars   67261520 frames   88656 mismatches      2167  reads 425315 read-mismatches     0  CURSOR :2167
+  -first_off             chars   67261520 frames   88656 mismatches    656656  reads 425315 read-mismatches  1536  DE :656554  DE CURSOR :102  DO(status):1536
+  -hsw0_none             chars   67261520 frames   88656 mismatches   1207372  reads 425315 read-mismatches     0  HSYNC :1207372
+  -r6z                   chars   67261520 frames   88656 mismatches    994884  reads 425315 read-mismatches  2941  DE :991223  DE CURSOR :3661  DO(status):2941
+  -vma_row0              chars   67261520 frames   88656 mismatches   2287570  reads 425315 read-mismatches   323  DO:323  MA :2287570
+  -il_fleet              chars   67261520 frames   85476 mismatches   8967688  reads 425315 read-mismatches  3929  CURSOR :3  DE :99  DO:993  DO(status):2936  MA :1289616  MA CURSOR :27  MA DE :179956  MA DE CURSOR :14  MA DE VSYNC :54277  MA DE VSYNC CURSOR :24  MA RA :4576485  MA RA CURSOR :151  MA RA DE :665405  MA RA DE CURSOR :106  MA RA DE VSYNC :180748  MA RA DE VSYNC CURSOR :136  MA RA VSYNC :1033141  MA RA VSYNC CURSOR :102  MA VSYNC :431321  MA VSYNC CURSOR :16  RA :429606  RA CURSOR :8  RA DE :357  RA VSYNC :89585  RA VSYNC CURSOR :12  VSYNC :36491  VSYNC CURSOR :2
+  -hs_cont               chars   67261520 frames   88656 mismatches   1726043  reads 425315 read-mismatches     0  HSYNC :1726043
+  -vs_hdl                chars   67261520 frames   88656 mismatches   1209002  reads 425315 read-mismatches     0  VSYNC :1209002
+  -lp_now                chars   67261520 frames   88656 mismatches         0  reads 425315 read-mismatches  4672  DO:4672
+  -rd_status_um          chars   67261520 frames   88656 mismatches         0  reads 425315 read-mismatches 97457  DO(status):97457
+  -rd_r31ff              chars   67261520 frames   88656 mismatches         0  reads 425315 read-mismatches 97808  DO:97808
+  -first_ma0             chars   67261520 frames   88656 mismatches     54350  reads 425315 read-mismatches     9  DO:9  MA :54350
+
+== V4 AMS40489 vs MAME ams40489
+  [all knobs]            chars   67261520 frames   90101 mismatches         0  reads 425315 read-mismatches     0
+  -vsw_prog              chars   67261520 frames   90101 mismatches   3052625  reads 425315 read-mismatches     0  DE :915846  DE CURSOR :3348  DE VSYNC :23592  DE VSYNC CURSOR :313  VSYNC :2109526
+  -blink_ds              chars   67261520 frames   90101 mismatches      1784  reads 425315 read-mismatches     0  CURSOR :1784
+  -cursor_line           chars   67261520 frames   90101 mismatches      2174  reads 425315 read-mismatches     0  CURSOR :2174
+  -first_off             chars   67261520 frames   90101 mismatches    613413  reads 425315 read-mismatches     0  CURSOR :8  DE :613324  DE CURSOR :81
+  -engine_t0             chars   67261520 frames   88656 mismatches   8407125  reads 425315 read-mismatches  4201  DE :33895  DE VSYNC :6708  DO:3158  DO(status):1043  MA :1916918  MA CURSOR :52  MA DE :299169  MA DE CURSOR :57  MA DE VSYNC :66925  MA DE VSYNC CURSOR :8  MA RA :3128709  MA RA CURSOR :161  MA RA DE :381066  MA RA DE CURSOR :165  MA RA DE VSYNC :74389  MA RA DE VSYNC CURSOR :24  MA RA VSYNC :845439  MA VSYNC :559527  RA :341781  RA DE :430  RA DE VSYNC :115  RA VSYNC :181961  VSYNC :569626
+  -adj_hold              chars   67261520 frames   90101 mismatches    542339  reads 425315 read-mismatches     0  DE :47046  DE VSYNC :11762  VSYNC :483531
+  -il_fleet              chars   67261520 frames   85476 mismatches   9265445  reads 425315 read-mismatches  4943  CURSOR :2  DE :3  DO:3732  DO(status):1211  MA :1342852  MA CURSOR :51  MA DE :150607  MA DE CURSOR :37  MA DE VSYNC :13745  MA DE VSYNC CURSOR :3  MA RA :5102176  MA RA CURSOR :248  MA RA DE :595757  MA RA DE CURSOR :215  MA RA DE VSYNC :49012  MA RA DE VSYNC CURSOR :28  MA RA VSYNC :635687  MA VSYNC :162904  RA :913387  RA CURSOR :24  RA DE :358  RA DE VSYNC :66  RA VSYNC :277972  VSYNC :20311
+  -hs_cont               chars   67261520 frames   90101 mismatches   1917450  reads 425315 read-mismatches     0  HSYNC :1917450
+  -vs_hdl                chars   67261520 frames   90101 mismatches    319987  reads 425315 read-mismatches     0  VSYNC :319987
+  -lp_now                chars   67261520 frames   90101 mismatches         0  reads 425315 read-mismatches 25174  DO:18901  DO(status):6273
+  -skew                  chars   67261520 frames   90101 mismatches   2152742  reads 425315 read-mismatches     0  DE :2152742
+  -rd_mirror             chars   67261520 frames   90101 mismatches         0  reads 425315 read-mismatches 397647  DO:298611  DO(status):99036
+  -first_ma0             chars   67261520 frames   90101 mismatches   2124572  reads 425315 read-mismatches  1621  DO:1210  DO(status):411  MA :2124572
+
+== V5 40226  vs MAME ams40489
+  [all knobs]            chars   67261520 frames   90101 mismatches         0  reads 425315 read-mismatches     0
+  -vsw_prog              chars   67261520 frames   90101 mismatches   3052625  reads 425315 read-mismatches     0  DE :915846  DE CURSOR :3348  DE VSYNC :23592  DE VSYNC CURSOR :313  VSYNC :2109526
+  -blink_ds              chars   67261520 frames   90101 mismatches      1784  reads 425315 read-mismatches     0  CURSOR :1784
+  -cursor_line           chars   67261520 frames   90101 mismatches      2174  reads 425315 read-mismatches     0  CURSOR :2174
+  -first_off             chars   67261520 frames   90101 mismatches    613413  reads 425315 read-mismatches     0  CURSOR :8  DE :613324  DE CURSOR :81
+  -engine_t0             chars   67261520 frames   88656 mismatches   8407125  reads 425315 read-mismatches  4201  DE :33895  DE VSYNC :6708  DO:3158  DO(status):1043  MA :1916918  MA CURSOR :52  MA DE :299169  MA DE CURSOR :57  MA DE VSYNC :66925  MA DE VSYNC CURSOR :8  MA RA :3128709  MA RA CURSOR :161  MA RA DE :381066  MA RA DE CURSOR :165  MA RA DE VSYNC :74389  MA RA DE VSYNC CURSOR :24  MA RA VSYNC :845439  MA VSYNC :559527  RA :341781  RA DE :430  RA DE VSYNC :115  RA VSYNC :181961  VSYNC :569626
+  -adj_hold              chars   67261520 frames   90101 mismatches    542339  reads 425315 read-mismatches     0  DE :47046  DE VSYNC :11762  VSYNC :483531
+  -il_fleet              chars   67261520 frames   85476 mismatches   9265445  reads 425315 read-mismatches  4943  CURSOR :2  DE :3  DO:3732  DO(status):1211  MA :1342852  MA CURSOR :51  MA DE :150607  MA DE CURSOR :37  MA DE VSYNC :13745  MA DE VSYNC CURSOR :3  MA RA :5102176  MA RA CURSOR :248  MA RA DE :595757  MA RA DE CURSOR :215  MA RA DE VSYNC :49012  MA RA DE VSYNC CURSOR :28  MA RA VSYNC :635687  MA VSYNC :162904  RA :913387  RA CURSOR :24  RA DE :358  RA DE VSYNC :66  RA VSYNC :277972  VSYNC :20311
+  -hs_cont               chars   67261520 frames   90101 mismatches   1917450  reads 425315 read-mismatches     0  HSYNC :1917450
+  -vs_hdl                chars   67261520 frames   90101 mismatches    319987  reads 425315 read-mismatches     0  VSYNC :319987
+  -lp_now                chars   67261520 frames   90101 mismatches         0  reads 425315 read-mismatches 25174  DO:18901  DO(status):6273
+  -skew                  chars   67261520 frames   90101 mismatches   2152742  reads 425315 read-mismatches     0  DE :2152742
+  -rd_mirror             chars   67261520 frames   90101 mismatches         0  reads 425315 read-mismatches 397647  DO:298611  DO(status):99036
+  -first_ma0             chars   67261520 frames   90101 mismatches   2124572  reads 425315 read-mismatches  1621  DO:1210  DO(status):411  MA :2124572
+
+== V6 R6545-1 vs MAME r6545_1
+  [all knobs]            chars   67426975 frames   85476 mismatches         0  reads 425315 read-mismatches     0
+  -blink_ds              chars   67426975 frames   85476 mismatches      1939  reads 425315 read-mismatches     0  CURSOR :1939
+  -cursor_line           chars   67426975 frames   85476 mismatches      2095  reads 425315 read-mismatches     0  CURSOR :2095
+  -first_off             chars   67426975 frames   85476 mismatches    688366  reads 425315 read-mismatches  1644  DE :687314  DE CURSOR :92  DO(status):1644  MA :433  MA DE :202  MA RA :145  MA RA DE :180
+  -engine_t0             chars   67426975 frames   85476 mismatches   2286039  reads 425315 read-mismatches   590  DE :443  DO:132  DO(status):458  MA :6304  MA DE :716  MA DE VSYNC :6267  MA RA :1604037  MA RA DE :59975  MA RA DE VSYNC :3595  MA RA VSYNC :276764  MA VSYNC :1217  RA :86295  RA VSYNC :7084  VSYNC :233342
+  -rowcol                chars   67426975 frames   85476 mismatches  13223022  reads 425315 read-mismatches  1659  DO:1659  MA :13223022
+  -upd_needs_mode        chars   67426975 frames   85476 mismatches    431077  reads 425315 read-mismatches     0  MA :431077
+  -upd_access3           chars   67426975 frames   85476 mismatches     40440  reads 425315 read-mismatches    47  DO(status):47  MA :19594  MA RA :20845  RA :1
+  -r1z_no_de             chars   67426975 frames   85476 mismatches       217  reads 425315 read-mismatches    31  DO(status):31  MA :56  MA RA :161
+  -hs_cont               chars   67426975 frames   85476 mismatches   1917450  reads 425315 read-mismatches     0  HSYNC :1917450
+  -vs_hdl                chars   67426975 frames   85476 mismatches    150066  reads 425315 read-mismatches     0  VSYNC :150066
+  -lp_now                chars   67426975 frames   85476 mismatches         0  reads 425315 read-mismatches  4688  DO:4688
+  -skew                  chars   67426975 frames   85476 mismatches    230412  reads 425315 read-mismatches     0  CURSOR :3752  DE :226660
+  -rd_r31hold            chars   67426975 frames   85476 mismatches         0  reads 425315 read-mismatches 44866  DO:44866
+  -first_ma0             chars   67426975 frames   85476 mismatches   2256860  reads 425315 read-mismatches   342  DO:342  MA :2256860
+
+== V6 SY6545-1 vs MAME sy6545_1
+  [all knobs]            chars   67426975 frames   85476 mismatches         0  reads 425315 read-mismatches     0
+  -blink_ds              chars   67426975 frames   85476 mismatches      1939  reads 425315 read-mismatches     0  CURSOR :1939
+  -cursor_line           chars   67426975 frames   85476 mismatches      2095  reads 425315 read-mismatches     0  CURSOR :2095
+  -first_off             chars   67426975 frames   85476 mismatches    688366  reads 425315 read-mismatches  1644  DE :687314  DE CURSOR :92  DO(status):1644  MA :433  MA DE :202  MA RA :145  MA RA DE :180
+  -engine_t0             chars   67426975 frames   85476 mismatches   2286039  reads 425315 read-mismatches   590  DE :443  DO:132  DO(status):458  MA :6304  MA DE :716  MA DE VSYNC :6267  MA RA :1604037  MA RA DE :59975  MA RA DE VSYNC :3595  MA RA VSYNC :276764  MA VSYNC :1217  RA :86295  RA VSYNC :7084  VSYNC :233342
+  -rowcol                chars   67426975 frames   85476 mismatches  13223022  reads 425315 read-mismatches  1659  DO:1659  MA :13223022
+  -upd_needs_mode        chars   67426975 frames   85476 mismatches    431077  reads 425315 read-mismatches     0  MA :431077
+  -upd_access3           chars   67426975 frames   85476 mismatches     40440  reads 425315 read-mismatches    47  DO(status):47  MA :19594  MA RA :20845  RA :1
+  -r1z_no_de             chars   67426975 frames   85476 mismatches       217  reads 425315 read-mismatches    31  DO(status):31  MA :56  MA RA :161
+  -hs_cont               chars   67426975 frames   85476 mismatches   1917450  reads 425315 read-mismatches     0  HSYNC :1917450
+  -vs_hdl                chars   67426975 frames   85476 mismatches    150066  reads 425315 read-mismatches     0  VSYNC :150066
+  -lp_now                chars   67426975 frames   85476 mismatches         0  reads 425315 read-mismatches  4688  DO:4688
+  -skew                  chars   67426975 frames   85476 mismatches    230412  reads 425315 read-mismatches     0  CURSOR :3752  DE :226660
+  -rd_r31hold            chars   67426975 frames   85476 mismatches         0  reads 425315 read-mismatches 44866  DO:44866
+  -first_ma0             chars   67426975 frames   85476 mismatches   2256860  reads 425315 read-mismatches   342  DO:342  MA :2256860
+
+== V7 C6545-1 vs MAME c6545_1
+  [all knobs]            chars   67261520 frames   85476 mismatches         0  reads 425315 read-mismatches     0
+  -blink_ds              chars   67261520 frames   85476 mismatches      1939  reads 425315 read-mismatches     0  CURSOR :1939
+  -cursor_line           chars   67261520 frames   85476 mismatches      2095  reads 425315 read-mismatches     0  CURSOR :2095
+  -first_off             chars   67261520 frames   85476 mismatches    687788  reads 425315 read-mismatches  1615  DE :687696  DE CURSOR :92  DO(status):1615
+  -engine_t0             chars   67261520 frames   85476 mismatches   2286594  reads 425315 read-mismatches   539  DE :443  DO:132  DO(status):407  MA RA :1610603  MA RA DE :60691  MA RA DE VSYNC :9862  MA RA VSYNC :278308  RA :86588  RA VSYNC :6760  VSYNC :233339
+  -rowcol                chars   67261520 frames   85476 mismatches  13229669  reads 425315 read-mismatches  1659  DO:1659  MA :13229669
+  -hs_cont               chars   67261520 frames   85476 mismatches   1917450  reads 425315 read-mismatches     0  HSYNC :1917450
+  -vs_hdl                chars   67261520 frames   85476 mismatches    150066  reads 425315 read-mismatches     0  VSYNC :150066
+  -lp_now                chars   67261520 frames   85476 mismatches         0  reads 425315 read-mismatches  4688  DO:4688
+  -skew                  chars   67261520 frames   85476 mismatches    230412  reads 425315 read-mismatches     0  CURSOR :3752  DE :226660
+  -first_ma0             chars   67261520 frames   85476 mismatches   2257948  reads 425315 read-mismatches   342  DO:342  MA :2257948

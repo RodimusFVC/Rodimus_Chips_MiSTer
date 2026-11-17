@@ -1,0 +1,8 @@
+seed 11 cycles 60000000 clkens 29835321 episodes 423 writes 81677 reads 54377 rewrites 10424 mid_resets 95 lp_toggles 32694
+coverage: adj_clkens 1636066 adj_R4=127 140980 adj&row<R6 840851 adj_exits 76259 il3 6081979 R0=0 1015488 R9=31 193820
+coverage: skewDE 16553449/3713712/4517971/5050189 skewCUR 16429737/4323446/5390106/3692032 cursor_mode 9492031/6441828/7497876/6403586
+RESULT dut_vs_fixed_mismatches 0
+RESULT stock_vs_fixed_mismatches 3250227 (in adjust class: R4=127 wrap 436129, R6>R4+1 2814098; OUTSIDE class 0)
+  stock diff signals DE                       48920
+  stock diff signals DE+VBLANK                1773300
+  stock diff signals VBLANK                   1428007

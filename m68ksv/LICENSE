@@ -1,0 +1,15 @@
+Copyright (C) 2026 Rodimus
+
+m68ksv: SystemVerilog 680x0 CPU core (rtl/) and its verification harness (verify/).
+
+Licence terms: TBD by the maintainer.
+
+Test data and references
+------------------------
+verify/ runs the SingleStepTests 680x0 (Tom Harte) 68000 suite. The test data is not copied into this repository;
+the runner reads a binary conversion of it (verify/tools/conv_harte.py) from $M68KSV_TESTS. Source:
+https://github.com/SingleStepTests/680x0 (commit e0d5ece9670205cc84a0101081837deb446f86a3). That repository carries
+no licence file at this commit.
+
+syn/quartus/ can build fx68k (https://github.com/ijor/fx68k, GPL-3.0) as a size reference; its sources are not in
+this repository (see syn/quartus/README.md). verify/tb/fxprobe.cpp is a harness for it and contains no fx68k code.

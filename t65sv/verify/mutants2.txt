@@ -1,0 +1,8 @@
+irq_branch_delay@Jump != 2'b01 || !really_rdy) IRQ_n_o@Jump != 2'b01) IRQ_n_o
+nmi_vector_entered@else if (NMICycle || (NMIAct \&\& MCycle == 3'd4) || NMI_entered)@else if (NMICycle || (NMIAct \&\& MCycle == 3'd4))
+nmi_branch_delay@if (NMI_n_o \&\& !NMI_n \&\& (IR\[4:0\] != 5'b10000 || Jump != 2'b01)) NMIAct@if (NMI_n_o \&\& !NMI_n) NMIAct
+nmi_after_brk@if (NMIAct \&\& IR != 8'h00) begin@if (NMIAct) begin
+really_rdy@assign really_rdy = Rdy | ~WRn_i;@assign really_rdy = Rdy;
+busb_r_cond@if (Set_Addr_To_r == AD_PBR || Set_Addr_To_r == AD_ZPG) BusB_r@if (Set_Addr_To_r == AD_PBR) BusB_r
+sync_out@assign o_Sync     = (MCycle == 3'd0);@assign o_Sync     = (MCycle == 3'd0) \&\& Rdy;
+vp_n@(MCycle == 3'd5 || MCycle == 3'd6)@(MCycle == 3'd5)

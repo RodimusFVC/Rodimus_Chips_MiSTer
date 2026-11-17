@@ -1,0 +1,5 @@
+# Variant normalized-md5 (T65 ALU MCode Pack; CR and trailing blanks stripped): a1b65753 1debc575 c36fa6cc d069e8eb
+# Representative: BBCMicro_MiSTer (rtl/t65)
+# Members: Arcade-Centipede_MiSTer Arcade-DECOCassette_MiSTer Arcade-SNK6502_MiSTer BBCMicro_MiSTer 
+# diff -u --strip-trailing-cr  REF(Ver 315 galaxian copy) -> BBCMicro_MiSTer
+

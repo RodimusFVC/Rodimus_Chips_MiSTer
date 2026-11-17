@@ -1,0 +1,4100 @@
+# Variant normalized-md5 (T65 ALU MCode Pack; CR and trailing blanks stripped): c0fb0a47 3f1bc531 d30710cc 0a654fd5
+# Representative: Arcade-Sprint1_MiSTer (rtl/T65)
+# Members: Arcade-AsteroidsDeluxe_MiSTer Arcade-CanyonBomber_MiSTer Arcade-Dominos_MiSTer Arcade-LunarLander_MiSTer Arcade-Sprint1_MiSTer Arcade-Sprint2_MiSTer Arcade-Subs_MiSTer Arcade-Ultratank_MiSTer 
+# diff -u --strip-trailing-cr  REF(Ver 315 galaxian copy) -> Arcade-Sprint1_MiSTer
+
+--- ref/T65.vhd
++++ Arcade-Sprint1_MiSTer/rtl/T65/T65.vhd
+@@ -1,69 +1,19 @@
+ -- ****
+ -- T65(b) core. In an effort to merge and maintain bug fixes ....
+ --
+--- Ver 315 SzGy April 2020
+---   Reduced the IRQ detection delay when RDY is not asserted (NMI?)
+---   Undocumented opcodes behavior change during not RDY and page boundary crossing (VICE tests - cpu/sha, cpu/shs, cpu/shxy)
+---
+--- Ver 313 WoS January 2015
+---   Fixed issue that NMI has to be first if issued the same time as a BRK instruction is latched in
+---   Now all Lorenz CPU tests on FPGAARCADE C64 core (sources used: SVN version 1021) are OK! :D :D :D
+---   This is just a starting point to go for optimizations and detailed fixes (the Lorenz test can't find)
+---
+--- Ver 312 WoS January 2015
+---   Undoc opcode timing fixes for $B3 (LAX iy) and $BB (LAS ay)
+---   Added comments in MCode section to find handling of individual opcodes more easily
+---   All "basic" Lorenz instruction test (individual functional checks, CPUTIMING check) work now with 
+---       actual FPGAARCADE C64 core (sources used: SVN version 1021).
+---
+--- Ver 305, 306, 307, 308, 309, 310, 311 WoS January 2015
+---   Undoc opcode fixes (now all Lorenz test on instruction functionality working, except timing issues on $B3 and $BB):
+---     SAX opcode
+---     SHA opcode
+---     SHX opcode
+---     SHY opcode
+---     SHS opcode
+---     LAS opcode
+---     alternate SBC opcode
+---     fixed NOP with immediate param (caused Lorenz trap test to fail)
+---     IRQ and NMI timing fixes (in conjuction with branches)
+---
+--- Ver 304 WoS December 2014
+---   Undoc opcode fixes:
+---     ARR opcode
+---     ANE/XAA opcode
+---   Corrected issue with NMI/IRQ prio (when asserted the same time)
+---
+--- Ver 303 ost(ML) July 2014
+---   (Sorry for some scratchpad comments that may make little sense)
+---   Mods and some 6502 undocumented instructions.
+---   Not correct opcodes acc. to Lorenz tests (incomplete list):
+---     NOPN    (nop)
+---     NOPZX   (nop + byte 172)
+---     NOPAX   (nop + word da  ...  da:  byte 0)
+---     ASOZ    (byte $07 + byte 172)
+---
+--- Ver 303,302 WoS April 2014
+---     Bugfixes for NMI from foft
+---     Bugfix for BRK command (and its special flag)
+---
+--- Ver 300,301 WoS January 2014
+---     More merging
+---     Bugfixes by ehenciak added, started tidyup *bust*
+ --
++-- Ver 301 more merging
++-- Ver 300 Bugfixes by ehenciak added, started tidyup *bust*
+ -- MikeJ March 2005
+---      Latest version from www.fpgaarcade.com (original www.opencores.org)
++-- Latest version from www.fpgaarcade.com (original www.opencores.org)
++--
+ -- ****
+ --
+ -- 65xx compatible microprocessor core
+ --
+--- FPGAARCADE SVN: $Id: T65.vhd 1347 2015-05-27 20:07:34Z wolfgang.scherr $
++-- Version : 0246
+ --
+--- Copyright (c) 2002...2015
+---               Daniel Wallner (jesus <at> opencores <dot> org)
+---               Mike Johnson   (mikej <at> fpgaarcade <dot> com)
+---               Wolfgang Scherr (WoS <at> pin4 <dot> at>
+---               Morten Leikvoll ()
++-- Copyright (c) 2002 Daniel Wallner (jesus@opencores.org)
+ --
+ -- All rights reserved
+ --
+@@ -93,37 +43,22 @@
+ -- ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ -- POSSIBILITY OF SUCH DAMAGE.
+ --
+--- Please report bugs to the author(s), but before you do so, please
++-- Please report bugs to the author, but before you do so, please
+ -- make sure that this is not a derivative work and that
+ -- you have the latest version of this file.
+ --
+--- ----- IMPORTANT NOTES -----
++-- The latest version of this file can be found at:
++--      http://www.opencores.org/cvsweb.shtml/t65/
++--
++-- Limitations :
++--
++-- 65C02 and 65C816 modes are incomplete
++-- Undocumented instructions are not supported
++-- Some interface signals behaves incorrect
+ --
+--- Limitations:
+---   65C02 and 65C816 modes are incomplete (and definitely untested after all 6502 undoc fixes)
+---      65C02 supported : inc, dec, phx, plx, phy, ply
+---      65D02 missing : bra, ora, lda, cmp, sbc, tsb*2, trb*2, stz*2, bit*2, wai, stp, jmp, bbr*8, bbs*8
+---   Some interface signals behave incorrect
+---   NMI interrupt handling not nice, needs further rework (to cycle-based encoding).
+---
+--- Usage:
+---   The enable signal allows clock gating / throttling without using the ready signal.
+---   Set it to constant '1' when using the Clk input as the CPU clock directly.
+---
+---   TAKE CARE you route the DO signal back to the DI signal while R_W_n='0',
+---   otherwise some undocumented opcodes won't work correctly.
+---   EXAMPLE:
+---      CPU : entity work.T65
+---          port map (
+---              R_W_n   => cpu_rwn_s,
+---              [....all other ports....]
+---              DI      => cpu_din_s,
+---              DO      => cpu_dout_s
+---          );
+---      cpu_din_s <= cpu_dout_s when cpu_rwn_s='0' else 
+---                   [....other sources from peripherals and memories...]
++-- File history :
+ --
+--- ----- IMPORTANT NOTES -----
++--      0246 : First release
+ --
+ 
+ library IEEE;
+@@ -131,386 +66,335 @@
+   use IEEE.numeric_std.all;
+   use work.T65_Pack.all;
+ 
++-- ehenciak 2-23-2005 : Added the enable signal so that one doesn't have to use
++-- the ready signal to limit the CPU.
+ entity T65 is
+-  port(
+-    Mode    : in  std_logic_vector(1 downto 0);      -- "00" => 6502, "01" => 65C02, "10" => 65C816
+-    Res_n   : in  std_logic;
+-    Enable  : in  std_logic;
+-    Clk     : in  std_logic;
+-    Rdy     : in  std_logic;
+-    Abort_n : in  std_logic;
+-    IRQ_n   : in  std_logic;
+-    NMI_n   : in  std_logic;
+-    SO_n    : in  std_logic;
+-    R_W_n   : out std_logic;
+-    Sync    : out std_logic;
+-    EF      : out std_logic;
+-    MF      : out std_logic;
+-    XF      : out std_logic;
+-    ML_n    : out std_logic;
+-    VP_n    : out std_logic;
+-    VDA     : out std_logic;
+-    VPA     : out std_logic;
+-    A       : out std_logic_vector(23 downto 0);
+-    DI      : in  std_logic_vector(7 downto 0);
+-    DO      : out std_logic_vector(7 downto 0);
+-    -- 6502 registers (MSB) PC, SP, P, Y, X, A (LSB)
+-    Regs    : out std_logic_vector(63 downto 0);
+-    DEBUG   : out T_t65_dbg;
+-    NMI_ack : out std_logic
+-  );
++	port(
++		Mode    : in  std_logic_vector(1 downto 0);      -- "00" => 6502, "01" => 65C02, "10" => 65C816
++		Res_n   : in  std_logic;
++		Enable  : in  std_logic;
++		Clk     : in  std_logic;
++		Rdy     : in  std_logic;
++		Abort_n : in  std_logic;
++		IRQ_n   : in  std_logic;
++		NMI_n   : in  std_logic;
++		SO_n    : in  std_logic;
++		R_W_n   : out std_logic;
++		Sync    : out std_logic;
++		EF      : out std_logic;
++		MF      : out std_logic;
++		XF      : out std_logic;
++		ML_n    : out std_logic;
++		VP_n    : out std_logic;
++		VDA     : out std_logic;
++		VPA     : out std_logic;
++		A       : out std_logic_vector(23 downto 0);
++		DI      : in  std_logic_vector(7 downto 0);
++		DO      : out std_logic_vector(7 downto 0)
++	);
+ end T65;
+ 
+ architecture rtl of T65 is
+ 
+-  -- Registers
+-  signal ABC, X, Y          : std_logic_vector(15 downto 0);
+-  signal P, AD, DL          : std_logic_vector(7 downto 0) :=  x"00";
+-  signal PwithB             : std_logic_vector(7 downto 0);--ML:New way to push P with correct B state to stack
+-  signal BAH                : std_logic_vector(7 downto 0);
+-  signal BAL                : std_logic_vector(8 downto 0);
+-  signal PBR                : std_logic_vector(7 downto 0);
+-  signal DBR                : std_logic_vector(7 downto 0);
+-  signal PC                 : unsigned(15 downto 0);
+-  signal S                  : unsigned(15 downto 0);
+-  signal EF_i               : std_logic;
+-  signal MF_i               : std_logic;
+-  signal XF_i               : std_logic;
+-
+-  signal IR                 : std_logic_vector(7 downto 0);
+-  signal MCycle             : std_logic_vector(2 downto 0);
+-
+-  signal DO_r               : std_logic_vector(7 downto 0);
+-
+-  signal Mode_r             : std_logic_vector(1 downto 0);
+-  signal ALU_Op_r           : T_ALU_Op;
+-  signal Write_Data_r       : T_Write_Data;
+-  signal Set_Addr_To_r      : T_Set_Addr_To;
+-  signal PCAdder            : unsigned(8 downto 0);
+-
+-  signal RstCycle           : std_logic;
+-  signal IRQCycle           : std_logic;
+-  signal NMICycle           : std_logic;
+-
+-  signal SO_n_o             : std_logic;
+-  signal IRQ_n_o            : std_logic;
+-  signal NMI_n_o            : std_logic;
+-  signal NMIAct             : std_logic;
+-
+-  signal Break              : std_logic;
+-
+-  -- ALU signals
+-  signal BusA               : std_logic_vector(7 downto 0);
+-  signal BusA_r             : std_logic_vector(7 downto 0);
+-  signal BusB               : std_logic_vector(7 downto 0);
+-  signal BusB_r             : std_logic_vector(7 downto 0);
+-  signal ALU_Q              : std_logic_vector(7 downto 0);
+-  signal P_Out              : std_logic_vector(7 downto 0);
+-
+-  -- Micro code outputs
+-  signal LCycle             : std_logic_vector(2 downto 0);
+-  signal ALU_Op             : T_ALU_Op;
+-  signal Set_BusA_To        : T_Set_BusA_To;
+-  signal Set_Addr_To        : T_Set_Addr_To;
+-  signal Write_Data         : T_Write_Data;
+-  signal Jump               : std_logic_vector(1 downto 0);
+-  signal BAAdd              : std_logic_vector(1 downto 0);
+-  signal BAQuirk            : std_logic_vector(1 downto 0);
+-  signal BreakAtNA          : std_logic;
+-  signal ADAdd              : std_logic;
+-  signal AddY               : std_logic;
+-  signal PCAdd              : std_logic;
+-  signal Inc_S              : std_logic;
+-  signal Dec_S              : std_logic;
+-  signal LDA                : std_logic;
+-  signal LDP                : std_logic;
+-  signal LDX                : std_logic;
+-  signal LDY                : std_logic;
+-  signal LDS                : std_logic;
+-  signal LDDI               : std_logic;
+-  signal LDALU              : std_logic;
+-  signal LDAD               : std_logic;
+-  signal LDBAL              : std_logic;
+-  signal LDBAH              : std_logic;
+-  signal SaveP              : std_logic;
+-  signal Write              : std_logic;
+-
+-  signal Res_n_i        : std_logic;
+-  signal Res_n_d        : std_logic;
+-
+-  signal rdy_mod        : std_logic; -- RDY signal turned off during the instruction
+-  signal really_rdy     : std_logic;
+-  signal WRn_i          : std_logic;
++	-- Registers
++	signal ABC, X, Y, D       : std_logic_vector(15 downto 0);
++	signal P, AD, DL          : std_logic_vector(7 downto 0) :=  x"00";
++	signal BAH                : std_logic_vector(7 downto 0);
++	signal BAL                : std_logic_vector(8 downto 0);
++	signal PBR                : std_logic_vector(7 downto 0);
++	signal DBR                : std_logic_vector(7 downto 0);
++	signal PC                 : unsigned(15 downto 0);
++	signal S                  : unsigned(15 downto 0);
++	signal EF_i               : std_logic;
++	signal MF_i               : std_logic;
++	signal XF_i               : std_logic;
++
++	signal IR                 : std_logic_vector(7 downto 0);
++	signal MCycle             : std_logic_vector(2 downto 0);
++
++	signal Mode_r             : std_logic_vector(1 downto 0);
++	signal ALU_Op_r           : std_logic_vector(3 downto 0);
++	signal Write_Data_r       : std_logic_vector(2 downto 0);
++	signal Set_Addr_To_r      : std_logic_vector(1 downto 0);
++	signal PCAdder            : unsigned(8 downto 0);
++
++	signal RstCycle           : std_logic;
++	signal IRQCycle           : std_logic;
++	signal NMICycle           : std_logic;
++
++	signal B_o                : std_logic;
++	signal SO_n_o             : std_logic;
++	signal IRQ_n_o            : std_logic;
++	signal NMI_n_o            : std_logic;
++	signal NMIAct             : std_logic;
++
++	signal Break              : std_logic;
++
++	-- ALU signals
++	signal BusA               : std_logic_vector(7 downto 0);
++	signal BusA_r             : std_logic_vector(7 downto 0);
++	signal BusB               : std_logic_vector(7 downto 0);
++	signal ALU_Q              : std_logic_vector(7 downto 0);
++	signal P_Out              : std_logic_vector(7 downto 0);
++
++	-- Micro code outputs
++	signal LCycle             : std_logic_vector(2 downto 0);
++	signal ALU_Op             : std_logic_vector(3 downto 0);
++	signal Set_BusA_To        : std_logic_vector(2 downto 0);
++	signal Set_Addr_To        : std_logic_vector(1 downto 0);
++	signal Write_Data         : std_logic_vector(2 downto 0);
++	signal Jump               : std_logic_vector(1 downto 0);
++	signal BAAdd              : std_logic_vector(1 downto 0);
++	signal BreakAtNA          : std_logic;
++	signal ADAdd              : std_logic;
++	signal AddY               : std_logic;
++	signal PCAdd              : std_logic;
++	signal Inc_S              : std_logic;
++	signal Dec_S              : std_logic;
++	signal LDA                : std_logic;
++	signal LDP                : std_logic;
++	signal LDX                : std_logic;
++	signal LDY                : std_logic;
++	signal LDS                : std_logic;
++	signal LDDI               : std_logic;
++	signal LDALU              : std_logic;
++	signal LDAD               : std_logic;
++	signal LDBAL              : std_logic;
++	signal LDBAH              : std_logic;
++	signal SaveP              : std_logic;
++	signal Write              : std_logic;
+ 
+-  signal NMI_entered    : std_logic;
++	signal really_rdy         : std_logic;
++	signal R_W_n_i            : std_logic;
+ 
+ begin
+-  NMI_ack <= NMIAct;
+-
+-  -- gate Rdy with read/write to make an "OK, it's really OK to stop the processor 
+-  really_rdy <= Rdy or not(WRn_i);
+-  Sync <= '1' when MCycle = "000" else '0';
+-  EF <= EF_i;
+-  MF <= MF_i;
+-  XF <= XF_i;
+-  R_W_n <= WRn_i;
+-  ML_n <= '0' when IR(7 downto 6) /= "10" and IR(2 downto 1) = "11" and MCycle(2 downto 1) /= "00" else '1';
+-  VP_n <= '0' when IRQCycle = '1' and (MCycle = "101" or MCycle = "110") else '1';
+-  VDA <= '1' when Set_Addr_To_r /= Set_Addr_To_PBR else '0';
+-  VPA <= '1' when Jump(1) = '0' else '0';
+-
+-  -- debugging signals
+-  DEBUG.I <= IR;
+-  DEBUG.A <= ABC(7 downto 0);
+-  DEBUG.X <= X(7 downto 0);
+-  DEBUG.Y <= Y(7 downto 0);
+-  DEBUG.S <= std_logic_vector(S(7 downto 0));
+-  DEBUG.P <= P;
+-
+-  Regs <= std_logic_vector(PC) & std_logic_vector(S)& P & Y(7 downto 0) & X(7 downto 0) & ABC(7 downto 0);
+-
+-  mcode : entity work.T65_MCode
+-    port map(
+---inputs
+-      Mode        => Mode_r,
+-      IR          => IR,
+-      MCycle      => MCycle,
+-      P           => P,
+-      Rdy_mod     => rdy_mod,
+---outputs
+-      LCycle      => LCycle,
+-      ALU_Op      => ALU_Op,
+-      Set_BusA_To => Set_BusA_To,
+-      Set_Addr_To => Set_Addr_To,
+-      Write_Data  => Write_Data,
+-      Jump        => Jump,
+-      BAAdd       => BAAdd,
+-      BAQuirk     => BAQuirk,
+-      BreakAtNA   => BreakAtNA,
+-      ADAdd       => ADAdd,
+-      AddY        => AddY,
+-      PCAdd       => PCAdd,
+-      Inc_S       => Inc_S,
+-      Dec_S       => Dec_S,
+-      LDA         => LDA,
+-      LDP         => LDP,
+-      LDX         => LDX,
+-      LDY         => LDY,
+-      LDS         => LDS,
+-      LDDI        => LDDI,
+-      LDALU       => LDALU,
+-      LDAD        => LDAD,
+-      LDBAL       => LDBAL,
+-      LDBAH       => LDBAH,
+-      SaveP       => SaveP,
+-      Write       => Write
+-      );
+-
+-  alu : entity work.T65_ALU
+-    port map(
+-      Mode => Mode_r,
+-      Op => ALU_Op_r,
+-      BusA => BusA_r,
+-      BusB => BusB,
+-      P_In => P,
+-      P_Out => P_Out,
+-      Q => ALU_Q
+-      );
+-
+-  -- the 65xx design requires at least two clock cycles before
+-  -- starting its reset sequence (according to datasheet)
+-  process (Res_n, Clk)
+-  begin
+-    if Res_n = '0' then
+-      Res_n_i <= '0';
+-      Res_n_d <= '0';
+-    elsif Clk'event and Clk = '1' then
+-      Res_n_i <= Res_n_d;
+-      Res_n_d <= '1';
+-    end if;
+-  end process;
+-
+-  process (Res_n_i, Clk)
+-  begin
+-    if Res_n_i = '0' then
+-      PC <= (others => '0');  -- Program Counter
+-      IR <= "00000000";
+-      S <= (others => '0');       -- Dummy
+-      PBR <= (others => '0');
+-      DBR <= (others => '0');
+-
+-      Mode_r <= (others => '0');
+-      ALU_Op_r <= ALU_OP_BIT;
+-      Write_Data_r <= Write_Data_DL;
+-      Set_Addr_To_r <= Set_Addr_To_PBR;
+-
+-      WRn_i <= '1';
+-      EF_i <= '1';
+-      MF_i <= '1';
+-      XF_i <= '1';
+-
+-    elsif Clk'event and Clk = '1' then  
+-      if (Enable = '1') then
+-        -- some instructions behavior changed by the Rdy line. Detect this at the correct cycles.
+-        if MCycle  = "000" then
+-          rdy_mod <= '0';
+-        elsif ((MCycle = "011" and IR /= x"93") or (MCycle = "100" and IR = x"93")) and Rdy = '0' then
+-          rdy_mod <= '1';
+-        end if;
+-
+-        if (really_rdy = '1') then
+-          WRn_i <= not Write or RstCycle;
+-
+-          PBR <= (others => '1'); -- Dummy
+-          DBR <= (others => '1'); -- Dummy
+-          EF_i <= '0';    -- Dummy
+-          MF_i <= '0';    -- Dummy
+-          XF_i <= '0';    -- Dummy
+-
+-          if MCycle  = "000" then
+-            Mode_r <= Mode;
+-
+-            if IRQCycle = '0' and NMICycle = '0' then
+-              PC <= PC + 1;
+-            end if;
+-
+-            if IRQCycle = '1' or NMICycle = '1' then
+-              IR <= "00000000";
+-            else
+-              IR <= DI;
+-            end if;
+-
+-            if LDS = '1' then -- LAS won't work properly if not limited to machine cycle 0
+-              S(7 downto 0) <= unsigned(ALU_Q);
+-            end if;
+-          end if;
+-
+-          ALU_Op_r <= ALU_Op;
+-          Write_Data_r <= Write_Data;
+-          if Break = '1' then
+-            Set_Addr_To_r <= Set_Addr_To_PBR;
+-          else
+-            Set_Addr_To_r <= Set_Addr_To;
+-          end if;
+-
+-          if Inc_S = '1' then
+-            S <= S + 1;
+-          end if;
+-          if Dec_S = '1' and RstCycle = '0' then
+-            S <= S - 1;
+-          end if;
+-
+-          if IR = "00000000" and MCycle = "001" and IRQCycle = '0' and NMICycle = '0' then
+-            PC <= PC + 1;
+-          end if;
+-          --
+-          -- jump control logic
+-          --
+-          case Jump is
+-            when "01" =>
+-              PC <= PC + 1;
+-            when "10" =>
+-              PC <= unsigned(DI & DL);
+-            when "11" =>
+-              if PCAdder(8) = '1' then
+-                if DL(7) = '0' then
+-                  PC(15 downto 8) <= PC(15 downto 8) + 1;
+-                else
+-                  PC(15 downto 8) <= PC(15 downto 8) - 1;
+-                end if;
+-              end if;
+-              PC(7 downto 0) <= PCAdder(7 downto 0);
+-            when others => null;
+-          end case;
+-        end if;
+-      end if;
+-    end if;
+-  end process;
+-
+-  PCAdder <= resize(PC(7 downto 0),9) + resize(unsigned(DL(7) & DL),9) when PCAdd = '1'
+-         else "0" & PC(7 downto 0);
+-
+-  process (Res_n_i, Clk)
+-    variable tmpP:std_logic_vector(7 downto 0);--Lets try to handle loading P at mcycle=0 and set/clk flags at same cycle
+-  begin
+-    if Res_n_i = '0' then
+-      P <= x"00"; -- ensure we have nothing set on reset
+-    elsif Clk'event and Clk = '1' then
+-      tmpP:=P;
+-      if (Enable = '1') then
+-        if (really_rdy = '1') then
+-          if MCycle = "000" then
+-            if LDA = '1' then
+-              ABC(7 downto 0) <= ALU_Q;
+-            end if;
+-            if LDX = '1' then
+-              X(7 downto 0) <= ALU_Q;
+-            end if;
+-            if LDY = '1' then
+-              Y(7 downto 0) <= ALU_Q;
+-            end if;
+-            if (LDA or LDX or LDY) = '1' then
+-              tmpP:=P_Out;
+-            end if;
+-          end if;
+-          if SaveP = '1' then
+-            tmpP:=P_Out;
+-          end if;
+-          if LDP = '1' then
+-            tmpP:=ALU_Q;
+-          end if;
+-          if IR(4 downto 0) = "11000" then
+-            case IR(7 downto 5) is
+-            when "000" =>--0x18(clc)
+-              tmpP(Flag_C) := '0';
+-            when "001" =>--0x38(sec)
+-              tmpP(Flag_C) := '1';
+-            when "010" =>--0x58(cli)
+-              tmpP(Flag_I) := '0';
+-            when "011" =>--0x78(sei)
+-              tmpP(Flag_I) := '1';
+-            when "101" =>--0xb8(clv)
+-              tmpP(Flag_V) := '0';
+-            when "110" =>--0xd8(cld)
+-              tmpP(Flag_D) := '0';
+-            when "111" =>--0xf8(sed)
+-              tmpP(Flag_D) := '1';
+-            when others =>
+-            end case;
+-          end if;
+-          tmpP(Flag_B) := '1';
+-          if IR = "00000000" and MCycle = "100" and RstCycle = '0' then
+-            --This should happen after P has been pushed to stack
+-            tmpP(Flag_I) := '1';
+-          end if;
+-          if RstCycle = '1' then
+-            tmpP(Flag_I) := '1';
+-            tmpP(Flag_D) := '0';
+-          end if;
+-          tmpP(Flag_1) := '1';
+-
+-          P<=tmpP;--new way
+-
+-        end if;
+-
+-        -- detect irq even if not rdy
+-        if IR(4 downto 0)/="10000" or Jump/="01" or really_rdy = '0' then -- delay interrupts during branches (checked with Lorenz test and real 6510), not best way yet, though - but works...
+-          IRQ_n_o <= IRQ_n;
+-        end if;
+-        -- detect nmi even if not rdy
+-        if IR(4 downto 0)/="10000" or Jump/="01" then -- delay interrupts during branches (checked with Lorenz test and real 6510) not best way yet, though - but works...
+-          NMI_n_o <= NMI_n;
+-        end if;
+-      end if;
+-      -- act immediately on SO pin change
+-      -- The signal is sampled on the trailing edge of phi1 and must be externally synchronized (from datasheet)
+-      SO_n_o <= SO_n;
+-		if SO_n_o = '1' and SO_n = '0' then
+-          P(Flag_V) <= '1';
+-      end if;
+-
+-    end if;
+-  end process;
++	-- ehenciak : gate Rdy with read/write to make an "OK, it's
++	--            really OK to stop the processor now if Rdy is
++	--            deasserted" signal
++	really_rdy <= Rdy or not(R_W_n_i);
++
++	-- ehenciak : Drive R_W_n_i off chip.
++	R_W_n      <= R_W_n_i;
++
++	Sync <= '1' when MCycle = "000" else '0';
++	EF <= EF_i;
++	MF <= MF_i;
++	XF <= XF_i;
++	ML_n <= '0' when IR(7 downto 6) /= "10" and IR(2 downto 1) = "11" and MCycle(2 downto 1) /= "00" else '1';
++	VP_n <= '0' when IRQCycle = '1' and (MCycle = "101" or MCycle = "110") else '1';
++	VDA <= '1' when Set_Addr_To_r /= "000" else '0';            -- Incorrect !!!!!!!!!!!!
++	VPA <= '1' when Jump(1) = '0' else '0';                     -- Incorrect !!!!!!!!!!!!
++
++	mcode : T65_MCode
++		port map(
++			Mode        => Mode_r,
++			IR          => IR,
++			MCycle      => MCycle,
++			P           => P,
++			LCycle      => LCycle,
++			ALU_Op      => ALU_Op,
++			Set_BusA_To => Set_BusA_To,
++			Set_Addr_To => Set_Addr_To,
++			Write_Data  => Write_Data,
++			Jump        => Jump,
++			BAAdd       => BAAdd,
++			BreakAtNA   => BreakAtNA,
++			ADAdd       => ADAdd,
++			AddY        => AddY,
++			PCAdd       => PCAdd,
++			Inc_S       => Inc_S,
++			Dec_S       => Dec_S,
++			LDA         => LDA,
++			LDP         => LDP,
++			LDX         => LDX,
++			LDY         => LDY,
++			LDS         => LDS,
++			LDDI        => LDDI,
++			LDALU       => LDALU,
++			LDAD        => LDAD,
++			LDBAL       => LDBAL,
++			LDBAH       => LDBAH,
++			SaveP       => SaveP,
++			Write       => Write
++			);
++
++	alu : T65_ALU
++		port map(
++			Mode => Mode_r,
++			Op => ALU_Op_r,
++			BusA => BusA_r,
++			BusB => BusB,
++			P_In => P,
++			P_Out => P_Out,
++			Q => ALU_Q
++			);
++
++	process (Res_n, Clk)
++	begin
++		if Res_n = '0' then
++			PC <= (others => '0');  -- Program Counter
++			IR <= "00000000";
++			S <= (others => '0');       -- Dummy !!!!!!!!!!!!!!!!!!!!!
++			D <= (others => '0');
++			PBR <= (others => '0');
++			DBR <= (others => '0');
++
++			Mode_r <= (others => '0');
++			ALU_Op_r <= "1100";
++			Write_Data_r <= "000";
++			Set_Addr_To_r <= "00";
++
++			R_W_n_i <= '1';
++			EF_i <= '1';
++			MF_i <= '1';
++			XF_i <= '1';
++
++		elsif Clk'event and Clk = '1' then
++		  if (Enable = '1') then
++			if (really_rdy = '1') then
++				R_W_n_i <= not Write or RstCycle;
++
++				D <= (others => '1');   -- Dummy
++				PBR <= (others => '1'); -- Dummy
++				DBR <= (others => '1'); -- Dummy
++				EF_i <= '0';    -- Dummy
++				MF_i <= '0';    -- Dummy
++				XF_i <= '0';    -- Dummy
++
++				if MCycle  = "000" then
++					Mode_r <= Mode;
++
++					if IRQCycle = '0' and NMICycle = '0' then
++						PC <= PC + 1;
++					end if;
++
++					if IRQCycle = '1' or NMICycle = '1' then
++						IR <= "00000000";
++					else
++						IR <= DI;
++					end if;
++				end if;
++
++				ALU_Op_r <= ALU_Op;
++				Write_Data_r <= Write_Data;
++				if Break = '1' then
++					Set_Addr_To_r <= "00";
++				else
++					Set_Addr_To_r <= Set_Addr_To;
++				end if;
++
++				if Inc_S = '1' then
++					S <= S + 1;
++				end if;
++				if Dec_S = '1' and RstCycle = '0' then
++					S <= S - 1;
++				end if;
++				if LDS = '1' then
++					S(7 downto 0) <= unsigned(ALU_Q);
++				end if;
++
++				if IR = "00000000" and MCycle = "001" and IRQCycle = '0' and NMICycle = '0' then
++					PC <= PC + 1;
++				end if;
++				--
++				-- jump control logic
++				--
++				case Jump is
++				  when "01" =>
++					  PC <= PC + 1;
++
++				  when "10" =>
++					  PC <= unsigned(DI & DL);
++
++				  when "11" =>
++					  if PCAdder(8) = '1' then
++						  if DL(7) = '0' then
++							  PC(15 downto 8) <= PC(15 downto 8) + 1;
++						  else
++							  PC(15 downto 8) <= PC(15 downto 8) - 1;
++						  end if;
++					  end if;
++					  PC(7 downto 0) <= PCAdder(7 downto 0);
++
++				  when others => null;
++				end case;
++			end if;
++		  end if;
++		end if;
++	end process;
++
++	PCAdder <= resize(PC(7 downto 0),9) + resize(unsigned(DL(7) & DL),9) when PCAdd = '1'
++			   else "0" & PC(7 downto 0);
++
++	process (Clk)
++	begin
++		if Clk'event and Clk = '1' then
++		  if (Enable = '1') then
++			if (really_rdy = '1') then
++				if MCycle = "000" then
++					if LDA = '1' then
++						ABC(7 downto 0) <= ALU_Q;
++					end if;
++					if LDX = '1' then
++						X(7 downto 0) <= ALU_Q;
++					end if;
++					if LDY = '1' then
++						Y(7 downto 0) <= ALU_Q;
++					end if;
++					if (LDA or LDX or LDY) = '1' then
++						P <= P_Out;
++					end if;
++				end if;
++				if SaveP = '1' then
++					P <= P_Out;
++				end if;
++				if LDP = '1' then
++					P <= ALU_Q;
++				end if;
++				if IR(4 downto 0) = "11000" then
++					case IR(7 downto 5) is
++					when "000" =>
++						P(Flag_C) <= '0';
++					when "001" =>
++						P(Flag_C) <= '1';
++					when "010" =>
++						P(Flag_I) <= '0';
++					when "011" =>
++						P(Flag_I) <= '1';
++					when "101" =>
++						P(Flag_V) <= '0';
++					when "110" =>
++						P(Flag_D) <= '0';
++					when "111" =>
++						P(Flag_D) <= '1';
++					when others =>
++					end case;
++				end if;
++				if IR = "00000000" and MCycle = "011" and RstCycle = '0' and NMICycle = '0' and IRQCycle = '0' then
++					P(Flag_B) <= '1';
++				end if;
++				if IR = "00000000" and MCycle = "100" and RstCycle = '0' and (NMICycle = '1' or IRQCycle = '1')  then
++					P(Flag_I) <= '1';
++					P(Flag_B) <= B_o;
++				end if;
++				if SO_n_o = '1' and SO_n = '0' then
++					P(Flag_V) <= '1';
++				end if;
++				if RstCycle = '1' and Mode_r /= "00" then
++					P(Flag_1) <= '1';
++					P(Flag_D) <= '0';
++					P(Flag_I) <= '1';
++				end if;
++				P(Flag_1) <= '1';
++
++				B_o     <= P(Flag_B);
++				SO_n_o <= SO_n;
++				IRQ_n_o <= IRQ_n;
++				NMI_n_o <= NMI_n;
++			end if;
++		  end if;
++		end if;
++	end process;
+ 
+ ---------------------------------------------------------------------------
+ --
+@@ -518,141 +402,109 @@
+ --
+ ---------------------------------------------------------------------------
+ 
+-  process (Res_n_i, Clk)
+-  begin
+-    if Res_n_i = '0' then
+-      BusA_r <= (others => '0');
+-      BusB <= (others => '0');
+-      BusB_r <= (others => '0');
+-      AD <= (others => '0');
+-      BAL <= (others => '0');
+-      BAH <= (others => '0');
+-      DL <= (others => '0');
+-    elsif Clk'event and Clk = '1' then
+-      if (Enable = '1') then
+-        if (really_rdy = '1') then
+-          NMI_entered <= '0';
+-          BusA_r <= BusA;
+-          BusB <= DI;
+-
+-          -- not really nice, but no better way found yet !
+-          if Set_Addr_To_r = Set_Addr_To_PBR or Set_Addr_To_r = Set_Addr_To_ZPG then
+-            BusB_r <= std_logic_vector(unsigned(DI(7 downto 0)) + 1); -- required for SHA
+-          end if;
+-
+-          case BAAdd is
+-          when "01" =>
+-            -- BA Inc
+-            AD <= std_logic_vector(unsigned(AD) + 1);
+-            BAL <= std_logic_vector(unsigned(BAL) + 1);
+-          when "10" =>
+-            -- BA Add
+-            BAL <= std_logic_vector(resize(unsigned(BAL(7 downto 0)),9) + resize(unsigned(BusA),9));
+-          when "11" =>
+-            -- BA Adj
+-            if BAL(8) = '1' then
+-              -- Handle quirks with some undocumented opcodes crossing page boundary
+-              case BAQuirk is
+-              when "00" => BAH <= std_logic_vector(unsigned(BAH) + 1); -- no quirk
+-              when "01" => BAH <= std_logic_vector(unsigned(BAH) + 1) and DO_r;
+-              when "10" => BAH <= DO_r;
+-              when others => null;
+-              end case;
+-            end if;
+-          when others =>
+-          end case;
+-
+-          -- modified to use Y register as well
+-          if ADAdd = '1' then
+-            if (AddY = '1') then
+-              AD <= std_logic_vector(unsigned(AD) + unsigned(Y(7 downto 0)));
+-            else
+-              AD <= std_logic_vector(unsigned(AD) + unsigned(X(7 downto 0)));
+-            end if;
+-          end if;
+-
+-          if IR = "00000000" then
+-            BAL <= (others => '1');
+-            BAH <= (others => '1');
+-            if RstCycle = '1' then
+-              BAL(2 downto 0) <= "100";
+-            elsif NMICycle = '1' or (NMIAct = '1' and MCycle="100") or NMI_entered='1' then
+-              BAL(2 downto 0) <= "010";
+-              if MCycle="100" then
+-                NMI_entered <= '1';
+-              end if;
+-            else
+-              BAL(2 downto 0) <= "110";
+-            end if;
+-            if Set_addr_To_r = Set_Addr_To_BA then
+-              BAL(0) <= '1';
+-            end if;
+-          end if;
+-
+-          if LDDI = '1' then
+-            DL <= DI;
+-          end if;
+-          if LDALU = '1' then
+-            DL <= ALU_Q;
+-          end if;
+-          if LDAD = '1' then
+-            AD <= DI;
+-          end if;
+-          if LDBAL = '1' then
+-            BAL(7 downto 0) <= DI;
+-          end if;
+-          if LDBAH = '1' then
+-            BAH <= DI;
+-          end if;
+-        end if;
+-      end if;
+-    end if;
+-  end process;
+-
+-  Break <= (BreakAtNA and not BAL(8)) or (PCAdd and not PCAdder(8));
+-
+-  with Set_BusA_To select
+-    BusA <=
+-      DI                                    when Set_BusA_To_DI,
+-      ABC(7 downto 0)                       when Set_BusA_To_ABC,
+-      X(7 downto 0)                         when Set_BusA_To_X,
+-      Y(7 downto 0)                         when Set_BusA_To_Y,
+-      std_logic_vector(S(7 downto 0))       when Set_BusA_To_S,
+-      P                                     when Set_BusA_To_P,
+-      ABC(7 downto 0) and DI                when Set_BusA_To_DA,
+-      (ABC(7 downto 0) or x"ee") and DI     when Set_BusA_To_DAO,--ee for OAL instruction. constant may be different on other platforms.TODO:Move to generics
+-      (ABC(7 downto 0) or x"ee") and DI and X(7 downto 0)    when Set_BusA_To_DAX,--XAA, ee for OAL instruction. constant may be different on other platforms.TODO:Move to generics
+-      ABC(7 downto 0) and X(7 downto 0)     when Set_BusA_To_AAX,--SAX, SHA
+-      (others => '-')                       when Set_BusA_To_DONTCARE;--Can probably remove this
+-
+-  with Set_Addr_To_r select
+-    A <=
+-      "0000000000000001" & std_logic_vector(S(7 downto 0))                            when Set_Addr_To_SP,
+-      DBR & "00000000" & AD                                                           when Set_Addr_To_ZPG,
+-      "00000000" & BAH & BAL(7 downto 0)                                              when Set_Addr_To_BA,
+-      PBR & std_logic_vector(PC(15 downto 8)) & std_logic_vector(PCAdder(7 downto 0)) when Set_Addr_To_PBR;
+-
+-  -- This is the P that gets pushed on stack with correct B flag. I'm not sure if NMI also clears B, but I guess it does.
+-  PwithB<=(P and x"ef") when (IRQCycle='1' or NMICycle='1') else P;
+-
+-  DO <= DO_r;
+-
+-  with Write_Data_r select
+-    DO_r <=
+-      DL                                  when Write_Data_DL,
+-      ABC(7 downto 0)                     when Write_Data_ABC,
+-      X(7 downto 0)                       when Write_Data_X,
+-      Y(7 downto 0)                       when Write_Data_Y,
+-      std_logic_vector(S(7 downto 0))     when Write_Data_S,
+-      PwithB                              when Write_Data_P,
+-      std_logic_vector(PC(7 downto 0))    when Write_Data_PCL,
+-      std_logic_vector(PC(15 downto 8))   when Write_Data_PCH,
+-      ABC(7 downto 0) and X(7 downto 0)   when Write_Data_AX,
+-      ABC(7 downto 0) and X(7 downto 0) and BusB_r(7 downto 0) when Write_Data_AXB, -- no better way found yet...
+-      X(7 downto 0) and BusB_r(7 downto 0) when Write_Data_XB, -- no better way found yet...
+-      Y(7 downto 0) and BusB_r(7 downto 0) when Write_Data_YB, -- no better way found yet...
+-      (others=>'-')                       when Write_Data_DONTCARE;--Can probably remove this
+-
++	process (Res_n, Clk)
++	begin
++		if Res_n = '0' then
++			BusA_r <= (others => '0');
++			BusB <= (others => '0');
++			AD <= (others => '0');
++			BAL <= (others => '0');
++			BAH <= (others => '0');
++			DL <= (others => '0');
++		elsif Clk'event and Clk = '1' then
++		  if (Enable = '1') then
++			if (Rdy = '1') then
++				BusA_r <= BusA;
++				BusB <= DI;
++
++				case BAAdd is
++				when "01" =>
++					-- BA Inc
++					AD <= std_logic_vector(unsigned(AD) + 1);
++					BAL <= std_logic_vector(unsigned(BAL) + 1);
++				when "10" =>
++					-- BA Add
++					BAL <= std_logic_vector(resize(unsigned(BAL(7 downto 0)),9) + resize(unsigned(BusA),9));
++				when "11" =>
++					-- BA Adj
++					if BAL(8) = '1' then
++						BAH <= std_logic_vector(unsigned(BAH) + 1);
++					end if;
++				when others =>
++				end case;
++
++				-- ehenciak : modified to use Y register as well (bugfix)
++				if ADAdd = '1' then
++				  if (AddY = '1') then
++					AD <= std_logic_vector(unsigned(AD) + unsigned(Y(7 downto 0)));
++				  else
++					AD <= std_logic_vector(unsigned(AD) + unsigned(X(7 downto 0)));
++				  end if;
++				end if;
++
++				if IR = "00000000" then
++					BAL <= (others => '1');
++					BAH <= (others => '1');
++					if RstCycle = '1' then
++						BAL(2 downto 0) <= "100";
++					elsif NMICycle = '1' then
++						BAL(2 downto 0) <= "010";
++					else
++						BAL(2 downto 0) <= "110";
++					end if;
++					if Set_addr_To_r = "11" then
++						BAL(0) <= '1';
++					end if;
++				end if;
++
++
++				if LDDI = '1' then
++					DL <= DI;
++				end if;
++				if LDALU = '1' then
++					DL <= ALU_Q;
++				end if;
++				if LDAD = '1' then
++					AD <= DI;
++				end if;
++				if LDBAL = '1' then
++					BAL(7 downto 0) <= DI;
++				end if;
++				if LDBAH = '1' then
++					BAH <= DI;
++				end if;
++			end if;
++		end if;
++	  end if;
++	end process;
++
++	Break <= (BreakAtNA and not BAL(8)) or (PCAdd and not PCAdder(8));
++
++
++	with Set_BusA_To select
++		BusA <= DI when "000",
++			ABC(7 downto 0) when "001",
++			X(7 downto 0) when "010",
++			Y(7 downto 0) when "011",
++			std_logic_vector(S(7 downto 0)) when "100",
++			P when "101",
++			(others => '-') when others;
++
++	with Set_Addr_To_r select
++		A <= "0000000000000001" & std_logic_vector(S(7 downto 0)) when "01",
++			DBR & "00000000" & AD when "10",
++			"00000000" & BAH & BAL(7 downto 0) when "11",
++			PBR & std_logic_vector(PC(15 downto 8)) & std_logic_vector(PCAdder(7 downto 0)) when others;
++
++	with Write_Data_r select
++		DO <= DL when "000",
++			ABC(7 downto 0) when "001",
++			X(7 downto 0) when "010",
++			Y(7 downto 0) when "011",
++			std_logic_vector(S(7 downto 0)) when "100",
++			P when "101",
++			std_logic_vector(PC(7 downto 0)) when "110",
++			std_logic_vector(PC(15 downto 8)) when others;
+ 
+ -------------------------------------------------------------------------
+ --
+@@ -660,42 +512,40 @@
+ --
+ -------------------------------------------------------------------------
+ 
+-  process (Res_n_i, Clk)
+-  begin
+-    if Res_n_i = '0' then
+-      MCycle <= "001";
+-      RstCycle <= '1';
+-      IRQCycle <= '0';
+-      NMICycle <= '0';
+-      NMIAct <= '0';
+-    elsif Clk'event and Clk = '1' then
+-      if (Enable = '1') then
+-        if (really_rdy = '1') then
+-          if MCycle = LCycle or Break = '1' then
+-            MCycle <= "000";
+-            RstCycle <= '0';
+-            IRQCycle <= '0';
+-            NMICycle <= '0';
+-            if NMIAct = '1' and IR/=x"00" then -- delay NMI further if we just executed a BRK
+-              NMICycle <= '1';
+-              NMIAct <= '0'; -- reset NMI edge detector if we start processing the NMI
+-            elsif IRQ_n_o = '0' and P(Flag_I) = '0' then
+-              IRQCycle <= '1';
+-            end if;
+-          else
+-            MCycle <= std_logic_vector(unsigned(MCycle) + 1);
+-          end if;
+-        end if;
+-        --detect NMI even if not rdy    
+-        if NMI_n_o = '1' and (NMI_n = '0' and (IR(4 downto 0)/="10000" or Jump/="01")) then -- branches have influence on NMI start (not best way yet, though - but works...)
+-          NMIAct <= '1';
+-        end if;
+-        -- we entered NMI during BRK instruction
+-        if NMI_entered='1' then
+-          NMIAct <= '0';
+-        end if;
+-      end if;
+-    end if;
+-  end process;
++	process (Res_n, Clk)
++	begin
++		if Res_n = '0' then
++			MCycle <= "001";
++			RstCycle <= '1';
++			IRQCycle <= '0';
++			NMICycle <= '0';
++			NMIAct <= '0';
++		elsif Clk'event and Clk = '1' then
++		  if (Enable = '1') then
++			if (really_rdy = '1') then
++				if MCycle = LCycle or Break = '1' then
++					MCycle <= "000";
++					RstCycle <= '0';
++					IRQCycle <= '0';
++					NMICycle <= '0';
++					if NMIAct = '1' then
++						NMICycle <= '1';
++					elsif IRQ_n_o = '0' and P(Flag_I) = '0' then
++						IRQCycle <= '1';
++					end if;
++				else
++					MCycle <= std_logic_vector(unsigned(MCycle) + 1);
++				end if;
++
++				if NMICycle = '1' then
++					NMIAct <= '0';
++				end if;
++				if NMI_n_o = '1' and NMI_n = '0' then
++					NMIAct <= '1';
++				end if;
++			end if;
++		  end if;
++		end if;
++	end process;
+ 
+ end;
+--- ref/T65_ALU.vhd
++++ Arcade-Sprint1_MiSTer/rtl/T65/T65_ALU.vhd
+@@ -1,18 +1,18 @@
+ -- ****
+ -- T65(b) core. In an effort to merge and maintain bug fixes ....
+ --
+--- See list of changes in T65 top file (T65.vhd)...
++--
++-- Ver 300 Bugfixes by ehenciak added
++-- MikeJ March 2005
++-- Latest version from www.fpgaarcade.com (original www.opencores.org)
+ --
+ -- ****
+--- 65xx compatible microprocessor core
+ --
+--- FPGAARCADE SVN: $Id: T65_ALU.vhd 1234 2015-02-28 20:14:50Z wolfgang.scherr $
++-- 6502 compatible microprocessor core
++--
++-- Version : 0245
+ --
+--- Copyright (c) 2002...2015
+---               Daniel Wallner (jesus <at> opencores <dot> org)
+---               Mike Johnson   (mikej <at> fpgaarcade <dot> com)
+---               Wolfgang Scherr (WoS <at> pin4 <dot> at>
+---               Morten Leikvoll ()
++-- Copyright (c) 2002 Daniel Wallner (jesus@opencores.org)
+ --
+ -- All rights reserved
+ --
+@@ -42,12 +42,19 @@
+ -- ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ -- POSSIBILITY OF SUCH DAMAGE.
+ --
+--- Please report bugs to the author(s), but before you do so, please
++-- Please report bugs to the author, but before you do so, please
+ -- make sure that this is not a derivative work and that
+ -- you have the latest version of this file.
+ --
++-- The latest version of this file can be found at:
++--      http://www.opencores.org/cvsweb.shtml/t65/
++--
+ -- Limitations :
+---   See in T65 top file (T65.vhd)...
++--
++-- File history :
++--
++--      0245 : First version
++--
+ 
+ library IEEE;
+ use IEEE.std_logic_1164.all;
+@@ -55,239 +62,199 @@
+ use work.T65_Pack.all;
+ 
+ entity T65_ALU is
+-  port(
+-    Mode    : in std_logic_vector(1 downto 0);      -- "00" => 6502, "01" => 65C02, "10" => 65816
+-    Op      : in T_ALU_OP;
+-    BusA    : in std_logic_vector(7 downto 0);
+-    BusB    : in std_logic_vector(7 downto 0);
+-    P_In    : in std_logic_vector(7 downto 0);
+-    P_Out   : out std_logic_vector(7 downto 0);
+-    Q       : out std_logic_vector(7 downto 0)
+-  );
++	port(
++		Mode    : in std_logic_vector(1 downto 0);      -- "00" => 6502, "01" => 65C02, "10" => 65816
++		Op      : in std_logic_vector(3 downto 0);
++		BusA    : in std_logic_vector(7 downto 0);
++		BusB    : in std_logic_vector(7 downto 0);
++		P_In    : in std_logic_vector(7 downto 0);
++		P_Out   : out std_logic_vector(7 downto 0);
++		Q       : out std_logic_vector(7 downto 0)
++	);
+ end T65_ALU;
+ 
+ architecture rtl of T65_ALU is
+ 
+-  -- AddSub variables (temporary signals)
+-  signal      ADC_Z           : std_logic;
+-  signal      ADC_C           : std_logic;
+-  signal      ADC_V           : std_logic;
+-  signal      ADC_N           : std_logic;
+-  signal      ADC_Q           : std_logic_vector(7 downto 0);
+-  signal      SBC_Z           : std_logic;
+-  signal      SBC_C           : std_logic;
+-  signal      SBC_V           : std_logic;
+-  signal      SBC_N           : std_logic;
+-  signal      SBC_Q           : std_logic_vector(7 downto 0);
+-  signal      SBX_Q           : std_logic_vector(7 downto 0);
++	-- AddSub variables (temporary signals)
++	signal      ADC_Z           : std_logic;
++	signal      ADC_C           : std_logic;
++	signal      ADC_V           : std_logic;
++	signal      ADC_N           : std_logic;
++	signal      ADC_Q           : std_logic_vector(7 downto 0);
++	signal      SBC_Z           : std_logic;
++	signal      SBC_C           : std_logic;
++	signal      SBC_V           : std_logic;
++	signal      SBC_N           : std_logic;
++	signal      SBC_Q           : std_logic_vector(7 downto 0);
+ 
+ begin
+ 
+-  process (P_In, BusA, BusB)
+-    variable AL : unsigned(6 downto 0);
+-    variable AH : unsigned(6 downto 0);
+-    variable C : std_logic;
+-  begin
+-    AL := resize(unsigned(BusA(3 downto 0) & P_In(Flag_C)), 7) + resize(unsigned(BusB(3 downto 0) & "1"), 7);
+-    AH := resize(unsigned(BusA(7 downto 4) & AL(5)), 7) + resize(unsigned(BusB(7 downto 4) & "1"), 7);
++	process (P_In, BusA, BusB)
++		variable AL : unsigned(6 downto 0);
++		variable AH : unsigned(6 downto 0);
++		variable C : std_logic;
++	begin
++		AL := resize(unsigned(BusA(3 downto 0) & P_In(Flag_C)), 7) + resize(unsigned(BusB(3 downto 0) & "1"), 7);
++		AH := resize(unsigned(BusA(7 downto 4) & AL(5)), 7) + resize(unsigned(BusB(7 downto 4) & "1"), 7);
+ 
+ -- pragma translate_off
+-      if is_x(std_logic_vector(AL)) then AL := "0000000"; end if;
+-      if is_x(std_logic_vector(AH)) then AH := "0000000"; end if;
++			if is_x(std_logic_vector(AL)) then AL := "0000000"; end if;
++			if is_x(std_logic_vector(AH)) then AH := "0000000"; end if;
+ -- pragma translate_on
+ 
+-    if AL(4 downto 1) = 0 and AH(4 downto 1) = 0 then
+-      ADC_Z <= '1';
+-    else
+-      ADC_Z <= '0';
+-    end if;
+-
+-    if AL(5 downto 1) > 9 and P_In(Flag_D) = '1' then
+-      AL(6 downto 1) := AL(6 downto 1) + 6;
+-    end if;
++		if AL(4 downto 1) = 0 and AH(4 downto 1) = 0 then
++			ADC_Z <= '1';
++		else
++			ADC_Z <= '0';
++		end if;
++
++		if AL(5 downto 1) > 9 and P_In(Flag_D) = '1' then
++			AL(6 downto 1) := AL(6 downto 1) + 6;
++		end if;
+ 
+-    C := AL(6) or AL(5);
+-    AH := resize(unsigned(BusA(7 downto 4) & C), 7) + resize(unsigned(BusB(7 downto 4) & "1"), 7);
++		C := AL(6) or AL(5);
++		AH := resize(unsigned(BusA(7 downto 4) & C), 7) + resize(unsigned(BusB(7 downto 4) & "1"), 7);
+ 
+-    ADC_N <= AH(4);
+-    ADC_V <= (AH(4) xor BusA(7)) and not (BusA(7) xor BusB(7));
++		ADC_N <= AH(4);
++		ADC_V <= (AH(4) xor BusA(7)) and not (BusA(7) xor BusB(7));
+ 
+ -- pragma translate_off
+-      if is_x(std_logic_vector(AH)) then AH := "0000000"; end if;
++			if is_x(std_logic_vector(AH)) then AH := "0000000"; end if;
+ -- pragma translate_on
+ 
+-    if AH(5 downto 1) > 9 and P_In(Flag_D) = '1' then
+-      AH(6 downto 1) := AH(6 downto 1) + 6;
+-    end if;
+-
+-    ADC_C <= AH(6) or AH(5);
+-
+-    ADC_Q <= std_logic_vector(AH(4 downto 1) & AL(4 downto 1));
+-  end process;
+-
+-  process (Op, P_In, BusA, BusB)
+-    variable AL : unsigned(6 downto 0);
+-    variable AH : unsigned(5 downto 0);
+-    variable C : std_logic;
+-    variable CT : std_logic;
+-  begin
+-    CT:='0';
+-    if(  Op=ALU_OP_AND or	--"0001" These OpCodes used to have LSB set
+-         Op=ALU_OP_ADC or	--"0011"
+-         Op=ALU_OP_EQ2 or	--"0101"
+-         Op=ALU_OP_SBC or	--"0111"
+-         Op=ALU_OP_ROL or	--"1001"
+-         Op=ALU_OP_ROR or	--"1011"
+---         Op=ALU_OP_EQ3 or	--"1101"
+-         Op=ALU_OP_INC		--"1111"
+-      ) then
+-      CT:='1';
+-    end if;
+-
+-    C := P_In(Flag_C) or not CT;--was: or not Op(0);
+-    AL := resize(unsigned(BusA(3 downto 0) & C), 7) - resize(unsigned(BusB(3 downto 0) & "1"), 6);
+-    AH := resize(unsigned(BusA(7 downto 4) & "0"), 6) - resize(unsigned(BusB(7 downto 4) & AL(5)), 6);
+-
+-    -- pragma translate_off
+-    if is_x(std_logic_vector(AL)) then AL := "0000000"; end if;
+-    if is_x(std_logic_vector(AH)) then AH := "000000"; end if;
+-    -- pragma translate_on
+-
+-    if AL(4 downto 1) = 0 and AH(4 downto 1) = 0 then
+-      SBC_Z <= '1';
+-    else
+-      SBC_Z <= '0';
+-    end if;
+-
+-    SBC_C <= not AH(5);
+-    SBC_V <= (AH(4) xor BusA(7)) and (BusA(7) xor BusB(7));
+-    SBC_N <= AH(4);
+-
+-    SBX_Q <= std_logic_vector(AH(4 downto 1) & AL(4 downto 1));
+-
+-    if P_In(Flag_D) = '1' then
+-      if AL(5) = '1' then
+-        AL(5 downto 1) := AL(5 downto 1) - 6;
+-      end if;
+-      AH := resize(unsigned(BusA(7 downto 4) & "0"), 6) - resize(unsigned(BusB(7 downto 4) & AL(6)), 6);
+-      if AH(5) = '1' then
+-        AH(5 downto 1) := AH(5 downto 1) - 6;
+-      end if;
+-    end if;
+-
+-    SBC_Q <= std_logic_vector(AH(4 downto 1) & AL(4 downto 1));
+-  end process;
+-
+-  process (Op, P_In, BusA, BusB,
+-      ADC_Z, ADC_C, ADC_V, ADC_N, ADC_Q,
+-      SBC_Z, SBC_C, SBC_V, SBC_N, SBC_Q,
+-		SBX_Q)
+-    variable Q_t : std_logic_vector(7 downto 0);
+-    variable Q2_t : std_logic_vector(7 downto 0);
+-  begin
+-    -- ORA, AND, EOR, ADC, NOP, LD, CMP, SBC
+-    -- ASL, ROL, LSR, ROR, BIT, LD, DEC, INC
+-    P_Out <= P_In;
+-    Q_t := BusA;
+-    Q2_t := BusA;
+-    case Op is
+-      when ALU_OP_OR=>
+-        Q_t := BusA or BusB;
+-      when ALU_OP_AND=>
+-        Q_t := BusA and BusB;
+-      when ALU_OP_EOR=>
+-        Q_t := BusA xor BusB;
+-      when ALU_OP_ADC=>
+-        P_Out(Flag_V) <= ADC_V;
+-        P_Out(Flag_C) <= ADC_C;
+-        Q_t := ADC_Q;
+-      when ALU_OP_CMP=>
+-        P_Out(Flag_C) <= SBC_C;
+-      when ALU_OP_SAX=>
+-        P_Out(Flag_C) <= SBC_C;
+-        Q_t := SBX_Q;  -- undoc: subtract (A & X) - (immediate)
+-      when ALU_OP_SBC=>
+-        P_Out(Flag_V) <= SBC_V;
+-        P_Out(Flag_C) <= SBC_C;
+-        Q_t := SBC_Q;  -- undoc: subtract  (A & X) - (immediate), then decimal correction
+-      when ALU_OP_ASL=>
+-        Q_t := BusA(6 downto 0) & "0";
+-        P_Out(Flag_C) <= BusA(7);
+-      when ALU_OP_ROL=>
+-        Q_t := BusA(6 downto 0) & P_In(Flag_C);
+-        P_Out(Flag_C) <= BusA(7);
+-      when ALU_OP_LSR=>
+-        Q_t := "0" & BusA(7 downto 1);
+-        P_Out(Flag_C) <= BusA(0);
+-      when ALU_OP_ROR=>
+-        Q_t := P_In(Flag_C) & BusA(7 downto 1);
+-        P_Out(Flag_C) <= BusA(0);
+-      when ALU_OP_ARR=> 
+-        Q_t := P_In(Flag_C) & (BusA(7 downto 1) and BusB(7 downto 1));
+-        P_Out(Flag_V) <= Q_t(5) xor Q_t(6);
+-        Q2_t := Q_t;
+-        if P_In(Flag_D)='1' then
+-          if (BusA(3 downto 0) and BusB(3 downto 0)) > "0100" then
+-            Q2_t(3 downto 0) := std_logic_vector(unsigned(Q_t(3 downto 0)) + x"6");
+-          end if;
+-          if (BusA(7 downto 4) and BusB(7 downto 4)) > "0100" then
+-            Q2_t(7 downto 4) := std_logic_vector(unsigned(Q_t(7 downto 4)) + x"6");
+-            P_Out(Flag_C) <= '1';
+-          else
+-            P_Out(Flag_C) <= '0';
+-          end if;
+-        else
+-          P_Out(Flag_C) <= Q_t(6);
+-        end if;
+-      when ALU_OP_BIT=>
+-        P_Out(Flag_V) <= BusB(6);
+-      when ALU_OP_DEC=>
+-        Q_t := std_logic_vector(unsigned(BusA) - 1);
+-      when ALU_OP_INC=>
+-        Q_t := std_logic_vector(unsigned(BusA) + 1);
+-      when others =>
+-        null;
+-      --EQ1,EQ2,EQ3 passes BusA to Q_t and P_in to P_out
+-    end case;
+-
+-    case Op is
+-      when ALU_OP_ADC=>
+-        P_Out(Flag_N) <= ADC_N;
+-        P_Out(Flag_Z) <= ADC_Z;
+-      when ALU_OP_CMP|ALU_OP_SBC|ALU_OP_SAX=>
+-        P_Out(Flag_N) <= SBC_N;
+-        P_Out(Flag_Z) <= SBC_Z;
+-      when ALU_OP_EQ1=>--dont touch P
+-      when ALU_OP_BIT=>
+-        P_Out(Flag_N) <= BusB(7);
+-        if (BusA and BusB) = "00000000" then
+-          P_Out(Flag_Z) <= '1';
+-        else
+-          P_Out(Flag_Z) <= '0';
+-        end if;
+-      when ALU_OP_ANC=>
+-        P_Out(Flag_N) <= Q_t(7);
+-        P_Out(Flag_C) <= Q_t(7);
+-        if Q_t = "00000000" then
+-          P_Out(Flag_Z) <= '1';
+-        else
+-          P_Out(Flag_Z) <= '0';
+-        end if;
+-      when others =>
+-        P_Out(Flag_N) <= Q_t(7);
+-        if Q_t = "00000000" then
+-          P_Out(Flag_Z) <= '1';
+-        else
+-          P_Out(Flag_Z) <= '0';
+-        end if;
+-    end case;
+-
+-    if Op=ALU_OP_ARR then
+-      -- handled above in ARR code
+-      Q <= Q2_t;
+-    else
+-      Q <= Q_t;
+-    end if;
+-  end process;
++		if AH(5 downto 1) > 9 and P_In(Flag_D) = '1' then
++			AH(6 downto 1) := AH(6 downto 1) + 6;
++		end if;
++
++		ADC_C <= AH(6) or AH(5);
++
++		ADC_Q <= std_logic_vector(AH(4 downto 1) & AL(4 downto 1));
++	end process;
++
++	process (Op, P_In, BusA, BusB)
++		variable AL : unsigned(6 downto 0);
++		variable AH : unsigned(5 downto 0);
++		variable C : std_logic;
++	begin
++		C := P_In(Flag_C) or not Op(0);
++		AL := resize(unsigned(BusA(3 downto 0) & C), 7) - resize(unsigned(BusB(3 downto 0) & "1"), 6);
++		AH := resize(unsigned(BusA(7 downto 4) & "0"), 6) - resize(unsigned(BusB(7 downto 4) & AL(5)), 6);
++
++-- pragma translate_off
++			if is_x(std_logic_vector(AL)) then AL := "0000000"; end if;
++			if is_x(std_logic_vector(AH)) then AH := "000000"; end if;
++-- pragma translate_on
++
++		if AL(4 downto 1) = 0 and AH(4 downto 1) = 0 then
++			SBC_Z <= '1';
++		else
++			SBC_Z <= '0';
++		end if;
++
++		SBC_C <= not AH(5);
++		SBC_V <= (AH(4) xor BusA(7)) and (BusA(7) xor BusB(7));
++		SBC_N <= AH(4);
++
++		if P_In(Flag_D) = '1' then
++			if AL(5) = '1' then
++				AL(5 downto 1) := AL(5 downto 1) - 6;
++			end if;
++			AH := resize(unsigned(BusA(7 downto 4) & "0"), 6) - resize(unsigned(BusB(7 downto 4) & AL(6)), 6);
++			if AH(5) = '1' then
++				AH(5 downto 1) := AH(5 downto 1) - 6;
++			end if;
++		end if;
++
++		SBC_Q <= std_logic_vector(AH(4 downto 1) & AL(4 downto 1));
++	end process;
++
++	process (Op, P_In, BusA, BusB,
++			ADC_Z, ADC_C, ADC_V, ADC_N, ADC_Q,
++			SBC_Z, SBC_C, SBC_V, SBC_N, SBC_Q)
++		variable Q_t : std_logic_vector(7 downto 0);
++	begin
++		-- ORA, AND, EOR, ADC, NOP, LD, CMP, SBC
++		-- ASL, ROL, LSR, ROR, BIT, LD, DEC, INC
++		P_Out <= P_In;
++		Q_t := BusA;
++		case Op(3 downto 0) is
++		when "0000" =>
++			-- ORA
++			Q_t := BusA or BusB;
++		when "0001" =>
++			-- AND
++			Q_t := BusA and BusB;
++		when "0010" =>
++			-- EOR
++			Q_t := BusA xor BusB;
++		when "0011" =>
++			-- ADC
++			P_Out(Flag_V) <= ADC_V;
++			P_Out(Flag_C) <= ADC_C;
++			Q_t := ADC_Q;
++		when "0101" | "1101" =>
++			-- LDA
++		when "0110" =>
++			-- CMP
++			P_Out(Flag_C) <= SBC_C;
++		when "0111" =>
++			-- SBC
++			P_Out(Flag_V) <= SBC_V;
++			P_Out(Flag_C) <= SBC_C;
++			Q_t := SBC_Q;
++		when "1000" =>
++			-- ASL
++			Q_t := BusA(6 downto 0) & "0";
++			P_Out(Flag_C) <= BusA(7);
++		when "1001" =>
++			-- ROL
++			Q_t := BusA(6 downto 0) & P_In(Flag_C);
++			P_Out(Flag_C) <= BusA(7);
++		when "1010" =>
++			-- LSR
++			Q_t := "0" & BusA(7 downto 1);
++			P_Out(Flag_C) <= BusA(0);
++		when "1011" =>
++			-- ROR
++			Q_t := P_In(Flag_C) & BusA(7 downto 1);
++			P_Out(Flag_C) <= BusA(0);
++		when "1100" =>
++			-- BIT
++			P_Out(Flag_V) <= BusB(6);
++		when "1110" =>
++			-- DEC
++			Q_t := std_logic_vector(unsigned(BusA) - 1);
++		when "1111" =>
++			-- INC
++			Q_t := std_logic_vector(unsigned(BusA) + 1);
++		when others =>
++		end case;
++
++		case Op(3 downto 0) is
++		when "0011" =>
++			P_Out(Flag_N) <= ADC_N;
++			P_Out(Flag_Z) <= ADC_Z;
++		when "0110" | "0111" =>
++			P_Out(Flag_N) <= SBC_N;
++			P_Out(Flag_Z) <= SBC_Z;
++		when "0100" =>
++		when "1100" =>
++			P_Out(Flag_N) <= BusB(7);
++			if (BusA and BusB) = "00000000" then
++				P_Out(Flag_Z) <= '1';
++			else
++				P_Out(Flag_Z) <= '0';
++			end if;
++		when others =>
++			P_Out(Flag_N) <= Q_t(7);
++			if Q_t = "00000000" then
++				P_Out(Flag_Z) <= '1';
++			else
++				P_Out(Flag_Z) <= '0';
++			end if;
++		end case;
++
++		Q <= Q_t;
++	end process;
+ 
+ end;
+--- ref/T65_MCode.vhd
++++ Arcade-Sprint1_MiSTer/rtl/T65/T65_MCode.vhd
+@@ -1,18 +1,19 @@
+ -- ****
+ -- T65(b) core. In an effort to merge and maintain bug fixes ....
+ --
+--- See list of changes in T65 top file (T65.vhd)...
++--
++-- Ver 301 Jump timing fixed
++-- Ver 300 Bugfixes by ehenciak added
++-- MikeJ March 2005
++-- Latest version from www.fpgaarcade.com (original www.opencores.org)
+ --
+ -- ****
++--
+ -- 65xx compatible microprocessor core
+ --
+--- FPGAARCADE SVN: $Id: T65_MCode.vhd 1234 2015-02-28 20:14:50Z wolfgang.scherr $
++-- Version : 0246 + fix
+ --
+--- Copyright (c) 2002...2015
+---               Daniel Wallner (jesus <at> opencores <dot> org)
+---               Mike Johnson   (mikej <at> fpgaarcade <dot> com)
+---               Wolfgang Scherr (WoS <at> pin4 <dot> at>
+---               Morten Leikvoll ()
++-- Copyright (c) 2002 Daniel Wallner (jesus@opencores.org)
+ --
+ -- All rights reserved
+ --
+@@ -42,1224 +43,1008 @@
+ -- ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ -- POSSIBILITY OF SUCH DAMAGE.
+ --
+--- Please report bugs to the author(s), but before you do so, please
++-- Please report bugs to the author, but before you do so, please
+ -- make sure that this is not a derivative work and that
+ -- you have the latest version of this file.
+ --
++-- The latest version of this file can be found at:
++--      http://www.opencores.org/cvsweb.shtml/t65/
++--
+ -- Limitations :
+---   See in T65 top file (T65.vhd)...
++--
++-- 65C02
++-- supported : inc, dec, phx, plx, phy, ply
++-- missing : bra, ora, lda, cmp, sbc, tsb*2, trb*2, stz*2, bit*2, wai, stp, jmp, bbr*8, bbs*8
++--
++-- File history :
++--
++--      0246 : First release
++--
+ 
+ library IEEE;
+ use IEEE.std_logic_1164.all;
+ use IEEE.numeric_std.all;
+-use ieee.std_logic_unsigned.all; 
+ use work.T65_Pack.all;
+ 
+ entity T65_MCode is
+-  port(
+-    Mode                    : in  std_logic_vector(1 downto 0);      -- "00" => 6502, "01" => 65C02, "10" => 65816
+-    IR                      : in  std_logic_vector(7 downto 0);
+-    MCycle                  : in  T_Lcycle;
+-    P                       : in  std_logic_vector(7 downto 0);
+-    Rdy_mod                 : in  std_logic;
+-    LCycle                  : out T_Lcycle;
+-    ALU_Op                  : out T_ALU_Op;
+-    Set_BusA_To             : out T_Set_BusA_To; -- DI,A,X,Y,S,P,DA,DAO,DAX,AAX
+-    Set_Addr_To             : out T_Set_Addr_To; -- PC Adder,S,AD,BA
+-    Write_Data              : out T_Write_Data;  -- DL,A,X,Y,S,P,PCL,PCH,AX,AXB,XB,YB
+-    Jump                    : out std_logic_vector(1 downto 0); -- PC,++,DIDL,Rel
+-    BAAdd                   : out std_logic_vector(1 downto 0); -- None,DB Inc,BA Add,BA Adj
+-    BAQuirk                 : out std_logic_vector(1 downto 0); -- None,And,Copy
+-    BreakAtNA               : out std_logic;
+-    ADAdd                   : out std_logic;
+-    AddY                    : out std_logic;
+-    PCAdd                   : out std_logic;
+-    Inc_S                   : out std_logic;
+-    Dec_S                   : out std_logic;
+-    LDA                     : out std_logic;
+-    LDP                     : out std_logic;
+-    LDX                     : out std_logic;
+-    LDY                     : out std_logic;
+-    LDS                     : out std_logic;
+-    LDDI                    : out std_logic;
+-    LDALU                   : out std_logic;
+-    LDAD                    : out std_logic;
+-    LDBAL                   : out std_logic;
+-    LDBAH                   : out std_logic;
+-    SaveP                   : out std_logic;
+-    Write                   : out std_logic
+-  );
++	port(
++		Mode                    : in  std_logic_vector(1 downto 0);      -- "00" => 6502, "01" => 65C02, "10" => 65816
++		IR                      : in  std_logic_vector(7 downto 0);
++		MCycle                  : in  std_logic_vector(2 downto 0);
++		P                       : in  std_logic_vector(7 downto 0);
++		LCycle                  : out std_logic_vector(2 downto 0);
++		ALU_Op                  : out std_logic_vector(3 downto 0);
++		Set_BusA_To             : out std_logic_vector(2 downto 0); -- DI,A,X,Y,S,P
++		Set_Addr_To             : out std_logic_vector(1 downto 0); -- PC Adder,S,AD,BA
++		Write_Data              : out std_logic_vector(2 downto 0); -- DL,A,X,Y,S,P,PCL,PCH
++		Jump                    : out std_logic_vector(1 downto 0); -- PC,++,DIDL,Rel
++		BAAdd                   : out std_logic_vector(1 downto 0);     -- None,DB Inc,BA Add,BA Adj
++		BreakAtNA               : out std_logic;
++		ADAdd                   : out std_logic;
++		AddY                    : out std_logic;
++		PCAdd                   : out std_logic;
++		Inc_S                   : out std_logic;
++		Dec_S                   : out std_logic;
++		LDA                     : out std_logic;
++		LDP                     : out std_logic;
++		LDX                     : out std_logic;
++		LDY                     : out std_logic;
++		LDS                     : out std_logic;
++		LDDI                    : out std_logic;
++		LDALU                   : out std_logic;
++		LDAD                    : out std_logic;
++		LDBAL                   : out std_logic;
++		LDBAH                   : out std_logic;
++		SaveP                   : out std_logic;
++		Write                   : out std_logic
++	);
+ end T65_MCode;
+ 
+ architecture rtl of T65_MCode is
+ 
+-  signal Branch : std_logic;
+-  signal ALUmore:std_logic;
++	signal Branch : std_logic;
+ 
+ begin
+ 
+-  with IR(7 downto 5) select
+-    Branch <= not P(Flag_N) when "000",
+-                  P(Flag_N) when "001",
+-              not P(Flag_V) when "010",
+-                  P(Flag_V) when "011",
+-              not P(Flag_C) when "100",
+-                  P(Flag_C) when "101",
+-              not P(Flag_Z) when "110",
+-                  P(Flag_Z) when others;
+-
+-  process (IR, MCycle, P, Branch, Mode, Rdy_mod)
+-  begin
+-    lCycle      <= Cycle_1;
+-    Set_BusA_To <= Set_BusA_To_ABC;
+-    Set_Addr_To <= Set_Addr_To_PBR;
+-    Write_Data  <= Write_Data_DL;
+-    Jump        <= (others => '0');
+-    BAAdd       <= "00";
+-    BAQuirk     <= "00";
+-    BreakAtNA   <= '0';
+-    ADAdd       <= '0';
+-    PCAdd       <= '0';
+-    Inc_S       <= '0';
+-    Dec_S       <= '0';
+-    LDA         <= '0';
+-    LDP         <= '0';
+-    LDX         <= '0';
+-    LDY         <= '0';
+-    LDS         <= '0';
+-    LDDI        <= '0';
+-    LDALU       <= '0';
+-    LDAD        <= '0';
+-    LDBAL       <= '0';
+-    LDBAH       <= '0';
+-    SaveP       <= '0';
+-    Write       <= '0';
+-    AddY        <= '0';
+-    ALUmore     <= '0';
+-
+-    case IR(7 downto 5) is
+-      when "100" => -- covers $8x,$9x
+-        case IR(1 downto 0) is
+-          when "00" => -- IR: $80,$84,$88,$8C,$90,$94,$98,$9C
+-            Set_BusA_To <= Set_BusA_To_Y;
+-            if IR(4 downto 2)="111" then   --  SYA ($9C)
+-              if Rdy_mod = '0' then
+-                Write_Data <= Write_Data_YB;
+-              else
+-                Write_Data <= Write_Data_Y;
+-              end if;
+-            else
+-              Write_Data <= Write_Data_Y;
+-            end if;
+-          when "10" => -- IR: $82,$86,$8A,$8E,$92,$96,$9A,$9E
+-            Set_BusA_To <= Set_BusA_To_X;
+-            if IR(4 downto 2)="111" then   --  SXA ($9E)
+-              if Rdy_mod = '0' then
+-                Write_Data <= Write_Data_XB;
+-              else
+-                Write_Data <= Write_Data_X;
+-              end if;
+-            else
+-              Write_Data <= Write_Data_X;
+-            end if;
+-          when "11" => -- IR: $83,$87,$8B,$8F,$93,$97,$9B,$9F
+-            if IR(4 downto 2)="110" then   --  SHS ($9B)
+-              Set_BusA_To <= Set_BusA_To_AAX;
+-              LDS <= '1';
+-            else
+-              Set_BusA_To <= Set_BusA_To_ABC;
+-            end if;
+-            if IR(4 downto 2)="111" or IR(4 downto 2)="110" or IR(4 downto 2)="100" then   --  SHA ($9F, $93), SHS ($9B)
+-              if Rdy_mod = '0' then
+-                Write_Data <= Write_Data_AXB;
+-              else
+-                Write_Data <= Write_Data_AX;
+-              end if;
+-            else
+-              Write_Data <= Write_Data_AX;
+-            end if;
+-          when others => -- IR: $81,$85,$89,$8D,$91,$95,$99,$9D
+-            Write_Data <= Write_Data_ABC;
+-        end case;
+-      when "101" => -- covers $Ax,$Bx
+-        Set_BusA_To <= Set_BusA_To_DI;
+-        case IR(1 downto 0) is
+-          when "00" => -- IR: $A0,$A4,$A8,$AC,$B0,$B4,$B8,$BC
+-            if IR(4) /= '1' or IR(2) /= '0' then--only for $A0,$A4,$A8,$AC or $B4,$BC
+-              LDY <= '1';
+-            end if;
+-          when "01" => -- IR: $A1,$A5,$A9,$AD,$B1,$B5,$B9,$BD
+-            LDA <= '1';
+-          when "10" => -- IR: $A2,$A6,$AA,$AE,$B2,$B6,$BA,$BE
+-            LDX <= '1';
+-          when others => -- IR: $A3,$A7,$AB,$AF,$B3,$B7,$BB,$BF (undoc)
+-            LDX <= '1';
+-            LDA <= '1';
+-            if IR(4 downto 2)="110" then   --  LAS (BB)
+-              Set_BusA_To <= Set_BusA_To_S;
+-              LDS <= '1';
+-            end if;
+-        end case;
+-      when "110" => -- covers $Cx,$Dx
+-        case IR(1 downto 0) is
+-          when "00" => -- IR: $C0,$C4,$C8,$CC,$D0,$D4,$D8,$DC
+-            if IR(4) = '0' then--only for $Cx
+-              LDY <= '1';
+-            end if;
+-            Set_BusA_To <= Set_BusA_To_Y;
+-          when others => -- IR: $C1,$C5,$C9,$CD,$D1,$D5,$D9,$DD, $C2,$C6,$CA,$CE,$D2,$D6,$DA,$DE, $C3,$C7,$CB,$CF,$D3,$D7,$DB,$DF
+-            Set_BusA_To <= Set_BusA_To_ABC;
+-        end case;
+-      when "111" => -- covers $Ex,$Fx
+-        case IR(1 downto 0) is
+-        when "00" => -- IR: $E0,$E4,$E8,$EC,$F0,$F4,$F8,$FC
+-          if IR(4) = '0' then -- only $Ex
+-            LDX <= '1';
+-          end if;
+-          Set_BusA_To <= Set_BusA_To_X;
+-        when others => -- IR: $E1,$E5,$E9,$ED,$F1,$F5,$F9,$FD, $E2,$E6,$EA,$EE,$F2,$F6,$FA,$FE, $E3,$E7,$EB,$EF,$F3,$F7,$FB,$FF
+-          Set_BusA_To <= Set_BusA_To_ABC;
+-        end case;
+-      when others =>
+-    end case;
+-
+-    if IR(7 downto 6) /= "10" and IR(1) = '1' and (mode="00" or IR(0)='0') then--covers $0x-$7x, $Cx-$Fx x=2,3,6,7,A,B,E,F, for 6502 undocs
+-      if IR=x"eb" then
+-        Set_BusA_To <= Set_BusA_To_ABC; -- alternate SBC ($EB)
+-      else
+-        Set_BusA_To <= Set_BusA_To_DI;
+-      end if;
+-    end if;
+-
+-    case IR(4 downto 0) is
+-      -- IR: $00,$20,$40,$60,$80,$A0,$C0,$E0
+-      --     $08,$28,$48,$68,$88,$A8,$C8,$E8
+-      --     $0A,$2A,$4A,$6A,$8A,$AA,$CA,$EA
+-      --     $18,$38,$58,$78,$98,$B8,$D8,$F8
+-      --     $1A,$3A,$5A,$7A,$9A,$BA,$DA,$FA
+-      when "00000" | "01000" | "01010" | "11000" | "11010" =>
+-        -- Implied
+-        case IR is
+-          when x"00" =>
+-            -- BRK ($00)
+-            lCycle <= Cycle_6;
+-            case MCycle is
+-              when Cycle_1 =>
+-                Set_Addr_To <= Set_Addr_To_SP;
+-                Write_Data <= Write_Data_PCH;
+-                Write <= '1';
+-              when Cycle_2 =>
+-                Dec_S <= '1';
+-                Set_Addr_To <= Set_Addr_To_SP;
+-                Write_Data <= Write_Data_PCL;
+-                Write <= '1';
+-              when Cycle_3 =>
+-                Dec_S <= '1';
+-                Set_Addr_To <= Set_Addr_To_SP;
+-                Write_Data <= Write_Data_P;
+-                Write <= '1';
+-              when Cycle_4 =>
+-                Dec_S <= '1';
+-                Set_Addr_To <= Set_Addr_To_BA;
+-              when Cycle_5 =>
+-                LDDI <= '1';
+-                Set_Addr_To <= Set_Addr_To_BA;
+-              when Cycle_6 =>
+-                Jump <= "10";
+-              when others =>
+-            end case;
+-          when x"20" => -- JSR ($20)
+-            lCycle <= Cycle_5;
+-            case MCycle is
+-              when Cycle_1 =>
+-                Jump <= "01";
+-                LDDI <= '1';
+-                Set_Addr_To <= Set_Addr_To_SP;
+-              when Cycle_2 =>
+-                Set_Addr_To <= Set_Addr_To_SP;
+-                Write_Data <= Write_Data_PCH;
+-                Write <= '1';
+-              when Cycle_3 =>
+-                Dec_S <= '1';
+-                Set_Addr_To <= Set_Addr_To_SP;
+-                Write_Data <= Write_Data_PCL;
+-                Write <= '1';
+-              when Cycle_4 =>
+-                Dec_S <= '1';
+-              when Cycle_5 =>
+-                Jump <= "10";
+-              when others =>
+-              end case;
+-            when x"40" => -- RTI ($40)
+-              lCycle <= Cycle_5;
+-              case MCycle is
+-              when Cycle_1 =>
+-                Set_Addr_To <= Set_Addr_To_SP;
+-              when Cycle_2 =>
+-                Inc_S <= '1';
+-                Set_Addr_To <= Set_Addr_To_SP;
+-              when Cycle_3 =>
+-                Inc_S <= '1';
+-                Set_Addr_To <= Set_Addr_To_SP;
+-                Set_BusA_To <= Set_BusA_To_DI;
+-              when Cycle_4 =>
+-                LDP <= '1';
+-                Inc_S <= '1';
+-                LDDI <= '1';
+-                Set_Addr_To <= Set_Addr_To_SP;
+-              when Cycle_5 =>
+-                Jump <= "10";
+-              when others =>
+-            end case;
+-          when x"60" => -- RTS ($60)
+-            lCycle <= Cycle_5;
+-            case MCycle is
+-              when Cycle_1 =>
+-                Set_Addr_To <= Set_Addr_To_SP;
+-              when Cycle_2 =>
+-                Inc_S <= '1';
+-                Set_Addr_To <= Set_Addr_To_SP;
+-              when Cycle_3 =>
+-                Inc_S <= '1';
+-                LDDI <= '1';
+-                Set_Addr_To <= Set_Addr_To_SP;
+-              when Cycle_4 =>
+-                Jump <= "10";
+-              when Cycle_5 =>
+-                Jump <= "01";
+-              when others =>
+-              end case;
+-            when x"08" | x"48" | x"5a" | x"da" => -- PHP, PHA, PHY*, PHX*  ($08,$48,$5A,$DA)
+-              lCycle <= Cycle_2;
+-              if Mode = "00" and IR(1) = '1' then--2 cycle nop
+-                lCycle <= Cycle_1;
+-              end if;
+-              case MCycle is
+-              when Cycle_1 =>
+-                if mode/="00" or IR(1)='0' then --wrong on 6502
+-                  Write <= '1';
+-                  case IR(7 downto 4) is
+-                  when "0000" =>
+-                    Write_Data <= Write_Data_P;
+-                  when "0100" =>
+-                    Write_Data <= Write_Data_ABC;
+-                  when "0101" =>
+-                    if Mode /= "00" then
+-                      Write_Data <= Write_Data_Y;
+-                    else
+-                      Write <= '0';
+-                    end if;
+-                  when "1101" =>
+-                    if Mode /= "00" then
+-                      Write_Data <= Write_Data_X;
+-                    else
+-                      Write <= '0';
+-                    end if;
+-                  when others =>
+-                  end case;
+-                  Set_Addr_To <= Set_Addr_To_SP;
+-                end if;
+-              when Cycle_2 =>
+-                Dec_S <= '1';
+-              when others =>
+-            end case;
+-          when  x"28" | x"68" | x"7a" | x"fa" => -- PLP, PLA, PLY*, PLX* ($28,$68,$7A,$FA)
+-            lCycle <= Cycle_3;
+-            if Mode = "00" and IR(1) = '1' then--2 cycle nop
+-              lCycle <= Cycle_1;
+-            end if;
+-            case IR(7 downto 4) is
+-              when "0010" =>--plp
+-                LDP <= '1';
+-              when "0110" =>--pla
+-                LDA <= '1';
+-              when "0111" =>--ply not for 6502
+-                if Mode /= "00" then
+-                  LDY <= '1';
+-                end if;
+-              when "1111" =>--plx not for 6502
+-                if Mode /= "00" then
+-                  LDX <= '1';
+-                end if;
+-              when others =>
+-            end case;
+-            case MCycle is
+-              when Cycle_sync =>
+-                if Mode /= "00" or IR(1) = '0' then--wrong on 6502
+-                  SaveP <= '1';
+-                end if;
+-              when Cycle_1 =>
+-                if Mode /= "00" or IR(1) = '0' then--wrong on 6502
+-                  Set_Addr_To <= Set_Addr_To_SP;
+-                  LDP <= '0';
+-                end if;
+-              when Cycle_2 =>
+-                Inc_S <= '1';
+-                Set_Addr_To <= Set_Addr_To_SP;
+-                LDP <= '0';
+-              when Cycle_3 =>
+-                Set_BusA_To <= Set_BusA_To_DI;
+-              when others =>
+-            end case;
+-          when x"a0" | x"c0" | x"e0" => -- LDY, CPY, CPX ($A0,$C0,$E0)
+-            -- Immediate
+-            case MCycle is
+-              when Cycle_sync =>
+-              when Cycle_1 =>
+-                Jump <= "01";
+-              when others =>
+-            end case;
+-          when x"88" => -- DEY ($88)
+-            LDY <= '1';
+-            case MCycle is
+-              when Cycle_sync =>
+-              when Cycle_1 =>
+-                Set_BusA_To <= Set_BusA_To_Y;
+-              when others =>
+-            end case;
+-          when x"ca" => -- DEX ($CA)
+-            LDX <= '1';
+-            case MCycle is
+-              when Cycle_sync =>
+-              when Cycle_1 =>
+-                Set_BusA_To <= Set_BusA_To_X;
+-              when others =>
+-            end case;
+-          when x"1a" | x"3a" => -- INC*, DEC* ($1A,$3A)
+-            if Mode /= "00" then
+-              LDA <= '1'; -- A
+-            else
+-              lCycle <= Cycle_1;--undoc 2 cycle nop
+-            end if;
+-            case MCycle is
+-              when Cycle_sync =>
+-              when Cycle_1 =>
+-                Set_BusA_To <= Set_BusA_To_S;
+-              when others =>
+-            end case;
+-          when x"0a" | x"2a" | x"4a" | x"6a" => -- ASL, ROL, LSR, ROR ($0A,$2A,$4A,$6A)
+-            LDA <= '1'; -- A
+-            Set_BusA_To <= Set_BusA_To_ABC;
+-            case MCycle is
+-              when Cycle_sync =>
+-              when Cycle_1 =>
+-              when others =>
+-            end case;
+-          when x"8a" | x"98" => -- TYA, TXA ($8A,$98)
+-            LDA <= '1';
+-            case MCycle is
+-              when Cycle_sync =>
+-              when Cycle_1 =>
+-              when others =>
+-            end case;
+-          when x"aa" | x"a8" => -- TAX, TAY ($AA,$A8)
+-            case MCycle is
+-              when Cycle_sync =>
+-              when Cycle_1 =>
+-                Set_BusA_To <= Set_BusA_To_ABC;
+-              when others =>
+-            end case;
+-          when x"9a" => -- TXS ($9A)
+-            LDS <= '1'; -- will be set only in Cycle_sync
+-          when x"ba" => -- TSX ($BA)
+-            LDX <= '1';
+-            case MCycle is
+-              when Cycle_sync =>
+-              when Cycle_1 =>
+-                Set_BusA_To <= Set_BusA_To_S;
+-              when others =>
+-            end case;
+-          when x"80" => -- undoc: NOP imm2 ($80)
+-            case MCycle is
+-              when Cycle_sync =>
+-              when Cycle_1 =>
+-                Jump <= "01";
+-              when others =>
+-            end case;
+-          when others => -- others ($0A,$EA, $18,$38,$58,$78,$B8,$C8,$D8,$E8,$F8)
+-            case MCycle is
+-              when Cycle_sync =>
+-              when others =>
+-            end case;
+-        end case;
+-
+-      -- IR: $01,$21,$41,$61,$81,$A1,$C1,$E1
+-      --     $03,$23,$43,$63,$83,$A3,$C3,$E3
+-      when "00001" | "00011" =>
+-        -- Zero Page Indexed Indirect (d,x)
+-        lCycle <= Cycle_5;
+-        if IR(7 downto 6) /= "10" then -- ($01,$21,$41,$61,$C1,$E1,$03,$23,$43,$63,$C3,$E3)
+-          LDA <= '1';
+-          if Mode="00" and IR(1)='1' then
+-            lCycle <= Cycle_7;
+-          end if;
+-        end if;
+-        case MCycle is
+-          when Cycle_1 =>
+-            Jump <= "01";
+-            LDAD <= '1';
+-            Set_Addr_To <= Set_Addr_To_ZPG;
+-          when Cycle_2 =>
+-            ADAdd <= '1';
+-            Set_Addr_To <= Set_Addr_To_ZPG;
+-          when Cycle_3 =>
+-            BAAdd <= "01";
+-            LDBAL <= '1';
+-            Set_Addr_To <= Set_Addr_To_ZPG;
+-          when Cycle_4 =>
+-            LDBAH <= '1';
+-            if IR(7 downto 5) = "100" then
+-              Write <= '1';
+-            end if;
+-            Set_Addr_To <= Set_Addr_To_BA;
+-          when Cycle_5=>
+-            if Mode="00" and IR(1)='1' and IR(7 downto 6)/="10" then
+-              Set_Addr_To <= Set_Addr_To_BA;
+-              Write <= '1';
+-              LDDI<='1';
+-            end if;
+-          when Cycle_6=>
+-              Write <= '1';
+-              LDALU<='1';
+-              SaveP<='1';
+-              Set_Addr_To <= Set_Addr_To_BA;
+-          when Cycle_7 =>
+-            ALUmore <= '1';
+-            Set_BusA_To <= Set_BusA_To_ABC;
+-          when others =>
+-        end case;
+-
+-      -- IR: $09,$29,$49,$69,$89,$A9,$C9,$E9
+-      when "01001" =>
+-        -- Immediate
+-        if IR(7 downto 5)/="100" then -- all except undoc. NOP imm2 (not $89)
+-          LDA <= '1';
+-        end if;
+-        case MCycle is
+-          when Cycle_1 =>
+-            Jump <= "01";
+-          when others =>
+-        end case;
+-
+-      -- IR: $0B,$2B,$4B,$6B,$8B,$AB,$CB,$EB
+-      when "01011" =>
+-        if Mode="00" then
+-        -- Immediate undoc for 6500
+-          case IR(7 downto 5) is 
+-            when "010"|"011"|"000"|"001" =>--ALR,ARR
+-              Set_BusA_To<=Set_BusA_To_DA;
+-              LDA <= '1';
+-            when "100" =>--XAA
+-              Set_BusA_To<=Set_BusA_To_DAX;
+-              LDA <= '1';
+-            when "110" =>--SAX (SBX)
+-              Set_BusA_To<=Set_BusA_To_AAX;
+-              LDX <= '1';
+-            when "101" =>--OAL
+-              Set_BusA_To<=Set_BusA_To_DAO;
+-              LDA <= '1';
+-            when others=>
+-              LDA <= '1';
+-          end case;
+-          case MCycle is
+-            when Cycle_1 =>
+-              Jump <= "01";
+-            when others =>
+-          end case;
+-        end if;
+-
+-      -- IR: $02,$22,$42,$62,$82,$A2,$C2,$E2
+-      --     $12,$32,$52,$72,$92,$B2,$D2,$F2
+-      when "00010" | "10010" =>
+-        -- Immediate, SKB, KIL
+-        case MCycle is
+-          when Cycle_sync =>
+-          when Cycle_1 =>
+-            if IR = "10100010" then
+-              -- LDX ($A2)
+-              Jump <= "01";
+-              LDX <= '1'; -- Moved, Lorenz test showed X changing on SKB (NOPx)
+-            elsif IR(7 downto 4)="1000" or IR(7 downto 4)="1100" or IR(7 downto 4)="1110" then
+-              -- undoc: NOP imm2
+-              Jump <= "01";
+-            else
+-              -- KIL !!!
+-            end if;
+-          when others =>
+-        end case;
+-
+-      -- IR: $04,$24,$44,$64,$84,$A4,$C4,$E4
+-      when "00100" =>
+-        -- Zero Page
+-        lCycle <= Cycle_2;
+-        case MCycle is
+-          when Cycle_sync =>
+-            if IR(7 downto 5) = "001" then--24=BIT zpg
+-              SaveP <= '1';
+-            end if;
+-          when Cycle_1 =>
+-            Jump <= "01";
+-            LDAD <= '1';
+-            if IR(7 downto 5) = "100" then--84=sty zpg (the only write in this group)
+-              Write <= '1';
+-            end if;
+-            Set_Addr_To <= Set_Addr_To_ZPG;
+-          when Cycle_2 =>
+-          when others =>
+-        end case;
+-
+-      -- IR: $05,$25,$45,$65,$85,$A5,$C5,$E5
+-      --     $06,$26,$46,$66,$86,$A6,$C6,$E6
+-      --     $07,$27,$47,$67,$87,$A7,$C7,$E7
+-      when "00101" | "00110" | "00111" =>
+-        -- Zero Page
+-        if IR(7 downto 6) /= "10" and IR(1) = '1' and (mode="00" or IR(0)='0') then--covers 0x-7x,cx-fx x=2,3,6,7,a,b,e,f, for 6502 undocs
+-          -- Read-Modify-Write
+-          lCycle <= Cycle_4;
+-          if Mode="00" and IR(0)='1' then
+-            LDA<='1';
+-          end if;
+-          case MCycle is
+-            when Cycle_1 =>
+-              Jump <= "01";
+-              LDAD <= '1';
+-              Set_Addr_To <= Set_Addr_To_ZPG;
+-            when Cycle_2 =>
+-              LDDI <= '1';
+-              if Mode="00"  then--The old 6500 writes back what is just read, before changing. The 65c does another read
+-                Write <= '1';
+-              end if;
+-              Set_Addr_To <= Set_Addr_To_ZPG;
+-            when Cycle_3 =>
+-              LDALU <= '1';
+-              SaveP <= '1';
+-              Write <= '1';
+-              Set_Addr_To <= Set_Addr_To_ZPG;
+-            when Cycle_4 =>
+-              if Mode="00" and IR(0)='1' then
+-                Set_BusA_To<=Set_BusA_To_ABC;
+-                ALUmore <= '1'; -- For undoc DCP/DCM support
+-                LDDI <= '1';    -- requires DIN to reflect DOUT!
+-              end if;
+-            when others =>
+-          end case;
+-        else
+-          lCycle <= Cycle_2;
+-          if IR(7 downto 6) /= "10" then
+-            LDA <= '1';
+-          end if;
+-          case MCycle is
+-            when Cycle_sync =>
+-            when Cycle_1 =>
+-              Jump <= "01";
+-              LDAD <= '1';
+-              if IR(7 downto 5) = "100" then
+-                Write <= '1';
+-              end if;
+-              Set_Addr_To <= Set_Addr_To_ZPG;
+-            when Cycle_2 =>
+-            when others =>
+-          end case;
+-        end if;
+-
+-      -- IR: $0C,$2C,$4C,$6C,$8C,$AC,$CC,$EC
+-      when "01100" =>
+-        -- Absolute
+-        if IR(7 downto 6) = "01" and IR(4 downto 0) = "01100" then -- JMP ($4C,$6C)
+-          if IR(5) = '0' then
+-            lCycle <= Cycle_2;
+-            case MCycle is
+-              when Cycle_1 =>
+-                Jump <= "01";
+-                LDDI <= '1';
+-              when Cycle_2 =>
+-                Jump <= "10";
+-              when others =>
+-            end case;
+-          else
+-            lCycle <= Cycle_4;
+-            case MCycle is
+-              when Cycle_1 =>
+-                Jump <= "01";
+-                LDDI <= '1';
+-                LDBAL <= '1';
+-              when Cycle_2 =>
+-                LDBAH <= '1';
+-                if Mode /= "00" then
+-                  Jump <= "10";
+-                end if;
+-                if Mode = "00" then
+-                  Set_Addr_To <= Set_Addr_To_BA;
+-                end if;
+-              when Cycle_3 =>
+-                LDDI <= '1';
+-                if Mode = "00" then
+-                  Set_Addr_To <= Set_Addr_To_BA;
+-                  BAAdd <= "01";      -- DB Inc
+-                else
+-                  Jump <= "01";
+-                end if;
+-              when Cycle_4 =>
+-                Jump <= "10";
+-              when others =>
+-            end case;
+-          end if;
+-        else
+-          lCycle <= Cycle_3;
+-          case MCycle is
+-            when Cycle_sync =>
+-              if IR(7 downto 5) = "001" then--2c-BIT
+-                SaveP <= '1';
+-              end if;
+-            when Cycle_1 =>
+-              Jump <= "01";
+-              LDBAL <= '1';
+-            when Cycle_2 =>
+-              Jump <= "01";
+-              LDBAH <= '1';
+-              if IR(7 downto 5) = "100" then--80, sty, the only write in this group
+-                Write <= '1';
+-              end if;
+-              Set_Addr_To <= Set_Addr_To_BA;
+-            when Cycle_3 =>
+-            when others =>
+-          end case;
+-        end if;
+-
+-      -- IR: $0D,$2D,$4D,$6D,$8D,$AD,$CD,$ED
+-      --     $0E,$2E,$4E,$6E,$8E,$AE,$CE,$EE
+-      --     $0F,$2F,$4F,$6F,$8F,$AF,$CF,$EF
+-      when "01101" | "01110" | "01111" =>
+-        -- Absolute
+-        if IR(7 downto 6) /= "10" and IR(1) = '1' and (mode="00" or IR(0)='0') then -- ($0E,$2E,$4E,$6E,$CE,$EE, $0F,$2F,$4F,$6F,$CF,$EF)
+-          -- Read-Modify-Write
+-          lCycle <= Cycle_5;
+-          if Mode="00" and IR(0) = '1' then
+-            LDA <= '1';
+-          end if;
+-          case MCycle is
+-            when Cycle_1 =>
+-              Jump <= "01";
+-              LDBAL <= '1';
+-            when Cycle_2 =>
+-              Jump <= "01";
+-              LDBAH <= '1';
+-              Set_Addr_To <= Set_Addr_To_BA;
+-            when Cycle_3 =>
+-              LDDI <= '1';
+-              if Mode="00" then--The old 6500 writes back what is just read, before changing. The 65c does another read
+-                Write <= '1';
+-              end if;
+-              Set_Addr_To <= Set_Addr_To_BA;
+-            when Cycle_4 =>
+-              Write <= '1';
+-              LDALU <= '1';
+-              SaveP <= '1';
+-              Set_Addr_To <= Set_Addr_To_BA;
+-            when Cycle_5 =>
+-              if Mode="00" and IR(0)='1' then
+-                ALUmore <= '1'; -- For undoc DCP/DCM support
+-                Set_BusA_To<=Set_BusA_To_ABC;
+-              end if;
+-            when others =>
+-          end case;
+-        else
+-          lCycle <= Cycle_3;
+-          if IR(7 downto 6) /= "10" then -- all but $8D, $8E, $8F, $AD, $AE, $AF ($AD does set LDA in an earlier case statement)
+-            LDA <= '1';
+-          end if;
+-          case MCycle is
+-            when Cycle_sync =>
+-            when Cycle_1 =>
+-              Jump <= "01";
+-              LDBAL <= '1';
+-            when Cycle_2 =>
+-              Jump <= "01";
+-              LDBAH <= '1';
+-              if IR(7 downto 5) = "100" then--8d
+-                Write <= '1';
+-              end if;
+-              Set_Addr_To <= Set_Addr_To_BA;
+-            when Cycle_3 =>
+-            when others =>
+-          end case;
+-        end if;
+-
+-      -- IR: $10,$30,$50,$70,$90,$B0,$D0,$F0
+-      when "10000" =>
+-        -- Relative
+-              -- This circuit dictates when the last
+-              -- microcycle occurs for the branch depending on
+-              -- whether or not the branch is taken and if a page
+-              -- is crossed...
+-        if (Branch = '1') then
+-                 lCycle <= Cycle_3; -- We're done @ T3 if branching...upper
+-                          -- level logic will stop at T2 if no page cross
+-                          -- (See the Break signal)
+-        else
+-                 lCycle <= Cycle_1;
+-        end if;
+-              -- This decodes the current microcycle and takes the
+-              -- proper course of action...
+-        case MCycle is
+-                -- On the T1 microcycle, increment the program counter
+-                -- and instruct the upper level logic to fetch the offset
+-                -- from the Din bus and store it in the data latches. This
+-                -- will be the last microcycle if the branch isn't taken.
+-          when Cycle_1 =>
+-            Jump <= "01"; -- Increments the PC by one (PC will now be PC+2)
+-                          -- from microcycle T0.
+-            LDDI <= '1';  -- Tells logic in top level (T65.vhd) to route
+-                          -- the Din bus to the memory data latch (DL)
+-                          -- so that the branch offset is fetched.
+-                -- In microcycle T2, tell the logic in the top level to
+-                -- add the offset.  If the most significant byte of the
+-                -- program counter (i.e. the current "page") does not need
+-                -- updating, we are done here...the Break signal at the
+-                -- T65.vhd level takes care of that...
+-          when Cycle_2 =>
+-            Jump    <= "11"; -- Tell the PC Jump logic to use relative mode.
+-            PCAdd   <= '1';  -- This tells the PC adder to update itself with
+-                             -- the current offset recently fetched from
+-                             -- memory.
+-                -- The following is microcycle T3 :
+-                -- The program counter should be completely updated
+-                -- on this cycle after the page cross is detected.
+-                -- We don't need to do anything here...
+-          when Cycle_3 =>
+-          when others => null; -- Do nothing.
+-        end case;
+-
+-      -- IR: $11,$31,$51,$71,$91,$B1,$D1,$F1
+-      --     $13,$33,$53,$73,$93,$B3,$D3,$F3
+-      when "10001" | "10011" =>
+-        lCycle <= Cycle_5;
+-        if IR(7 downto 6) /= "10" then -- ($11,$31,$51,$71,$D1,$F1,$13,$33,$53,$73,$D3,$F3)
+-          LDA <= '1';
+-          if Mode="00" and IR(1)='1' then
+-            lCycle <= Cycle_7;
+-          end if;
+-        end if;
+-        case MCycle is
+-          when Cycle_1 =>
+-            Jump <= "01";
+-            LDAD <= '1';
+-            Set_Addr_To <= Set_Addr_To_ZPG;
+-          when Cycle_2 =>
+-            LDBAL <= '1';
+-            BAAdd <= "01";  -- DB Inc
+-            Set_Addr_To <= Set_Addr_To_ZPG;
+-          when Cycle_3 =>
+-            Set_BusA_To <= Set_BusA_To_Y;
+-            BAAdd <= "10";  -- BA Add
+-            LDBAH <= '1';
+-            Set_Addr_To <= Set_Addr_To_BA;
+-          when Cycle_4 =>
+-            BAAdd <= "11";  -- BA Adj
+-            if IR(7 downto 5) = "100" then
+-              Write <= '1';
+-              if IR(3 downto 0) = x"3" then
+-                BAQuirk <= "10"; -- COPY
+-              end if;
+-            elsif IR(1)='0' or IR=x"B3" then -- Dont do this on $x3, except undoc LAXiy $B3 (says real CPU and Lorenz tests)
+-              BreakAtNA <= '1';
+-            end if;
+-              Set_Addr_To <= Set_Addr_To_BA;
+-          when Cycle_5 =>
+-            if Mode="00" and IR(1)='1' and IR(7 downto 6)/="10" then
+-              Set_Addr_To <= Set_Addr_To_BA;
+-              LDDI<='1';
+-              Write <= '1';
+-            end if;
+-          when Cycle_6 =>
+-            LDALU<='1';
+-            SaveP<='1';
+-            Write <= '1';
+-            Set_Addr_To <= Set_Addr_To_BA;
+-          when Cycle_7 =>
+-            ALUmore <= '1';
+-            Set_BusA_To<=Set_BusA_To_ABC;
+-          when others =>
+-        end case;
+-
+-      -- IR: $14,$34,$54,$74,$94,$B4,$D4,$F4
+-      --     $15,$35,$55,$75,$95,$B5,$D5,$F5
+-      --     $16,$36,$56,$76,$96,$B6,$D6,$F6
+-      --     $17,$37,$57,$77,$97,$B7,$D7,$F7
+-      when "10100" | "10101" | "10110" | "10111" =>
+-        -- Zero Page, X
+-        if IR(7 downto 6) /= "10" and IR(1) = '1' and (Mode="00" or IR(0)='0') then -- ($16,$36,$56,$76,$D6,$F6, $17,$37,$57,$77,$D7,$F7)
+-          -- Read-Modify-Write
+-          if Mode="00" and IR(0)='1' then
+-            LDA<='1';
+-          end if;
+-          lCycle <= Cycle_5;
+-          case MCycle is
+-            when Cycle_1 =>
+-              Jump <= "01";
+-              LDAD <= '1';
+-              Set_Addr_To <= Set_Addr_To_ZPG;
+-            when Cycle_2 =>
+-              ADAdd <= '1';
+-              Set_Addr_To <= Set_Addr_To_ZPG;
+-            when Cycle_3 =>
+-              LDDI <= '1';
+-              if Mode="00" then -- The old 6500 writes back what is just read, before changing. The 65c does another read
+-                Write <= '1';
+-              end if;
+-              Set_Addr_To <= Set_Addr_To_ZPG;
+-            when Cycle_4 =>
+-              LDALU <= '1';
+-              SaveP <= '1';
+-              Write <= '1';
+-              Set_Addr_To <= Set_Addr_To_ZPG;
+-              if Mode="00" and IR(0)='1' then
+-                LDDI<='1';
+-              end if;
+-            when Cycle_5 =>
+-              if Mode="00" and IR(0)='1' then
+-                ALUmore <= '1'; -- For undoc DCP/DCM support
+-                Set_BusA_To<=Set_BusA_To_ABC;
+-              end if;
+-            when others =>
+-          end case;
+-        else
+-          lCycle <= Cycle_3;
+-          if IR(7 downto 6) /= "10" and IR(0)='1' then -- dont LDA on undoc skip
+-            LDA <= '1';
+-          end if;
+-          case MCycle is
+-            when Cycle_sync =>
+-            when Cycle_1 =>
+-              Jump <= "01";
+-              LDAD <= '1';
+-              Set_Addr_To <= Set_Addr_To_ZPG;
+-            when Cycle_2 =>
+-              ADAdd <= '1';
+-              -- Added this check for Y reg. use, added undocs
+-              if (IR(3 downto 1) = "011") then -- ($16,$36,$56,$76,$96,$B6,$D6,$F6,$17,$37,$57,$77,$97,$B7,$D7,$F7)
+-                AddY <= '1';
+-              end if;
+-              if IR(7 downto 5) = "100" then -- ($14,$34,$15,$35,$16,$36,$17,$37) the only write instruction
+-                Write <= '1';
+-              end if;
+-              Set_Addr_To <= Set_Addr_To_ZPG;
+-            when Cycle_3 => null;
+-            when others =>
+-          end case;
+-        end if;
+-
+-      -- IR: $19,$39,$59,$79,$99,$B9,$D9,$F9
+-      --     $1B,$3B,$5B,$7B,$9B,$BB,$DB,$FB
+-      when "11001" | "11011" =>
+-        -- Absolute Y
+-        lCycle <= Cycle_4;
+-        if IR(7 downto 6) /= "10" then
+-          LDA <= '1';
+-          if Mode="00" and IR(1)='1' then
+-            lCycle <= Cycle_6;
+-          end if;
+-        end if;
+-        case MCycle is
+-          when Cycle_1 =>
+-            Jump <= "01";
+-            LDBAL <= '1';
+-          when Cycle_2 =>
+-            Jump <= "01";
+-            Set_BusA_To <= Set_BusA_To_Y;
+-            BAAdd <= "10";  -- BA Add
+-            LDBAH <= '1';
+-            Set_Addr_To <= Set_Addr_To_BA;
+-          when Cycle_3 =>
+-            BAAdd <= "11";  -- BA adj
+-            if IR(7 downto 5) = "100" then--99/9b
+-              Write <= '1';
+-              if IR(3 downto 0) = x"B" then
+-                BAQuirk <= "01"; -- AND
+-              end if;
+-            elsif IR(1)='0' or IR=x"BB" then -- Dont do this on $xB, except undoc $BB (says real CPU and Lorenz tests)
+-              BreakAtNA <= '1';
+-            end if;
+-            Set_Addr_To <= Set_Addr_To_BA;
+-          when Cycle_4 => -- just for undoc
+-            if Mode="00" and IR(1)='1' and IR(7 downto 6)/="10" then
+-              Set_Addr_To <= Set_Addr_To_BA;
+-              LDDI<='1';
+-              Write <= '1';
+-            end if;
+-          when Cycle_5 =>
+-            Write <= '1';
+-            LDALU<='1';
+-            Set_Addr_To <= Set_Addr_To_BA;
+-            SaveP<='1';
+-          when Cycle_6 =>
+-            ALUmore <= '1';
+-            Set_BusA_To <= Set_BusA_To_ABC;
+-          when others =>
+-        end case;
+-
+-      -- IR: $1C,$3C,$5C,$7C,$9C,$BC,$DC,$FC
+-      --     $1D,$3D,$5D,$7D,$9D,$BD,$DD,$FD
+-      --     $1E,$3E,$5E,$7E,$9E,$BE,$DE,$FE
+-      --     $1F,$3F,$5F,$7F,$9F,$BF,$DF,$FF
+-      when "11100" | "11101" | "11110" | "11111" =>
+-        -- Absolute X
+-        if IR(7 downto 6) /= "10" and IR(1) = '1' and (Mode="00" or IR(0)='0') then -- ($1E,$3E,$5E,$7E,$DE,$FE, $1F,$3F,$5F,$7F,$DF,$FF)
+-          -- Read-Modify-Write
+-          lCycle <= Cycle_6;
+-          if Mode="00" and IR(0)='1' then
+-            LDA <= '1';
+-          end if;
+-          case MCycle is
+-            when Cycle_1 =>
+-              Jump <= "01";
+-              LDBAL <= '1';
+-            when Cycle_2 =>
+-              Jump <= "01";
+-              Set_BusA_To <= Set_BusA_To_X;
+-              BAAdd <= "10";      -- BA Add
+-              LDBAH <= '1';
+-              Set_Addr_To <= Set_Addr_To_BA;
+-            when Cycle_3 =>
+-              BAAdd <= "11";      -- BA adj
+-              Set_Addr_To <= Set_Addr_To_BA;
+-            when Cycle_4 =>
+-              LDDI <= '1';
+-              if Mode="00" then--The old 6500 writes back what is just read, before changing. The 65c does another read
+-                Write <= '1';
+-              end if;
+-              Set_Addr_To <= Set_Addr_To_BA;
+-            when Cycle_5 =>
+-              LDALU <= '1';
+-              SaveP <= '1';
+-              Write <= '1';
+-              Set_Addr_To <= Set_Addr_To_BA;
+-            when Cycle_6 =>
+-              if Mode="00" and IR(0)='1' then
+-                ALUmore <= '1';
+-                Set_BusA_To <= Set_BusA_To_ABC;
+-              end if;
+-            when others =>
+-          end case;
+-        else -- ($1C,$3C,$5C,$7C,$9C,$BC,$DC,$FC, $1D,$3D,$5D,$7D,$9D,$BD,$DD,$FD, $9E,$BE,$9F,$BF)
+-          lCycle <= Cycle_4;--Or 3 if not page crossing
+-          if IR(7 downto 6) /= "10" then
+-            if Mode/="00" or IR(4)='0' or IR(1 downto 0)/="00" then
+-              LDA <= '1';
+-            end if;
+-          end if;
+-          case MCycle is
+-            when Cycle_sync =>
+-            when Cycle_1 =>
+-              Jump <= "01";
+-              LDBAL <= '1';
+-            when Cycle_2 =>
+-              Jump <= "01";
+-              -- special case $BE which uses Y reg as index!!
+-              if(IR(7 downto 6)="10" and IR(4 downto 1)="1111") then
+-                Set_BusA_To <= Set_BusA_To_Y;
+-              else
+-                Set_BusA_To <= Set_BusA_To_X;
+-              end if;
+-              BAAdd <= "10";      -- BA Add
+-              LDBAH <= '1';
+-              Set_Addr_To <= Set_Addr_To_BA;
+-            when Cycle_3 =>
+-              BAAdd <= "11";      -- BA adj
+-              if IR(7 downto 5) = "100" then -- ($9C,$9D,$9E,$9F)
+-                Write <= '1';
+-                case IR(1 downto 0) is
+-                when "00"|"10" => BAQuirk <= "01"; -- AND
+-                when "11" => BAQuirk <= "10"; -- COPY
+-                when others => null;
+-                end case;
+-              else
+-                BreakAtNA <= '1';
+-              end if;
+-              Set_Addr_To <= Set_Addr_To_BA;
+-            when Cycle_4 =>
+-            when others =>
+-          end case;
+-        end if;
+-      when others =>
+-    end case;
+-  end process;
+-
+-  process (IR, MCycle, Mode,ALUmore)
+-  begin
+-    -- ORA, AND, EOR, ADC, NOP, LD, CMP, SBC
+-    -- ASL, ROL, LSR, ROR, BIT, LD, DEC, INC
+-    case IR(1 downto 0) is
+-      when "00" =>
+-        case IR(4 downto 2) is
+-        -- IR: $00,$20,$40,$60,$80,$A0,$C0,$E0
+-        --     $04,$24,$44,$64,$84,$A4,$C4,$E4
+-        --     $0C,$2C,$4C,$6C,$8C,$AC,$CC,$EC
+-        when "000" | "001" | "011" =>
+-          case IR(7 downto 5) is
+-            when "110" | "111" => -- CP ($C0,$C4,$CC,$E0,$E4,$EC)
+-              ALU_Op <= ALU_OP_CMP;
+-            when "101" => -- LD ($A0,$A4,$AC)
+-              ALU_Op <= ALU_OP_EQ2;
+-            when "001" => -- BIT ($20,$24,$2C - $20 is ignored, as its a jmp)
+-              ALU_Op <= ALU_OP_BIT;
+-            when others => -- other, NOP/ST ($x0,$x4,$xC)
+-              ALU_Op <= ALU_OP_EQ1;
+-          end case;
+-
+-        -- IR: $08,$28,$48,$68,$88,$A8,$C8,$E8
+-        when "010" =>
+-          case IR(7 downto 5) is
+-            when "111" | "110" => -- IN ($C8,$E8)
+-              ALU_Op <= ALU_OP_INC;
+-            when "100" => -- DEY ($88)
+-              ALU_Op <= ALU_OP_DEC;
+-            when others => -- LD
+-              ALU_Op <= ALU_OP_EQ2;
+-          end case;
+-
+-        -- IR: $18,$38,$58,$78,$98,$B8,$D8,$F8
+-        when "110" =>
+-          case IR(7 downto 5) is
+-            when "100" => -- TYA ($98)
+-              ALU_Op <= ALU_OP_EQ2;
+-            when others =>
+-              ALU_Op <= ALU_OP_EQ1;
+-          end case;
+-
+-        -- IR: $10,$30,$50,$70,$90,$B0,$D0,$F0
+-        --     $14,$34,$54,$74,$94,$B4,$D4,$F4
+-        --     $1C,$3C,$5C,$7C,$9C,$BC,$DC,$FC
+-        when others =>
+-          case IR(7 downto 5) is
+-            when "101" => -- LD ($B0,$B4,$BC)
+-              ALU_Op <= ALU_OP_EQ2;
+-            when others =>
+-              ALU_Op <= ALU_OP_EQ1;
+-          end case;
+-        end case;
+-
+-      when "01" => -- OR
+-        case(to_integer(unsigned(IR(7 downto 5)))) is
+-          when 0=> -- IR: $01,$05,$09,$0D,$11,$15,$19,$1D
+-            ALU_Op<=ALU_OP_OR;
+-          when 1=> -- IR: $21,$25,$29,$2D,$31,$35,$39,$3D
+-            ALU_Op<=ALU_OP_AND;
+-          when 2=> -- IR: $41,$45,$49,$4D,$51,$55,$59,$5D
+-            ALU_Op<=ALU_OP_EOR;
+-          when 3=> -- IR: $61,$65,$69,$6D,$71,$75,$79,$7D
+-            ALU_Op<=ALU_OP_ADC; 
+-          when 4=>-- IR: $81,$85,$89,$8D,$91,$95,$99,$9D
+-            ALU_Op<=ALU_OP_EQ1; -- STA
+-          when 5=> -- IR: $A1,$A5,$A9,$AD,$B1,$B5,$B9,$BD
+-            ALU_Op<=ALU_OP_EQ2; -- LDA
+-          when 6=> -- IR: $C1,$C5,$C9,$CD,$D1,$D5,$D9,$DD
+-            ALU_Op<=ALU_OP_CMP;
+-          when others=> -- IR: $E1,$E5,$E9,$ED,$F1,$F5,$F9,$FD
+-            ALU_Op<=ALU_OP_SBC;
+-        end case;
+-
+-      when "10" =>
+-        case(to_integer(unsigned(IR(7 downto 5)))) is
+-          when 0=> -- IR: $02,$06,$0A,$0E,$12,$16,$1A,$1E
+-            ALU_Op<=ALU_OP_ASL;
+-            if IR(4 downto 2) = "110" and Mode/="00" then -- 00011010,$1A -> INC acc, not on 6502
+-              ALU_Op <= ALU_OP_INC;
+-            end if;
+-          when 1=> -- IR: $22,$26,$2A,$2E,$32,$36,$3A,$3E
+-            ALU_Op<=ALU_OP_ROL;
+-            if IR(4 downto 2) = "110" and Mode/="00" then -- 00111010,$3A -> DEC acc, not on 6502
+-              ALU_Op <= ALU_OP_DEC;
+-            end if;
+-          when 2=> -- IR: $42,$46,$4A,$4E,$52,$56,$5A,$5E
+-            ALU_Op<=ALU_OP_LSR;
+-          when 3=> -- IR: $62,$66,$6A,$6E,$72,$76,$7A,$7E
+-            ALU_Op<=ALU_OP_ROR;
+-          when 4=> -- IR: $82,$86,$8A,$8E,$92,$96,$9A,$9E
+-            ALU_Op<=ALU_OP_BIT;
+-            if IR(4 downto 2) = "010" then   -- 10001010, $8A -> TXA
+-              ALU_Op <= ALU_OP_EQ2;
+-            else                             -- 100xxx10, $82,$86,$8E,$92,$96,$9A,$9E
+-              ALU_Op <= ALU_OP_EQ1;
+-            end if;
+-          when 5=> -- IR: $A2,$A6,$AA,$AE,$B2,$B6,$BA,$BE
+-            ALU_Op<=ALU_OP_EQ2; -- LDX
+-          when 6=> -- IR: $C2,$C6,$CA,$CE,$D2,$D6,$DA,$DE
+-            ALU_Op<=ALU_OP_DEC;
+-          when others=> -- IR: $E2,$E6,$EA,$EE,$F2,$F6,$FA,$FE
+-            ALU_Op<=ALU_OP_INC;
+-        end case;
+-
+-      when others => -- "11" undoc double alu ops
+-        case(to_integer(unsigned(IR(7 downto 5)))) is
+-          -- IR: $A3,$A7,$AB,$AF,$B3,$B7,$BB,$BF
+-          when 5 =>
+-            if IR=x"bb" then--LAS
+-              ALU_Op <= ALU_OP_AND;
+-            else
+-              ALU_Op <= ALU_OP_EQ2;
+-            end if;
+-
+-          -- IR: $03,$07,$0B,$0F,$13,$17,$1B,$1F
+-          --     $23,$27,$2B,$2F,$33,$37,$3B,$3F
+-          --     $43,$47,$4B,$4F,$53,$57,$5B,$5F
+-          --     $63,$67,$6B,$6F,$73,$77,$7B,$7F
+-          --     $83,$87,$8B,$8F,$93,$97,$9B,$9F
+-          --     $C3,$C7,$CB,$CF,$D3,$D7,$DB,$DF
+-          --     $E3,$E7,$EB,$EF,$F3,$F7,$FB,$FF
+-          when others =>
+-            if IR=x"6b" then -- ARR
+-              ALU_Op<=ALU_OP_ARR;
+-            elsif IR=x"8b" then -- ARR
+-              ALU_Op<=ALU_OP_XAA;   -- we can't use the bit operation as we don't set all flags...
+-            elsif IR=x"0b" or IR=x"2b" then -- ANC
+-              ALU_Op<=ALU_OP_ANC;
+-            elsif IR=x"eb" then -- alternate SBC
+-              ALU_Op<=ALU_OP_SBC;
+-            elsif ALUmore='1'  then 
+-              case(to_integer(unsigned(IR(7 downto 5)))) is
+-                when 0=>
+-                  ALU_Op<=ALU_OP_OR;
+-                when 1=>
+-                  ALU_Op<=ALU_OP_AND;
+-                when 2=>
+-                  ALU_Op<=ALU_OP_EOR;
+-                when 3=>
+-                  ALU_Op<=ALU_OP_ADC;
+-                when 4=>
+-                  ALU_Op<=ALU_OP_EQ1; -- STA
+-                when 5=>
+-                  ALU_Op<=ALU_OP_EQ2; -- LDA
+-                when 6=>
+-                  ALU_Op<=ALU_OP_CMP;
+-                when others=>
+-                  ALU_Op<=ALU_OP_SBC;
+-              end case;
+-            else
+-              case(to_integer(unsigned(IR(7 downto 5)))) is
+-                when 0=>
+-                  ALU_Op<=ALU_OP_ASL;
+-                when 1=>
+-                  ALU_Op<=ALU_OP_ROL;
+-                when 2=>
+-                  ALU_Op<=ALU_OP_LSR;
+-                when 3=>
+-                  ALU_Op<=ALU_OP_ROR;
+-                when 4=>
+-                  ALU_Op<=ALU_OP_BIT;
+-                when 5=>
+-                  ALU_Op<=ALU_OP_EQ2; -- LDX
+-                when 6=>
+-                  ALU_Op<=ALU_OP_DEC;
+-                  if IR(4 downto 2)="010" then  -- $6B
+-                    ALU_Op<=ALU_OP_SAX; -- special SAX (SBX) case
+-                  end if;
+-                when others=>
+-                   ALU_Op<=ALU_OP_INC;
+-              end case;
+-            end if;
+-        end case;
+-    end case;
+-  end process;
++	with IR(7 downto 5) select
++		Branch <= not P(Flag_N) when "000",
++					  P(Flag_N) when "001",
++				  not P(Flag_V) when "010",
++					  P(Flag_V) when "011",
++				  not P(Flag_C) when "100",
++					  P(Flag_C) when "101",
++				  not P(Flag_Z) when "110",
++					  P(Flag_Z) when others;
++
++	process (IR, MCycle, P, Branch, Mode)
++	begin
++		LCycle      <= "001";
++		Set_BusA_To <= "001"; -- A
++		Set_Addr_To <= (others => '0');
++		Write_Data  <= (others => '0');
++		Jump        <= (others => '0');
++		BAAdd       <= "00";
++		BreakAtNA   <= '0';
++		ADAdd       <= '0';
++		PCAdd       <= '0';
++		Inc_S       <= '0';
++		Dec_S       <= '0';
++		LDA         <= '0';
++		LDP         <= '0';
++		LDX         <= '0';
++		LDY         <= '0';
++		LDS         <= '0';
++		LDDI        <= '0';
++		LDALU       <= '0';
++		LDAD        <= '0';
++		LDBAL       <= '0';
++		LDBAH       <= '0';
++		SaveP       <= '0';
++		Write       <= '0';
++		AddY        <= '0';
++
++		case IR(7 downto 5) is
++		when "100" =>
++		--{{{
++			case IR(1 downto 0) is
++			when "00" =>
++				Set_BusA_To <= "011"; -- Y
++				Write_Data <= "011"; -- Y
++			when "10" =>
++				Set_BusA_To <= "010"; -- X
++				Write_Data <= "010"; -- X
++			when others =>
++				Write_Data <= "001"; -- A
++			end case;
++		--}}}
++		when "101" =>
++		--{{{
++			case IR(1 downto 0) is
++			when "00" =>
++				if IR(4) /= '1' or IR(2) /= '0' then
++					LDY <= '1';
++				end if;
++			when "10" =>
++				LDX <= '1';
++			when others =>
++				LDA <= '1';
++			end case;
++			Set_BusA_To <= "000"; -- DI
++		--}}}
++		when "110" =>
++		--{{{
++			case IR(1 downto 0) is
++			when "00" =>
++				if IR(4) = '0' then
++					LDY <= '1';
++				end if;
++				Set_BusA_To <= "011"; -- Y
++			when others =>
++				Set_BusA_To <= "001"; -- A
++			end case;
++		--}}}
++		when "111" =>
++		--{{{
++			case IR(1 downto 0) is
++			when "00" =>
++				if IR(4) = '0' then
++					LDX <= '1';
++				end if;
++				Set_BusA_To <= "010"; -- X
++			when others =>
++				Set_BusA_To <= "001"; -- A
++			end case;
++		--}}}
++		when others =>
++		end case;
++
++		if IR(7 downto 6) /= "10" and IR(1 downto 0) = "10" then
++			Set_BusA_To <= "000"; -- DI
++		end if;
++
++		case IR(4 downto 0) is
++		when "00000" | "01000" | "01010" | "11000" | "11010" =>
++		--{{{
++			-- Implied
++			case IR is
++			when "00000000" =>
++				-- BRK
++				LCycle <= "110";
++				case to_integer(unsigned(MCycle)) is
++				when 1 =>
++					Set_Addr_To <= "01"; -- S
++					Write_Data <= "111"; -- PCH
++					Write <= '1';
++				when 2 =>
++					Dec_S <= '1';
++					Set_Addr_To <= "01"; -- S
++					Write_Data <= "110"; -- PCL
++					Write <= '1';
++				when 3 =>
++					Dec_S <= '1';
++					Set_Addr_To <= "01"; -- S
++					Write_Data <= "101"; -- P
++					Write <= '1';
++				when 4 =>
++					Dec_S <= '1';
++					Set_Addr_To <= "11"; -- BA
++				when 5 =>
++					LDDI <= '1';
++					Set_Addr_To <= "11"; -- BA
++				when 6 =>
++					Jump <= "10"; -- DIDL
++				when others =>
++				end case;
++			when "00100000" =>
++				-- JSR
++				LCycle <= "101";
++				case to_integer(unsigned(MCycle)) is
++				when 1 =>
++					Jump <= "01";
++					LDDI <= '1';
++					Set_Addr_To <= "01"; -- S
++				when 2 =>
++					Set_Addr_To <= "01"; -- S
++					Write_Data <= "111"; -- PCH
++					Write <= '1';
++				when 3 =>
++					Dec_S <= '1';
++					Set_Addr_To <= "01"; -- S
++					Write_Data <= "110"; -- PCL
++					Write <= '1';
++				when 4 =>
++					Dec_S <= '1';
++				when 5 =>
++					Jump <= "10"; -- DIDL
++				when others =>
++				end case;
++			when "01000000" =>
++				-- RTI
++				LCycle <= "101";
++				case to_integer(unsigned(MCycle)) is
++				when 1 =>
++					Set_Addr_To <= "01"; -- S
++				when 2 =>
++					Inc_S <= '1';
++					Set_Addr_To <= "01"; -- S
++				when 3 =>
++					Inc_S <= '1';
++					Set_Addr_To <= "01"; -- S
++					Set_BusA_To <= "000"; -- DI
++				when 4 =>
++					LDP <= '1';
++					Inc_S <= '1';
++					LDDI <= '1';
++					Set_Addr_To <= "01"; -- S
++				when 5 =>
++					Jump <= "10"; -- DIDL
++				when others =>
++				end case;
++			when "01100000" =>
++				-- RTS
++				LCycle <= "101";
++				case to_integer(unsigned(MCycle)) is
++				when 1 =>
++					Set_Addr_To <= "01"; -- S
++				when 2 =>
++					Inc_S <= '1';
++					Set_Addr_To <= "01"; -- S
++				when 3 =>
++					Inc_S <= '1';
++					LDDI <= '1';
++					Set_Addr_To <= "01"; -- S
++				when 4 =>
++					Jump <= "10"; -- DIDL
++				when 5 =>
++					Jump <= "01";
++				when others =>
++				end case;
++			when "00001000" | "01001000" | "01011010" | "11011010" =>
++				-- PHP, PHA, PHY*, PHX*
++				LCycle <= "010";
++				if Mode = "00" and IR(1) = '1' then
++					LCycle <= "001";
++				end if;
++				case to_integer(unsigned(MCycle)) is
++				when 1 =>
++					case IR(7 downto 4) is
++					when "0000" =>
++						Write_Data <= "101"; -- P
++					when "0100" =>
++						Write_Data <= "001"; -- A
++					when "0101" =>
++						Write_Data <= "011"; -- Y
++					when "1101" =>
++						Write_Data <= "010"; -- X
++					when others =>
++					end case;
++					Write <= '1';
++					Set_Addr_To <= "01"; -- S
++				when 2 =>
++					Dec_S <= '1';
++				when others =>
++				end case;
++			when "00101000" | "01101000" | "01111010" | "11111010" =>
++				-- PLP, PLA, PLY*, PLX*
++				LCycle <= "011";
++				if Mode = "00" and IR(1) = '1' then
++					LCycle <= "001";
++				end if;
++				case IR(7 downto 4) is
++				when "0010" =>
++					LDP <= '1';
++				when "0110" =>
++					LDA <= '1';
++				when "0111" =>
++					if Mode /= "00" then
++						LDY <= '1';
++					end if;
++				when "1111" =>
++					if Mode /= "00" then
++						LDX <= '1';
++					end if;
++				when others =>
++				end case;
++				case to_integer(unsigned(MCycle)) is
++				when 0 =>
++					SaveP <= '1';
++				when 1 =>
++					Set_Addr_To <= "01"; -- S
++				when 2 =>
++					Inc_S <= '1';
++					Set_Addr_To <= "01"; -- S
++				when 3 =>
++					Set_BusA_To <= "000"; -- DI
++				when others =>
++				end case;
++			when "10100000" | "11000000" | "11100000" =>
++				-- LDY, CPY, CPX
++				-- Immediate
++				case to_integer(unsigned(MCycle)) is
++				when 0 =>
++				when 1 =>
++					Jump <= "01";
++				when others =>
++				end case;
++			when "10001000" =>
++				-- DEY
++				LDY <= '1';
++				case to_integer(unsigned(MCycle)) is
++				when 0 =>
++				when 1 =>
++					Set_BusA_To <= "011"; -- Y
++				when others =>
++				end case;
++			when "11001010" =>
++				-- DEX
++				LDX <= '1';
++				case to_integer(unsigned(MCycle)) is
++				when 0 =>
++				when 1 =>
++					Set_BusA_To <= "010"; -- X
++				when others =>
++				end case;
++			when "00011010" | "00111010" =>
++				-- INC*, DEC*
++				if Mode /= "00" then
++					LDA <= '1'; -- A
++				end if;
++				case to_integer(unsigned(MCycle)) is
++				when 0 =>
++				when 1 =>
++					Set_BusA_To <= "100"; -- S
++				when others =>
++				end case;
++			when "00001010" | "00101010" | "01001010" | "01101010" =>
++				-- ASL, ROL, LSR, ROR
++				LDA <= '1'; -- A
++				Set_BusA_To <= "001"; -- A
++				case to_integer(unsigned(MCycle)) is
++				when 0 =>
++				when 1 =>
++				when others =>
++				end case;
++			when "10001010" | "10011000" =>
++				-- TYA, TXA
++				LDA <= '1'; -- A
++				case to_integer(unsigned(MCycle)) is
++				when 0 =>
++				when 1 =>
++				when others =>
++				end case;
++			when "10101010" | "10101000" =>
++				-- TAX, TAY
++				case to_integer(unsigned(MCycle)) is
++				when 0 =>
++				when 1 =>
++					Set_BusA_To <= "001"; -- A
++				when others =>
++				end case;
++			when "10011010" =>
++				-- TXS
++				case to_integer(unsigned(MCycle)) is
++				when 0 =>
++					LDS <= '1';
++				when 1 =>
++				when others =>
++				end case;
++			when "10111010" =>
++				-- TSX
++				LDX <= '1';
++				case to_integer(unsigned(MCycle)) is
++				when 0 =>
++				when 1 =>
++					Set_BusA_To <= "100"; -- S
++				when others =>
++				end case;
++
++		--                      when "00011000" | "00111000" | "01011000" | "01111000" | "10111000" | "11011000" | "11111000" | "11001000" | "11101000" =>
++		--                              -- CLC, SEC, CLI, SEI, CLV, CLD, SED, INY, INX
++		--                              case to_integer(unsigned(MCycle)) is
++		--                              when 1 =>
++		--                              when others =>
++		--                              end case;
++			when others =>
++				case to_integer(unsigned(MCycle)) is
++				when 0 =>
++				when others =>
++				end case;
++			end case;
++		--}}}
++
++		when "00001" | "00011" =>
++		--{{{
++			-- Zero Page Indexed Indirect (d,x)
++			LCycle <= "101";
++			if IR(7 downto 6) /= "10" then
++				LDA <= '1';
++			end if;
++			case to_integer(unsigned(MCycle)) is
++			when 0 =>
++			when 1 =>
++				Jump <= "01";
++				LDAD <= '1';
++				Set_Addr_To <= "10"; -- AD
++			when 2 =>
++				ADAdd <= '1';
++				Set_Addr_To <= "10"; -- AD
++			when 3 =>
++				BAAdd <= "01";  -- DB Inc
++				LDBAL <= '1';
++				Set_Addr_To <= "10"; -- AD
++			when 4 =>
++				LDBAH <= '1';
++				if IR(7 downto 5) = "100" then
++					Write <= '1';
++				end if;
++				Set_Addr_To <= "11"; -- BA
++			when 5 =>
++			when others =>
++			end case;
++		--}}}
++
++		when "01001" | "01011" =>
++		--{{{
++			-- Immediate
++			LDA <= '1';
++			case to_integer(unsigned(MCycle)) is
++			when 0 =>
++			when 1 =>
++				Jump <= "01";
++			when others =>
++			end case;
++
++		--}}}
++
++		when "00010" | "10010" =>
++		--{{{
++			-- Immediate, KIL
++			LDX <= '1';
++			case to_integer(unsigned(MCycle)) is
++			when 0 =>
++			when 1 =>
++				if IR = "10100010" then
++					-- LDX
++					Jump <= "01";
++				else
++					-- KIL !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
++				end if;
++			when others =>
++			end case;
++		--}}}
++
++		when "00100" =>
++		--{{{
++			-- Zero Page
++			LCycle <= "010";
++			case to_integer(unsigned(MCycle)) is
++			when 0 =>
++				if IR(7 downto 5) = "001" then
++					SaveP <= '1';
++				end if;
++			when 1 =>
++				Jump <= "01";
++				LDAD <= '1';
++				if IR(7 downto 5) = "100" then
++					Write <= '1';
++				end if;
++				Set_Addr_To <= "10"; -- AD
++			when 2 =>
++			when others =>
++			end case;
++		--}}}
++
++		when "00101" | "00110" | "00111" =>
++		--{{{
++			-- Zero Page
++			if IR(7 downto 6) /= "10" and IR(1 downto 0) = "10" then
++				-- Read-Modify-Write
++				LCycle <= "100";
++				case to_integer(unsigned(MCycle)) is
++				when 1 =>
++					Jump <= "01";
++					LDAD <= '1';
++					Set_Addr_To <= "10"; -- AD
++				when 2 =>
++					LDDI <= '1';
++					Write <= '1';
++					Set_Addr_To <= "10"; -- AD
++				when 3 =>
++					LDALU <= '1';
++					SaveP <= '1';
++					Write <= '1';
++					Set_Addr_To <= "10"; -- AD
++				when 4 =>
++				when others =>
++				end case;
++			else
++				LCycle <= "010";
++				if IR(7 downto 6) /= "10" then
++					LDA <= '1';
++				end if;
++				case to_integer(unsigned(MCycle)) is
++				when 0 =>
++				when 1 =>
++					Jump <= "01";
++					LDAD <= '1';
++					if IR(7 downto 5) = "100" then
++						Write <= '1';
++					end if;
++					Set_Addr_To <= "10"; -- AD
++				when 2 =>
++				when others =>
++				end case;
++			end if;
++		--}}}
++
++		when "01100" =>
++		--{{{
++			-- Absolute
++			if IR(7 downto 6) = "01" and IR(4 downto 0) = "01100" then
++				-- JMP
++				if IR(5) = '0' then
++					--LCycle <= "011";
++					LCycle <= "010";
++					case to_integer(unsigned(MCycle)) is
++					when 1 =>
++						Jump <= "01";
++						LDDI <= '1';
++					when 2 =>
++						Jump <= "10"; -- DIDL
++					when others =>
++					end case;
++				else
++					LCycle <= "101";
++					case to_integer(unsigned(MCycle)) is
++					when 2 =>
++						Jump <= "01";
++						LDDI <= '1';
++						LDBAL <= '1';
++					when 3 =>
++						LDBAH <= '1';
++						if Mode /= "00" then
++							Jump <= "10"; -- DIDL
++						end if;
++						if Mode = "00" then
++							Set_Addr_To <= "11"; -- BA
++						end if;
++					when 4 =>
++						LDDI <= '1';
++						if Mode = "00" then
++							Set_Addr_To <= "11"; -- BA
++							BAAdd <= "01";      -- DB Inc
++						else
++							Jump <= "01";
++						end if;
++					when 5 =>
++						Jump <= "10"; -- DIDL
++					when others =>
++					end case;
++				end if;
++			else
++				LCycle <= "011";
++				case to_integer(unsigned(MCycle)) is
++				when 0 =>
++					if IR(7 downto 5) = "001" then
++						SaveP <= '1';
++					end if;
++				when 1 =>
++					Jump <= "01";
++					LDBAL <= '1';
++				when 2 =>
++					Jump <= "01";
++					LDBAH <= '1';
++					if IR(7 downto 5) = "100" then
++						Write <= '1';
++					end if;
++					Set_Addr_To <= "11"; -- BA
++				when 3 =>
++				when others =>
++				end case;
++			end if;
++		--}}}
++
++		when "01101" | "01110" | "01111" =>
++		--{{{
++			-- Absolute
++			if IR(7 downto 6) /= "10" and IR(1 downto 0) = "10" then
++				-- Read-Modify-Write
++				LCycle <= "101";
++				case to_integer(unsigned(MCycle)) is
++				when 1 =>
++					Jump <= "01";
++					LDBAL <= '1';
++				when 2 =>
++					Jump <= "01";
++					LDBAH <= '1';
++					Set_Addr_To <= "11"; -- BA
++				when 3 =>
++					LDDI <= '1';
++					Write <= '1';
++					Set_Addr_To <= "11"; -- BA
++				when 4 =>
++					Write <= '1';
++					LDALU <= '1';
++					SaveP <= '1';
++					Set_Addr_To <= "11"; -- BA
++				when 5 =>
++					SaveP <= '0'; -- MIKEJ was 1
++				when others =>
++				end case;
++			else
++				LCycle <= "011";
++				if IR(7 downto 6) /= "10" then
++					LDA <= '1';
++				end if;
++				case to_integer(unsigned(MCycle)) is
++				when 0 =>
++				when 1 =>
++					Jump <= "01";
++					LDBAL <= '1';
++				when 2 =>
++					Jump <= "01";
++					LDBAH <= '1';
++					if IR(7 downto 5) = "100" then
++						Write <= '1';
++					end if;
++					Set_Addr_To <= "11"; -- BA
++				when 3 =>
++				when others =>
++				end case;
++			end if;
++		--}}}
++
++		when "10000" =>
++		--{{{
++			-- Relative
++
++						-- This circuit dictates when the last
++						-- microcycle occurs for the branch depending on
++						-- whether or not the branch is taken and if a page
++						-- is crossed...
++			if (Branch = '1') then
++
++							 LCycle <= "011"; -- We're done @ T3 if branching...upper
++											  -- level logic will stop at T2 if no page cross
++											  -- (See the Break signal)
++			else
++
++							 LCycle <= "001";
++
++			end if;
++
++						-- This decodes the current microcycle and takes the
++						-- proper course of action...
++			case to_integer(unsigned(MCycle)) is
++
++							-- On the T1 microcycle, increment the program counter
++							-- and instruct the upper level logic to fetch the offset
++							-- from the Din bus and store it in the data latches. This
++							-- will be the last microcycle if the branch isn't taken.
++				when 1 =>
++
++					Jump <= "01"; -- Increments the PC by one (PC will now be PC+2)
++											  -- from microcycle T0.
++
++				LDDI <= '1';  -- Tells logic in top level (T65.vhd) to route
++											  -- the Din bus to the memory data latch (DL)
++											  -- so that the branch offset is fetched.
++
++							-- In microcycle T2, tell the logic in the top level to
++							-- add the offset.  If the most significant byte of the
++							-- program counter (i.e. the current "page") does not need
++							-- updating, we are done here...the Break signal at the
++							-- T65.vhd level takes care of that...
++				when 2 =>
++
++				Jump    <= "11"; -- Tell the PC Jump logic to use relative mode.
++
++				PCAdd   <= '1';  -- This tells the PC adder to update itself with
++												 -- the current offset recently fetched from
++												 -- memory.
++
++							-- The following is microcycle T3 :
++							-- The program counter should be completely updated
++							-- on this cycle after the page cross is detected.
++							-- We don't need to do anything here...
++				when 3 =>
++
++
++				when others => null; -- Do nothing.
++
++			end case;
++		--}}}
++
++		when "10001" | "10011" =>
++		--{{{
++			-- Zero Page Indirect Indexed (d),y
++			LCycle <= "101";
++			if IR(7 downto 6) /= "10" then
++				LDA <= '1';
++			end if;
++			case to_integer(unsigned(MCycle)) is
++			when 0 =>
++			when 1 =>
++				Jump <= "01";
++				LDAD <= '1';
++				Set_Addr_To <= "10"; -- AD
++			when 2 =>
++				LDBAL <= '1';
++				BAAdd <= "01";  -- DB Inc
++				Set_Addr_To <= "10"; -- AD
++			when 3 =>
++				Set_BusA_To <= "011"; -- Y
++				BAAdd <= "10";  -- BA Add
++				LDBAH <= '1';
++				Set_Addr_To <= "11"; -- BA
++			when 4 =>
++				BAAdd <= "11";  -- BA Adj
++				if IR(7 downto 5) = "100" then
++					Write <= '1';
++				else
++					BreakAtNA <= '1';
++				end if;
++				Set_Addr_To <= "11"; -- BA
++			when 5 =>
++			when others =>
++			end case;
++		--}}}
++
++		when "10100" | "10101" | "10110" | "10111" =>
++		--{{{
++			-- Zero Page, X
++			if IR(7 downto 6) /= "10" and IR(1 downto 0) = "10" then
++				-- Read-Modify-Write
++				LCycle <= "101";
++				case to_integer(unsigned(MCycle)) is
++				when 1 =>
++					Jump <= "01";
++					LDAD <= '1';
++					Set_Addr_To <= "10"; -- AD
++				when 2 =>
++					ADAdd <= '1';
++					Set_Addr_To <= "10"; -- AD
++				when 3 =>
++					LDDI <= '1';
++					Write <= '1';
++					Set_Addr_To <= "10"; -- AD
++				when 4 =>
++					LDALU <= '1';
++					SaveP <= '1';
++					Write <= '1';
++					Set_Addr_To <= "10"; -- AD
++				when 5 =>
++				when others =>
++				end case;
++			else
++				LCycle <= "011";
++				if IR(7 downto 6) /= "10" then
++					LDA <= '1';
++				end if;
++				case to_integer(unsigned(MCycle)) is
++				when 0 =>
++				when 1 =>
++					Jump <= "01";
++					LDAD <= '1';
++					Set_Addr_To <= "10"; -- AD
++				when 2 =>
++					ADAdd <= '1';
++					-- Added this check for Y reg. use...
++					if (IR(3 downto 0) = "0110") then
++					  AddY <= '1';
++					end if;
++
++					if IR(7 downto 5) = "100" then
++						Write <= '1';
++					end if;
++					Set_Addr_To <= "10"; -- AD
++				when 3 => null;
++				when others =>
++				end case;
++			end if;
++		--}}}
++
++		when "11001" | "11011" =>
++		--{{{
++			-- Absolute Y
++			LCycle <= "100";
++			if IR(7 downto 6) /= "10" then
++				LDA <= '1';
++			end if;
++			case to_integer(unsigned(MCycle)) is
++			when 0 =>
++			when 1 =>
++				Jump <= "01";
++				LDBAL <= '1';
++			when 2 =>
++				Jump <= "01";
++				Set_BusA_To <= "011"; -- Y
++				BAAdd <= "10";  -- BA Add
++				LDBAH <= '1';
++				Set_Addr_To <= "11"; -- BA
++			when 3 =>
++				BAAdd <= "11";  -- BA adj
++				if IR(7 downto 5) = "100" then
++					Write <= '1';
++				else
++					BreakAtNA <= '1';
++				end if;
++				Set_Addr_To <= "11"; -- BA
++			when 4 =>
++			when others =>
++			end case;
++		--}}}
++
++		when "11100" | "11101" | "11110" | "11111" =>
++		--{{{
++			-- Absolute X
++
++			if IR(7 downto 6) /= "10" and IR(1 downto 0) = "10" then
++				-- Read-Modify-Write
++				LCycle <= "110";
++				case to_integer(unsigned(MCycle)) is
++				when 1 =>
++					Jump <= "01";
++					LDBAL <= '1';
++				when 2 =>
++					Jump <= "01";
++					Set_BusA_To <= "010"; -- X
++					BAAdd <= "10";      -- BA Add
++					LDBAH <= '1';
++					Set_Addr_To <= "11"; -- BA
++				when 3 =>
++					BAAdd <= "11";      -- BA adj
++					Set_Addr_To <= "11"; -- BA
++				when 4 =>
++					LDDI <= '1';
++					Write <= '1';
++					Set_Addr_To <= "11"; -- BA
++				when 5 =>
++					LDALU <= '1';
++					SaveP <= '1';
++					Write <= '1';
++					Set_Addr_To <= "11"; -- BA
++				when 6 =>
++				when others =>
++				end case;
++			else
++				LCycle <= "100";
++				if IR(7 downto 6) /= "10" then
++					LDA <= '1';
++				end if;
++				case to_integer(unsigned(MCycle)) is
++				when 0 =>
++				when 1 =>
++					Jump <= "01";
++					LDBAL <= '1';
++				when 2 =>
++					Jump <= "01";
++					-- mikej
++					-- special case 0xBE which uses Y reg as index!!
++					if (IR = "10111110") then
++					  Set_BusA_To <= "011"; -- Y
++					else
++					  Set_BusA_To <= "010"; -- X
++					end if;
++					BAAdd <= "10";      -- BA Add
++					LDBAH <= '1';
++					Set_Addr_To <= "11"; -- BA
++				when 3 =>
++					BAAdd <= "11";      -- BA adj
++					if IR(7 downto 5) = "100" then
++						Write <= '1';
++					else
++						BreakAtNA <= '1';
++					end if;
++					Set_Addr_To <= "11"; -- BA
++				when 4 =>
++				when others =>
++				end case;
++			end if;
++		--}}}
++		when others =>
++		end case;
++	end process;
++
++	process (IR, MCycle)
++	begin
++		-- ORA, AND, EOR, ADC, NOP, LD, CMP, SBC
++		-- ASL, ROL, LSR, ROR, BIT, LD, DEC, INC
++		case IR(1 downto 0) is
++		when "00" =>
++		--{{{
++			case IR(4 downto 2) is
++			when "000" | "001" | "011" =>
++				case IR(7 downto 5) is
++				when "110" | "111" =>
++					-- CP
++					ALU_Op <= "0110";
++				when "101" =>
++					-- LD
++					ALU_Op <= "0101";
++				when "001" =>
++					-- BIT
++					ALU_Op <= "1100";
++				when others =>
++					-- NOP/ST
++					ALU_Op <= "0100";
++				end case;
++			when "010" =>
++				case IR(7 downto 5) is
++				when "111" | "110" =>
++					-- IN
++					ALU_Op <= "1111";
++				when "100" =>
++					-- DEY
++					ALU_Op <= "1110";
++				when others =>
++					-- LD
++					ALU_Op <= "1101";
++				end case;
++			when "110" =>
++				case IR(7 downto 5) is
++				when "100" =>
++					-- TYA
++					ALU_Op <= "1101";
++				when others =>
++					ALU_Op <= "----";
++				end case;
++			when others =>
++				case IR(7 downto 5) is
++				when "101" =>
++					-- LD
++					ALU_Op <= "1101";
++				when others =>
++					ALU_Op <= "0100";
++				end case;
++			end case;
++		--}}}
++		when "01" => -- OR
++		--{{{
++			ALU_Op(3) <= '0';
++			ALU_Op(2 downto 0) <= IR(7 downto 5);
++		--}}}
++		when "10" =>
++		--{{{
++			ALU_Op(3) <= '1';
++			ALU_Op(2 downto 0) <= IR(7 downto 5);
++			case IR(7 downto 5) is
++			when "000" =>
++				if IR(4 downto 2) = "110" then
++					-- INC
++					ALU_Op <= "1111";
++				end if;
++			when "001" =>
++				if IR(4 downto 2) = "110" then
++					-- DEC
++					ALU_Op <= "1110";
++				end if;
++			when "100" =>
++				if IR(4 downto 2) = "010" then
++					-- TXA
++					ALU_Op <= "0101";
++				else
++					ALU_Op <= "0100";
++				end if;
++			when others =>
++			end case;
++		--}}}
++		when others =>
++		--{{{
++			case IR(7 downto 5) is
++			when "100" =>
++				ALU_Op <= "0100";
++			when others =>
++				if MCycle = "000" then
++					ALU_Op(3) <= '0';
++					ALU_Op(2 downto 0) <= IR(7 downto 5);
++				else
++					ALU_Op(3) <= '1';
++					ALU_Op(2 downto 0) <= IR(7 downto 5);
++				end if;
++			end case;
++		--}}}
++		end case;
++	end process;
+ 
+ end;
+--- ref/T65_Pack.vhd
++++ Arcade-Sprint1_MiSTer/rtl/T65/T65_Pack.vhd
+@@ -1,18 +1,18 @@
+ -- ****
+ -- T65(b) core. In an effort to merge and maintain bug fixes ....
+ --
+--- See list of changes in T65 top file (T65.vhd)...
++--
++-- Ver 300 Bugfixes by ehenciak added
++-- MikeJ March 2005
++-- Latest version from www.fpgaarcade.com (original www.opencores.org)
+ --
+ -- ****
++--
+ -- 65xx compatible microprocessor core
+ --
+--- FPGAARCADE SVN: $Id: T65_Pack.vhd 1234 2015-02-28 20:14:50Z wolfgang.scherr $
++-- Version : 0246
+ --
+--- Copyright (c) 2002...2015
+---               Daniel Wallner (jesus <at> opencores <dot> org)
+---               Mike Johnson   (mikej <at> fpgaarcade <dot> com)
+---               Wolfgang Scherr (WoS <at> pin4 <dot> at>
+---               Morten Leikvoll ()
++-- Copyright (c) 2002 Daniel Wallner (jesus@opencores.org)
+ --
+ -- All rights reserved
+ --
+@@ -42,139 +42,76 @@
+ -- ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ -- POSSIBILITY OF SUCH DAMAGE.
+ --
+--- Please report bugs to the author(s), but before you do so, please
++-- Please report bugs to the author, but before you do so, please
+ -- make sure that this is not a derivative work and that
+ -- you have the latest version of this file.
+ --
++-- The latest version of this file can be found at:
++--      http://www.opencores.org/cvsweb.shtml/t65/
++--
+ -- Limitations :
+---   See in T65 top file (T65.vhd)...
++--
++-- File history :
++--
+ 
+ library IEEE;
+ use IEEE.std_logic_1164.all;
+ 
+ package T65_Pack is
+ 
+-  constant Flag_C : integer := 0;
+-  constant Flag_Z : integer := 1;
+-  constant Flag_I : integer := 2;
+-  constant Flag_D : integer := 3;
+-  constant Flag_B : integer := 4;
+-  constant Flag_1 : integer := 5;
+-  constant Flag_V : integer := 6;
+-  constant Flag_N : integer := 7;
+-
+-  subtype T_Lcycle is std_logic_vector(2 downto 0);
+-  constant Cycle_sync :T_Lcycle:="000";
+-  constant Cycle_1    :T_Lcycle:="001";
+-  constant Cycle_2    :T_Lcycle:="010";
+-  constant Cycle_3    :T_Lcycle:="011";
+-  constant Cycle_4    :T_Lcycle:="100";
+-  constant Cycle_5    :T_Lcycle:="101";
+-  constant Cycle_6    :T_Lcycle:="110";
+-  constant Cycle_7    :T_Lcycle:="111";
+-
+-  function CycleNext(c:T_Lcycle) return T_Lcycle;
+-
+-  type T_Set_BusA_To is
+-  (
+-    Set_BusA_To_DI,
+-    Set_BusA_To_ABC,
+-    Set_BusA_To_X,
+-    Set_BusA_To_Y,
+-    Set_BusA_To_S,
+-    Set_BusA_To_P,
+-    Set_BusA_To_DA,
+-    Set_BusA_To_DAO,
+-    Set_BusA_To_DAX,
+-    Set_BusA_To_AAX,
+-    Set_BusA_To_DONTCARE
+-  );
+-  
+-  type T_Set_Addr_To is
+-  (
+-    Set_Addr_To_PBR,
+-    Set_Addr_To_SP,
+-    Set_Addr_To_ZPG,
+-    Set_Addr_To_BA
+-  );
+-  
+-  type T_Write_Data is
+-  (
+-    Write_Data_DL,
+-    Write_Data_ABC,
+-    Write_Data_X,
+-    Write_Data_Y,
+-    Write_Data_S,
+-    Write_Data_P,
+-    Write_Data_PCL,
+-    Write_Data_PCH,
+-    Write_Data_AX,
+-    Write_Data_AXB,
+-    Write_Data_XB,
+-    Write_Data_YB,
+-    Write_Data_DONTCARE
+-  );
+-  
+-  type T_ALU_OP is
+-  (
+-    ALU_OP_OR,  --"0000"
+-    ALU_OP_AND,  --"0001"
+-    ALU_OP_EOR,  --"0010"
+-    ALU_OP_ADC,  --"0011"
+-    ALU_OP_EQ1,  --"0100" EQ1 does not change N,Z flags, EQ2/3 does.
+-    ALU_OP_EQ2,  --"0101" Not sure yet whats the difference between EQ2&3. They seem to do the same ALU op
+-    ALU_OP_CMP,  --"0110"
+-    ALU_OP_SBC,  --"0111"
+-    ALU_OP_ASL,  --"1000"
+-    ALU_OP_ROL,  --"1001"
+-    ALU_OP_LSR,  --"1010"
+-    ALU_OP_ROR,  --"1011"
+-    ALU_OP_BIT,  --"1100"
+---    ALU_OP_EQ3,  --"1101"
+-    ALU_OP_DEC,  --"1110"
+-    ALU_OP_INC,  --"1111"
+-    ALU_OP_ARR,
+-    ALU_OP_ANC,
+-    ALU_OP_SAX,
+-    ALU_OP_XAA
+---    ALU_OP_UNDEF--"----"--may be replaced with any?
+-  );
+-
+-  type T_t65_dbg is record
+-    I     : std_logic_vector(7 downto 0); -- instruction
+-    A     : std_logic_vector(7 downto 0); -- A reg
+-    X     : std_logic_vector(7 downto 0); -- X reg
+-    Y     : std_logic_vector(7 downto 0); -- Y reg
+-    S     : std_logic_vector(7 downto 0); -- stack pointer
+-    P     : std_logic_vector(7 downto 0); -- processor flags
+-  end record;
++	constant Flag_C : integer := 0;
++	constant Flag_Z : integer := 1;
++	constant Flag_I : integer := 2;
++	constant Flag_D : integer := 3;
++	constant Flag_B : integer := 4;
++	constant Flag_1 : integer := 5;
++	constant Flag_V : integer := 6;
++	constant Flag_N : integer := 7;
++
++	component T65_MCode
++	port(
++		Mode                    : in  std_logic_vector(1 downto 0);      -- "00" => 6502, "01" => 65C02, "10" => 65816
++		IR                      : in  std_logic_vector(7 downto 0);
++		MCycle                  : in  std_logic_vector(2 downto 0);
++		P                       : in  std_logic_vector(7 downto 0);
++		LCycle                  : out std_logic_vector(2 downto 0);
++		ALU_Op                  : out std_logic_vector(3 downto 0);
++		Set_BusA_To             : out std_logic_vector(2 downto 0); -- DI,A,X,Y,S,P
++		Set_Addr_To             : out std_logic_vector(1 downto 0); -- PC Adder,S,AD,BA
++		Write_Data              : out std_logic_vector(2 downto 0); -- DL,A,X,Y,S,P,PCL,PCH
++		Jump                    : out std_logic_vector(1 downto 0); -- PC,++,DIDL,Rel
++		BAAdd                   : out std_logic_vector(1 downto 0);     -- None,DB Inc,BA Add,BA Adj
++		BreakAtNA               : out std_logic;
++		ADAdd                   : out std_logic;
++		AddY                    : out std_logic;
++		PCAdd                   : out std_logic;
++		Inc_S                   : out std_logic;
++		Dec_S                   : out std_logic;
++		LDA                     : out std_logic;
++		LDP                     : out std_logic;
++		LDX                     : out std_logic;
++		LDY                     : out std_logic;
++		LDS                     : out std_logic;
++		LDDI                    : out std_logic;
++		LDALU                   : out std_logic;
++		LDAD                    : out std_logic;
++		LDBAL                   : out std_logic;
++		LDBAH                   : out std_logic;
++		SaveP                   : out std_logic;
++		Write                   : out std_logic
++	);
++	end component;
++
++	component T65_ALU
++	port(
++		Mode    : in  std_logic_vector(1 downto 0);      -- "00" => 6502, "01" => 65C02, "10" => 65C816
++		Op      : in  std_logic_vector(3 downto 0);
++		BusA    : in  std_logic_vector(7 downto 0);
++		BusB    : in  std_logic_vector(7 downto 0);
++		P_In    : in  std_logic_vector(7 downto 0);
++		P_Out   : out std_logic_vector(7 downto 0);
++		Q       : out std_logic_vector(7 downto 0)
++	);
++	end component;
+ 
+ end;
+-
+-package body T65_Pack is
+-
+-  function CycleNext(c:T_Lcycle) return T_Lcycle is
+-  begin
+-    case(c) is
+-    when Cycle_sync=>
+-      return Cycle_1;
+-    when Cycle_1=>
+-      return Cycle_2;
+-    when Cycle_2=>
+-      return Cycle_3;
+-    when Cycle_3=>
+-      return Cycle_4;
+-    when Cycle_4=>
+-      return Cycle_5;
+-    when Cycle_5=>
+-      return Cycle_6;
+-    when Cycle_6=>
+-      return Cycle_7;
+-    when Cycle_7=>
+-      return Cycle_sync;
+-    when others=>
+-      return Cycle_sync;
+-    end case;
+-  end CycleNext;
+-
+-end T65_Pack;
+\ No newline at end of file

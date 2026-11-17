@@ -1,0 +1,3 @@
+/home/user/dl/vicetp/Lorenz-2.15/src/cpuport.prg
+/home/user/dl/vicetp/Lorenz-2.15/src/mmu.prg
+/home/user/dl/vicetp/Lorenz-2.15/src/mmufetch.prg

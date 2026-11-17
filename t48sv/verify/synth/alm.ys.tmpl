@@ -1,0 +1,15 @@
+# yosys 0.33 synth_intel_alm flow, ABC9 in -fast mode (the default script's &mfs
+# step asserts in yosys-abc 0.33: giaMfs.c "iLitNew >= 0")
+@READ@
+hierarchy -top @TOP@
+synth_intel_alm -family cyclonev -top @TOP@ @OPTS@ -run begin:map_luts
+techmap -map +/intel_alm/common/abc9_map.v
+abc9 -fast -maxlut 6 -W 600
+techmap -map +/intel_alm/common/abc9_unmap.v
+techmap -map +/intel_alm/common/alm_map.v
+opt -fast
+autoname
+clean
+synth_intel_alm -family cyclonev -top @TOP@ -run check:check
+tee -o @OUT@.stat stat
+ltp -noff

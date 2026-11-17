@@ -1,0 +1,3 @@
+set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) ../../rtl/m68ksv_all.sv]
+set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) m68ksv_qtop.sv]
+set_global_assignment -name SDC_FILE [file join $::quartus(qip_path) m68ksv_qtop.sdc]

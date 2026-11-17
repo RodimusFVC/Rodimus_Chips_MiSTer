@@ -1,0 +1,10 @@
+random: cycles=20000003 comparisons=40000004 mismatches=0 opcodes_executed=256/256 min_per_opcode=363
+random: cycles=20000003 comparisons=40000004 mismatches=0 opcodes_executed=256/256 min_per_opcode=862
+random: cycles=20000003 comparisons=40000004 mismatches=0 opcodes_executed=256/256 min_per_opcode=704
+random: cycles=20000003 comparisons=40000004 mismatches=0 opcodes_executed=256/256 min_per_opcode=551
+random: cycles=20000003 comparisons=40000004 mismatches=0 opcodes_executed=256/256 min_per_opcode=383
+random: cycles=20000003 comparisons=40000004 mismatches=0 opcodes_executed=256/256 min_per_opcode=180
+random: cycles=20000003 comparisons=40000004 mismatches=0 opcodes_executed=256/256 min_per_opcode=479
+random: cycles=20000003 comparisons=40000004 mismatches=0 opcodes_executed=256/256 min_per_opcode=464
+random: cycles=20000003 comparisons=40000004 mismatches=0 opcodes_executed=256/256 min_per_opcode=392
+random: cycles=20000003 comparisons=40000004 mismatches=0 opcodes_executed=256/256 min_per_opcode=466

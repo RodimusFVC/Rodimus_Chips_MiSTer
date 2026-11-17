@@ -1,0 +1,264 @@
+; m68ktest_a.a - m68ksv real-68000 test cases (SAS/C 6.58 asm, Motorola syntax)
+; Copyright (C) 2026 Rodimus
+;
+; Runs the REPORT.md "Amiga candidates" in supervisor mode with interrupts masked, catching
+; address error (3), illegal (4), zero divide (5) and TRAPV (7) with our own handlers. Each test
+; fills one 96-byte record; the C side (m68ktest.c) prints and logs them.
+; 68000 ONLY: the handlers assume 68000 exception frames (the C side refuses to run on 010+).
+
+        XDEF    _RunTests
+        XDEF    _GetResults
+
+R_WHICH equ     0               ; long: vector taken (0 = none)
+R_FRAME equ     4               ; 8 words: stacked frame (addr err: 7 words; others: SR, PC)
+R_REGS  equ     20              ; 15 longs: d0-d7/a0-a6 at the exception, or after the test
+R_SR    equ     80              ; word: SR after the test (no-exception tests only)
+R_INS   equ     84              ; long: address of the instruction under test
+R_NXT   equ     88              ; long: address of the instruction after it
+R_BUF   equ     92              ; long: address of buf (odd-address tests use buf+1 / buf+3)
+R_SIZE  equ     96
+NTESTS  equ     8
+
+        SECTION m68ktest_code,CODE
+
+_GetResults:
+        lea     records,a0
+        move.l  a0,d0
+        rts
+
+_RunTests:
+        movem.l d2-d7/a2-a6,-(sp)
+        move.l  $4,a6                   ; ExecBase
+        lea     super(pc),a5
+        jsr     -30(a6)                 ; Supervisor(a5): runs super, which ends with RTE
+        movem.l (sp)+,d2-d7/a2-a6
+        rts
+
+;------------------------------------------------------------------ supervisor part
+super:
+        move.w  #$2700,sr               ; no interrupts while our vectors are installed
+        move.l  $0C,oldv3
+        move.l  $10,oldv4
+        move.l  $14,oldv5
+        move.l  $1C,oldv7
+        move.l  #h_addr,$0C
+        move.l  #h_ill,$10
+        move.l  #h_zdiv,$14
+        move.l  #h_trapv,$1C
+
+; T1: MOVE.W (A0)+,D0 with A0 odd. Is A0 incremented before the address error?
+        lea     records+R_SIZE*0,a0
+        lea     t1_ins(pc),a1
+        lea     t1_nxt(pc),a2
+        lea     t1_res(pc),a3
+        bsr     begin
+        lea     buf+1,a0
+        moveq   #0,d0
+t1_ins: move.w  (a0)+,d0
+t1_nxt: nop
+t1_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     finish
+
+; T2: MOVE.W D0,-(A1) to an odd address, ILLEGAL next. Access word I/N bit?
+        lea     records+R_SIZE*1,a0
+        lea     t2_ins(pc),a1
+        lea     t2_nxt(pc),a2
+        lea     t2_res(pc),a3
+        bsr     begin
+        lea     buf+3,a1
+        move.l  #$12345678,d0
+t2_ins: move.w  d0,-(a1)
+t2_nxt: dc.w    $4AFC                   ; ILLEGAL
+t2_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     finish
+
+; T2b (control): the same with NOP next.
+        lea     records+R_SIZE*2,a0
+        lea     t2b_ins(pc),a1
+        lea     t2b_nxt(pc),a2
+        lea     t2b_res(pc),a3
+        bsr     begin
+        lea     buf+3,a1
+        move.l  #$12345678,d0
+t2b_ins: move.w d0,-(a1)
+t2b_nxt: nop
+t2b_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     finish
+
+; T3: TRAPV after ADDA.L overflowed internally (CCR V = 0). Trap or not?
+        lea     records+R_SIZE*3,a0
+        lea     t3_ins(pc),a1
+        lea     t3_nxt(pc),a2
+        lea     t3_res(pc),a3
+        bsr     begin
+        moveq   #0,d7
+        move.l  #$7FFFFFFF,d5
+        movea.l #1,a6
+        move.w  #0,ccr
+        adda.l  d5,a6
+t3_ins: trapv
+t3_nxt: moveq   #$55,d7
+t3_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     finish
+
+; T3b (control): TRAPV with V = 1 must trap.
+        lea     records+R_SIZE*4,a0
+        lea     t3b_ins(pc),a1
+        lea     t3b_nxt(pc),a2
+        lea     t3b_res(pc),a3
+        bsr     begin
+        moveq   #0,d7
+        move.w  #2,ccr
+t3b_ins: trapv
+t3b_nxt: moveq  #$55,d7
+t3b_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     finish
+
+; T4a: DIVU (d16,A7),D0 by zero, D0 = $80011234 (bit 31 set, high word non-zero). Stacked PC, N, Z?
+        lea     records+R_SIZE*5,a0
+        lea     t4a_ins(pc),a1
+        lea     t4a_nxt(pc),a2
+        lea     t4a_res(pc),a3
+        bsr     begin
+        clr.l   -(sp)
+        clr.l   -(sp)
+        move.l  #$80011234,d0
+        move.w  #0,ccr
+t4a_ins: divu.w 4(sp),d0
+t4a_nxt: nop
+t4a_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     finish
+        addq.l  #8,sp
+
+; T4b: the same with D0 = $00005678 (high word zero).
+        lea     records+R_SIZE*6,a0
+        lea     t4b_ins(pc),a1
+        lea     t4b_nxt(pc),a2
+        lea     t4b_res(pc),a3
+        bsr     begin
+        clr.l   -(sp)
+        clr.l   -(sp)
+        move.l  #$00005678,d0
+        move.w  #0,ccr
+t4b_ins: divu.w 4(sp),d0
+t4b_nxt: nop
+t4b_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     finish
+        addq.l  #8,sp
+
+; T5: ASR.L by 40 on -1. X and C?
+        lea     records+R_SIZE*7,a0
+        lea     t5_ins(pc),a1
+        lea     t5_nxt(pc),a2
+        lea     t5_res(pc),a3
+        bsr     begin
+        moveq   #-1,d0
+        moveq   #40,d1
+        move.w  #0,ccr
+t5_ins: asr.l   d1,d0
+t5_nxt: nop
+t5_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     finish
+
+; restore the vectors and go back to user mode (RTE restores the caller's SR)
+        move.l  oldv3,$0C
+        move.l  oldv4,$10
+        move.l  oldv5,$14
+        move.l  oldv7,$1C
+        rte
+
+;------------------------------------------------------------------ helpers
+; begin: a0 = record, a1 = instruction, a2 = next instruction, a3 = resume address
+begin:  move.l  a0,cur
+        clr.l   R_WHICH(a0)
+        move.l  a1,R_INS(a0)
+        move.l  a2,R_NXT(a0)
+        move.l  #buf,R_BUF(a0)
+        move.l  a3,resume
+        rts
+
+; finish: no exception taken -> keep the registers and SR saved after the test
+finish: movea.l cur,a0
+        tst.l   R_WHICH(a0)
+        bne.s   fin_x
+        lea     scratch,a1
+        lea     R_REGS(a0),a2
+        moveq   #14,d0
+fin_l:  move.l  (a1)+,(a2)+
+        dbra    d0,fin_l
+        move.w  srsave,R_SR(a0)
+fin_x:  rts
+
+; capture: d1 = vector, d2 = frame words; frame at 4(sp) (above our return address);
+; registers at the exception already in scratch
+capture:
+        movea.l cur,a0
+        move.l  d1,R_WHICH(a0)
+        lea     4(sp),a1
+        lea     R_FRAME(a0),a2
+        subq.w  #1,d2
+cap_f:  move.w  (a1)+,(a2)+
+        dbra    d2,cap_f
+        lea     scratch,a1
+        lea     R_REGS(a0),a2
+        moveq   #14,d2
+cap_r:  move.l  (a1)+,(a2)+
+        dbra    d2,cap_r
+        rts
+
+;------------------------------------------------------------------ exception handlers
+; address error: 68000 group-0 frame, 7 words (access word, access address, IR, SR, PC)
+h_addr: movem.l d0-d7/a0-a6,scratch
+        moveq   #3,d1
+        moveq   #7,d2
+        bsr     capture
+        addq.l  #8,sp                   ; drop access word, access address, IR
+        move.l  resume,2(sp)
+        rte
+
+; illegal / zero divide / TRAPV: group-1/2 frame, 3 words (SR, PC)
+h_ill:  movem.l d0-d7/a0-a6,scratch
+        moveq   #4,d1
+        moveq   #3,d2
+        bsr     capture
+        move.l  resume,2(sp)
+        rte
+
+h_zdiv: movem.l d0-d7/a0-a6,scratch
+        moveq   #5,d1
+        moveq   #3,d2
+        bsr     capture
+        move.l  resume,2(sp)
+        rte
+
+h_trapv: movem.l d0-d7/a0-a6,scratch
+        moveq   #7,d1
+        moveq   #3,d2
+        bsr     capture
+        move.l  resume,2(sp)
+        rte
+
+;------------------------------------------------------------------ data
+        SECTION m68ktest_bss,BSS
+
+oldv3:  ds.l    1
+oldv4:  ds.l    1
+oldv5:  ds.l    1
+oldv7:  ds.l    1
+cur:    ds.l    1
+resume: ds.l    1
+scratch: ds.l   15
+srsave: ds.w    1
+        ds.w    1
+buf:    ds.l    4
+records: ds.b   R_SIZE*NTESTS
+
+        END

@@ -1,0 +1,516 @@
+==== directed: 394657 instructions compared (4846 cross an 8K page boundary)
+== same-page instructions: 111 (opcode, field) disagreement classes
+-- IAR: 2 opcodes: B6(827/827) B7(941/941)
+-- PSL.C: 1 opcodes: 91(374/911)
+-- PSL.CC: 22 opcodes: 91(522/911) 94(412/822) 95(469/838) 96(443/832) 97(518/912) B6(460/827) B7(485/941) E1(84/830) E2(95/988) E3(107/963) E4(122/993) E5(98/844) E6(77/808) E7(107/969) E8(94/841) E9(94/745) EA(96/786) EB(71/841) EC(88/802) ED(91/780) EE(88/832) EF(108/856)
+-- PSL.IDC: 32 opcodes: 80(20/946) 81(25/818) 82(39/865) 83(36/868) 84(28/832) 85(2/879) 86(19/921) 87(4/837) 88(14/835) 89(19/834) 8A(10/733) 8B(8/813) 8C(9/818) 8D(26/934) 8E(10/802) 8F(10/874) 91(311/911) A0(11/916) A1(63/861) A2(24/862) A3(45/858) A4(17/870) A6(26/896) A7(4/788) A8(12/754) A9(16/824) AA(29/803) AB(19/713) AC(18/887) AD(12/838) AE(18/821) AF(16/909)
+-- PSL.OVF: 9 opcodes: 50(426/842) 51(378/828) 52(403/890) 53(456/903) 91(316/911) D0(424/864) D1(393/924) D2(486/1019) D3(402/851)
+-- PSL.RS/WC/COM: 1 opcodes: 91(531/911)
+-- PSU.F: 1 opcodes: 90(422/860)
+-- PSU.II: 1 opcodes: 90(368/860)
+-- PSU.SP: 1 opcodes: 90(720/860)
+-- RAS: 1 opcodes: 90(50/860)
+-- RAS top: 1 opcodes: 90(389/860)
+-- cycles: 38 opcodes: 14(133/920) 15(673/1143) 16(624/1085) 17(1447/1447) 18(33/825) 19(138/799) 1A(148/1154) 1B(327/921) 38(23/740) 39(134/858) 3A(165/950) 3B(346/902) 58(328/1260) 59(366/1030) 5A(319/956) 5B(294/926) 78(340/1226) 79(346/882) 7A(302/1097) 7B(302/869) 98(337/1037) 99(241/988) 9A(181/935) 9B(370/940) B6(827/827) B7(941/941) B8(277/917) B9(198/1042) BA(177/968) BB(332/891) D8(301/951) D9(341/1258) DA(333/949) DB(306/1205) F8(378/1003) F9(357/1069) FA(314/1075) FB(371/1119)
+-- writes: 1 opcodes: CC(198/838)
+== same-page instructions examples
+[14 cycles] 14 @0018: cycles rtl=3 mame=5 | before pc=0018 r0=00 r1-3=72,FF,7A r1'-3'=00,01,94 psl=18 psu=87
+[15 cycles] 15 @0771: cycles rtl=3 mame=5 | before pc=0771 r0=48 r1-3=0B,31,FF r1'-3'=01,FF,69 psl=40 psu=C0
+[16 cycles] 16 @2B49: cycles rtl=3 mame=5 | before pc=2B49 r0=F8 r1-3=FF,FF,FF r1'-3'=FF,6A,DA psl=B8 psu=67
+[17 cycles] 17 @5461: cycles rtl=3 mame=5 | before pc=5461 r0=00 r1-3=80,8D,41 r1'-3'=01,01,01 psl=6C psu=65
+[18 cycles] 18 D0 @2524: cycles rtl=4 mame=5 | before pc=2524 r0=00 r1-3=1A,FF,86 r1'-3'=24,80,ED psl=3B psu=C6
+[19 cycles] 19 FB @046A: cycles rtl=4 mame=5 | before pc=046A r0=E2 r1-3=FF,C4,54 r1'-3'=E6,D8,61 psl=6F psu=80
+[1A cycles] 1A DC @4DF5: cycles rtl=4 mame=5 | before pc=4DF5 r0=24 r1-3=85,47,1C r1'-3'=74,FF,8D psl=88 psu=46
+[1B cycles] 1B BA @0018: cycles rtl=4 mame=5 | before pc=0018 r0=85 r1-3=03,83,FF r1'-3'=BB,00,A2 psl=85 psu=83
+[38 cycles] 38 F2 @1965: cycles rtl=4 mame=5 | before pc=1965 r0=FA r1-3=C6,EB,C5 r1'-3'=01,B5,00 psl=20 psu=C6
+[39 cycles] 39 E7 @584E: cycles rtl=4 mame=5 | before pc=584E r0=01 r1-3=5B,CD,01 r1'-3'=FF,37,EB psl=40 psu=84
+[3A cycles] 3A C2 @2BE4: cycles rtl=4 mame=5 | before pc=2BE4 r0=CD r1-3=15,00,7E r1'-3'=33,47,FA psl=82 psu=C4
+[3B cycles] 3B D7 @0DF6: cycles rtl=4 mame=5 | before pc=0DF6 r0=DD r1-3=4B,1D,7A r1'-3'=01,21,DD psl=71 psu=83
+[50 PSL.OVF] 50 @575E: PSL rtl=6B mame=6F | before pc=575E r0=DF r1-3=CC,FF,BF r1'-3'=01,00,01 psl=AA psu=47
+[51 PSL.OVF] 51 @1009: PSL rtl=24 mame=20 | before pc=1009 r0=00 r1-3=00,B0,01 r1'-3'=01,0C,00 psl=A4 psu=45
+[52 PSL.OVF] 52 @6C41: PSL rtl=61 mame=65 | before pc=6C41 r0=31 r1-3=86,84,41 r1'-3'=BB,00,A2 psl=A1 psu=84
+[53 PSL.OVF] 53 @4A40: PSL rtl=A4 mame=A0 | before pc=4A40 r0=95 r1-3=3B,47,95 r1'-3'=74,FF,8D psl=A4 psu=46
+[58 cycles] 58 96 @0037: cycles rtl=4 mame=5 | before pc=0037 r0=85 r1-3=69,A9,E6 r1'-3'=57,C3,01 psl=A8 psu=47
+[59 cycles] 59 FB @60D1: cycles rtl=4 mame=5 | before pc=60D1 r0=7B r1-3=D2,DC,DF r1'-3'=21,FD,45 psl=7B psu=06
+[5A cycles] 5A BA @6756: cycles rtl=4 mame=5 | before pc=6756 r0=72 r1-3=4B,1D,7A r1'-3'=01,21,DD psl=90 psu=83
+[5B cycles] 5B E9 @40E1: cycles rtl=4 mame=5 | before pc=40E1 r0=F3 r1-3=11,01,2D r1'-3'=A9,76,EB psl=98 psu=E7
+[78 cycles] 78 E6 @2A6C: cycles rtl=4 mame=5 | before pc=2A6C r0=08 r1-3=2A,1B,FF r1'-3'=01,FF,69 psl=40 psu=C7
+[79 cycles] 79 DD @1D1E: cycles rtl=4 mame=5 | before pc=1D1E r0=43 r1-3=CA,AA,F5 r1'-3'=B8,C1,01 psl=40 psu=80
+[7A cycles] 7A 80 @6208: cycles rtl=4 mame=5 | before pc=6208 r0=4F r1-3=A4,8E,5F r1'-3'=00,00,4A psl=8F psu=81
+[7B cycles] 7B 87 @0046: cycles rtl=4 mame=5 | before pc=0046 r0=FF r1-3=6A,7C,4E r1'-3'=00,97,00 psl=48 psu=67
+[80 PSL.IDC] 80 @65D5: PSL rtl=9B mame=BB | before pc=65D5 r0=FF r1-3=01,45,4A r1'-3'=DF,FF,9B psl=7F psu=81
+[81 PSL.IDC] 81 @0029: PSL rtl=89 mame=A9 | before pc=0029 r0=86 r1-3=FF,F0,4C r1'-3'=01,FF,01 psl=A9 psu=00
+[82 PSL.IDC] 82 @2413: PSL rtl=88 mame=A8 | before pc=2413 r0=85 r1-3=69,1F,E6 r1'-3'=57,C3,01 psl=69 psu=47
+[83 PSL.IDC] 83 @0019: PSL rtl=4B mame=6B | before pc=0019 r0=4D r1-3=91,01,FF r1'-3'=00,01,00 psl=6F psu=05
+[84 PSL.IDC] 84 EF @5E44: PSL rtl=89 mame=A9 | before pc=5E44 r0=E4 r1-3=13,0C,8E r1'-3'=5C,FF,CF psl=A9 psu=04
+[85 PSL.IDC] 85 CF @0019: PSL rtl=8A mame=AA | before pc=0019 r0=3F r1-3=00,00,92 r1'-3'=92,9A,38 psl=6F psu=C4
+[86 PSL.IDC] 86 DF @7C17: PSL rtl=98 mame=B8 | before pc=7C17 r0=1A r1-3=00,00,EC r1'-3'=5F,1A,FF psl=59 psu=46
+[87 PSL.IDC] 87 2F @0017: PSL rtl=58 mame=78 | before pc=0017 r0=FD r1-3=00,B4,DE r1'-3'=90,95,01 psl=FD psu=82
+[88 PSL.IDC] 88 7F @001F: PSL rtl=59 mame=79 | before pc=001F r0=BD r1-3=05,C1,FF r1'-3'=5E,03,61 psl=79 psu=42
+[89 PSL.IDC] 89 66 @0019: PSL rtl=9A mame=BA | before pc=0019 r0=3B r1-3=FF,00,00 r1'-3'=00,6B,DF psl=5F psu=86
+[8A PSL.IDC] 8A 09 @3F26: PSL rtl=59 mame=79 | before pc=3F26 r0=77 r1-3=9A,E0,D1 r1'-3'=6B,5A,54 psl=7D psu=C3
+[8B PSL.IDC] 8B 6E @7991: PSL rtl=49 mame=69 | before pc=7991 r0=C9 r1-3=36,17,23 r1'-3'=18,00,01 psl=49 psu=C1
+[8C PSL.IDC] 8C BF D4 @3243: PSL rtl=58 mame=78 | before pc=3243 r0=2B r1-3=11,01,2D r1'-3'=A8,E8,EA psl=B9 psu=81
+[8D PSL.IDC] 8D 12 72 @0026: PSL rtl=48 mame=68 | before pc=0026 r0=B0 r1-3=41,9C,88 r1'-3'=90,B8,65 psl=4D psu=41
+[8E PSL.IDC] 8E 39 4B @27F3: PSL rtl=88 mame=A8 | before pc=27F3 r0=9D r1-3=00,D2,9D r1'-3'=28,00,00 psl=A9 psu=C2
+[8F PSL.IDC] 8F A8 B7 @576C: PSL rtl=8C mame=AC | before pc=576C r0=73 r1-3=84,FE,A3 r1'-3'=FF,E0,72 psl=89 psu=66
+[90 PSU.F] 90 @003E: PSU rtl=67 mame=1 | before pc=003E r0=FF r1-3=03,7C,A4 r1'-3'=00,97,00 psl=48 psu=01
+[90 PSU.II] 90 @003E: PSU rtl=67 mame=1 | before pc=003E r0=FF r1-3=03,7C,A4 r1'-3'=00,97,00 psl=48 psu=01
+[90 PSU.SP] 90 @003E: PSU rtl=67 mame=1 | before pc=003E r0=FF r1-3=03,7C,A4 r1'-3'=00,97,00 psl=48 psu=01
+[90 RAS] 90 @0029: RAS rtl=24 mame=0 | before pc=0029 r0=BC r1-3=C3,AE,30 r1'-3'=8D,FF,01 psl=AB psu=07
+[90 RAS top] 90 @118C: RAS rtl=0 mame=37E3 | before pc=118C r0=1B r1-3=48,4B,E7 r1'-3'=01,E0,CB psl=40 psu=02
+[91 PSL.C] 91 @48D2: PSL rtl=7A mame=BB | before pc=48D2 r0=7A r1-3=D2,DC,DF r1'-3'=21,9B,45 psl=BB psu=07
+[91 PSL.CC] 91 @650B: PSL rtl=F8 mame=B8 | before pc=650B r0=F8 r1-3=FF,FF,FF r1'-3'=FF,6A,01 psl=B8 psu=44
+[91 PSL.IDC] 91 @0023: PSL rtl=AF mame=53 | before pc=0023 r0=AF r1-3=8E,B9,FF r1'-3'=6A,FF,16 psl=53 psu=87
+[91 PSL.OVF] 91 @46D4: PSL rtl=E8 mame=BF | before pc=46D4 r0=E8 r1-3=00,FF,FF r1'-3'=00,FF,29 psl=BF psu=C6
+[91 PSL.RS/WC/COM] 91 @46D4: PSL rtl=E8 mame=BF | before pc=46D4 r0=E8 r1-3=00,FF,FF r1'-3'=00,FF,29 psl=BF psu=C6
+[94 PSL.CC] 94 @0EBE: PSL rtl=8B mame=4B | before pc=0EBE r0=CC r1-3=D7,17,91 r1'-3'=7E,FF,00 psl=4B psu=83
+[95 PSL.CC] 95 @6C40: PSL rtl=A1 mame=61 | before pc=6C40 r0=31 r1-3=86,84,41 r1'-3'=BB,00,A2 psl=61 psu=84
+[96 PSL.CC] 96 @6C57: PSL rtl=61 mame=A1 | before pc=6C57 r0=BF r1-3=02,42,41 r1'-3'=BB,00,A2 psl=A1 psu=A1
+[97 PSL.CC] 97 @001B: PSL rtl=B8 mame=78 | before pc=001B r0=4A r1-3=FF,2F,22 r1'-3'=00,FF,FF psl=78 psu=85
+[98 cycles] 98 F9 @2A33: cycles rtl=4 mame=5 | before pc=2A33 r0=FF r1-3=8C,E1,FF r1'-3'=02,FF,15 psl=B4 psu=44
+[99 cycles] 99 BA @001A: cycles rtl=4 mame=5 | before pc=001A r0=03 r1-3=FF,00,39 r1'-3'=BF,CF,01 psl=BA psu=45
+[9A cycles] 9A 87 @3C68: cycles rtl=4 mame=5 | before pc=3C68 r0=0A r1-3=5D,E2,FF r1'-3'=85,00,00 psl=69 psu=47
+[9B cycles] 9B 86 @5802: cycles rtl=4 mame=5 | before pc=5802 r0=45 r1-3=13,A4,E7 r1'-3'=01,E0,CB psl=80 psu=00
+[A0 PSL.IDC] A0 @0018: PSL rtl=B8 mame=98 | before pc=0018 r0=FF r1-3=FF,01,B3 r1'-3'=FF,00,00 psl=98 psu=03
+[A1 PSL.IDC] A1 @64AA: PSL rtl=AA mame=8A | before pc=64AA r0=BB r1-3=FF,FC,04 r1'-3'=19,71,D3 psl=8E psu=04
+[A2 PSL.IDC] A2 @2009: PSL rtl=68 mame=48 | before pc=2009 r0=76 r1-3=A7,FF,79 r1'-3'=D6,16,00 psl=A8 psu=83
+[A3 PSL.IDC] A3 @5752: PSL rtl=AA mame=8A | before pc=5752 r0=18 r1-3=CC,BF,1F r1'-3'=01,00,01 psl=4E psu=47
+[A4 PSL.IDC] A4 9F @0035: PSL rtl=6B mame=4B | before pc=0035 r0=BF r1-3=B4,00,47 r1'-3'=FF,54,FF psl=8E psu=A6
+[A6 PSL.IDC] A6 5F @0021: PSL rtl=B8 mame=98 | before pc=0021 r0=98 r1-3=95,82,3A r1'-3'=01,37,FC psl=98 psu=87
+[A7 PSL.IDC] A7 7F @0018: PSL rtl=BA mame=9A | before pc=0018 r0=B0 r1-3=FE,B6,DA r1'-3'=2F,C3,00 psl=BA psu=46
+[A8 PSL.IDC] A8 63 @6967: PSL rtl=AA mame=8A | before pc=6967 r0=10 r1-3=88,11,79 r1'-3'=00,D2,96 psl=8A psu=45
+[A9 PSL.IDC] A9 CA @3955: PSL rtl=AE mame=8E | before pc=3955 r0=C0 r1-3=40,8F,FF r1'-3'=00,01,00 psl=4A psu=47
+[AA PSL.IDC] AA 8B @4FA2: PSL rtl=6F mame=4F | before pc=4FA2 r0=B4 r1-3=01,92,8E r1'-3'=01,F0,EB psl=8A psu=43
+[AB PSL.IDC] AB 82 @6642: PSL rtl=AA mame=8A | before pc=6642 r0=01 r1-3=01,FF,01 r1'-3'=00,FF,CC psl=4A psu=85
+[AC PSL.IDC] AC AF 94 @05D8: PSL rtl=6A mame=4A | before pc=05D8 r0=02 r1-3=6E,FE,00 r1'-3'=00,00,07 psl=6E psu=04
+[AD PSL.IDC] AD 58 08 @6CAF: PSL rtl=BB mame=9B | before pc=6CAF r0=F8 r1-3=01,AF,FF r1'-3'=FF,4B,FB psl=1E psu=C7
+[AE PSL.IDC] AE 01 03 @1FC2: PSL rtl=6D mame=4D | before pc=1FC2 r0=7D r1-3=FF,9E,DB r1'-3'=00,01,01 psl=88 psu=87
+[AF PSL.IDC] AF 56 60 @04B9: PSL rtl=A8 mame=88 | before pc=04B9 r0=00 r1-3=DE,9C,00 r1'-3'=E9,FF,84 psl=0C psu=43
+[B6 IAR] B6 3F @06FC: IAR rtl=6FE mame=6FD | before pc=06FC r0=09 r1-3=F7,DE,09 r1'-3'=C3,00,A5 psl=4D psu=44
+[B6 PSL.CC] B6 3F @06FC: PSL rtl=8D mame=4D | before pc=06FC r0=09 r1-3=F7,DE,09 r1'-3'=C3,00,A5 psl=4D psu=44
+[B6 cycles] B6 3F @06FC: cycles rtl=3 mame=2 | before pc=06FC r0=09 r1-3=F7,DE,09 r1'-3'=C3,00,A5 psl=4D psu=44
+[B7 IAR] B7 44 @001B: IAR rtl=1D mame=1C | before pc=001B r0=EE r1-3=67,01,2E r1'-3'=01,00,01 psl=AA psu=46
+[B7 PSL.CC] B7 2C @61F6: PSL rtl=AA mame=6A | before pc=61F6 r0=6A r1-3=44,8E,5F r1'-3'=00,00,4A psl=6A psu=83
+[B7 cycles] B7 44 @001B: cycles rtl=3 mame=2 | before pc=001B r0=EE r1-3=67,01,2E r1'-3'=01,00,01 psl=AA psu=46
+[B8 cycles] B8 D7 @4F6A: cycles rtl=4 mame=5 | before pc=4F6A r0=E6 r1-3=FF,62,FF r1'-3'=49,94,0A psl=9A psu=03
+[B9 cycles] B9 F0 @0036: cycles rtl=4 mame=5 | before pc=0036 r0=3E r1-3=0A,08,FF r1'-3'=01,FF,69 psl=80 psu=C7
+[BA cycles] BA 93 @0027: cycles rtl=4 mame=5 | before pc=0027 r0=2F r1-3=00,FF,01 r1'-3'=01,00,72 psl=5C psu=83
+[BB cycles] BB 8A @001D: cycles rtl=4 mame=5 | before pc=001D r0=00 r1-3=00,7A,01 r1'-3'=01,0C,00 psl=21 psu=44
+[CC writes] CC CD 6A @0022: bus rtl={Mw[1F02]=0B } mame={Mw[1F02]=0A } | before pc=0022 r0=0B r1-3=A0,D5,00 r1'-3'=75,1E,F5 psl=51 psu=04
+[D0 PSL.OVF] D0 @0DEE: PSL rtl=90 mame=94 | before pc=0DEE r0=72 r1-3=4B,1D,7A r1'-3'=01,21,DD psl=90 psu=83
+[D1 PSL.OVF] D1 @0018: PSL rtl=6 mame=2 | before pc=0018 r0=00 r1-3=00,00,00 r1'-3'=00,95,FF psl=06 psu=84
+[D2 PSL.OVF] D2 @4DDC: PSL rtl=64 mame=60 | before pc=4DDC r0=00 r1-3=53,1B,DB r1'-3'=00,FC,78 psl=64 psu=87
+[D3 PSL.OVF] D3 @5FA5: PSL rtl=8F mame=8B | before pc=5FA5 r0=97 r1-3=A7,A0,E9 r1'-3'=FF,FF,D3 psl=AE psu=02
+[D8 cycles] D8 C1 @1DAF: cycles rtl=4 mame=5 | before pc=1DAF r0=2B r1-3=D7,FF,01 r1'-3'=1F,D4,59 psl=9B psu=C6
+[D9 cycles] D9 92 @4C27: cycles rtl=4 mame=5 | before pc=4C27 r0=96 r1-3=66,2C,F6 r1'-3'=33,47,FA psl=A1 psu=C5
+[DA cycles] DA 89 @3906: cycles rtl=4 mame=5 | before pc=3906 r0=15 r1-3=06,93,00 r1'-3'=CF,01,00 psl=61 psu=07
+[DB cycles] DB B0 @0027: cycles rtl=4 mame=5 | before pc=0027 r0=A5 r1-3=FF,2F,22 r1'-3'=00,7F,9F psl=B9 psu=85
+[E1 PSL.CC] E1 @28DA: PSL rtl=A0 mame=60 | before pc=28DA r0=FF r1-3=FE,FF,30 r1'-3'=49,09,E8 psl=60 psu=C1
+[E2 PSL.CC] E2 @2D9D: PSL rtl=A8 mame=68 | before pc=2D9D r0=AD r1-3=E4,A0,B2 r1'-3'=FF,FF,1D psl=A8 psu=21
+[E3 PSL.CC] E3 @0085: PSL rtl=64 mame=A4 | before pc=0085 r0=90 r1-3=C1,B0,FF r1'-3'=01,40,FF psl=A4 psu=67
+[E4 PSL.CC] E4 D1 @0018: PSL rtl=4D mame=8D | before pc=0018 r0=88 r1-3=01,FF,88 r1'-3'=90,B8,65 psl=8D psu=41
+[E5 PSL.CC] E5 86 @6CE1: PSL rtl=A0 mame=60 | before pc=6CE1 r0=60 r1-3=FF,0A,E6 r1'-3'=00,01,01 psl=60 psu=41
+[E6 PSL.CC] E6 E9 @7C05: PSL rtl=61 mame=A1 | before pc=7C05 r0=ED r1-3=04,E5,0A r1'-3'=00,20,00 psl=A1 psu=46
+[E7 PSL.CC] E7 FA @598E: PSL rtl=59 mame=99 | before pc=598E r0=19 r1-3=11,01,2D r1'-3'=D5,01,EB psl=99 psu=81
+[E8 PSL.CC] E8 C1 @5420: PSL rtl=A8 mame=68 | before pc=5420 r0=FF r1-3=FF,FF,9F r1'-3'=00,FF,29 psl=A8 psu=C6
+[E9 PSL.CC] E9 08 @054C: PSL rtl=A5 mame=65 | before pc=054C r0=1E r1-3=B8,DB,FF r1'-3'=00,FC,78 psl=65 psu=80
+[EA PSL.CC] EA B1 @6132: PSL rtl=61 mame=A1 | before pc=6132 r0=3B r1-3=06,94,00 r1'-3'=CF,01,00 psl=61 psu=07
+[EB PSL.CC] EB 86 @1FD7: PSL rtl=A9 mame=69 | before pc=1FD7 r0=FE r1-3=5D,00,F4 r1'-3'=FF,C1,00 psl=A9 psu=45
+[EC PSL.CC] EC 6B 9B @4F45: PSL rtl=A8 mame=68 | before pc=4F45 r0=BD r1-3=00,FF,FF r1'-3'=26,FA,25 psl=28 psu=87
+[ED PSL.CC] ED 68 E6 @6508: PSL rtl=B8 mame=78 | before pc=6508 r0=F8 r1-3=FF,FF,FF r1'-3'=FF,6A,01 psl=B8 psu=44
+[EE PSL.CC] EE 71 15 @6CDD: PSL rtl=60 mame=A0 | before pc=6CDD r0=E5 r1-3=FF,0A,E6 r1'-3'=00,01,01 psl=60 psu=41
+[EF PSL.CC] EF 02 10 @7F80: PSL rtl=51 mame=91 | before pc=7F80 r0=41 r1-3=0B,B1,00 r1'-3'=35,BB,C1 psl=51 psu=83
+[F8 cycles] F8 E3 @7FEF: cycles rtl=4 mame=5 | before pc=7FEF r0=0A r1-3=F7,68,F3 r1'-3'=C3,00,A5 psl=4D psu=44
+[F9 cycles] F9 98 @46D7: cycles rtl=4 mame=5 | before pc=46D7 r0=13 r1-3=EF,7C,4E r1'-3'=00,97,00 psl=A9 psu=60
+[FA cycles] FA F9 @78F1: cycles rtl=4 mame=5 | before pc=78F1 r0=EE r1-3=5E,C9,32 r1'-3'=17,97,01 psl=40 psu=C6
+[FB cycles] FB DE @3F93: cycles rtl=4 mame=5 | before pc=3F93 r0=A5 r1-3=FF,62,FF r1'-3'=41,56,05 psl=7B psu=05
+== page-crossing instructions: 374 (opcode, field) disagreement classes
+-- I/O reads: 1 opcodes: 57(8/8)
+-- IAR: 133 opcodes: 01(2/2) 05(7/7) 07(1/1) 0A(5/66) 0C(5/8) 0E(13/22) 12(1/1) 14(5/5) 15(1/1) 18(23/69) 19(27/61) 1A(27/63) 1B(74/74) 1C(3/3) 1F(1/2) 22(3/3) 25(3/3) 26(3/3) 28(4/83) 29(3/46) 2B(2/75) 2C(3/14) 2D(1/13) 2E(4/8) 2F(6/19) 31(3/3) 34(2/2) 35(3/4) 36(6/6) 38(11/69) 39(23/50) 3A(31/67) 3B(46/46) 3C(1/1) 3D(3/3) 44(1/1) 45(5/5) 46(4/4) 47(2/2) 48(2/91) 49(1/73) 4A(6/49) 4B(3/90) 4C(3/8) 4D(9/21) 4F(6/17) 52(4/4) 57(8/8) 58(79/84) 59(52/64) 5A(57/70) 5B(74/93) 5E(1/2) 66(1/1) 67(6/6) 68(5/71) 6A(1/70) 6B(3/72) 6E(7/12) 6F(1/9) 70(5/5) 74(2/2) 75(7/7) 78(57/58) 79(48/57) 7A(52/56) 7B(63/64) 7C(1/2) 7E(1/1) 7F(2/2) 81(2/2) 84(5/5) 86(2/2) 87(3/3) 88(5/73) 89(5/62) 8A(3/82) 8D(5/10) 8E(1/15) 8F(4/11) 98(77/90) 99(41/73) 9A(29/48) 9B(6/6) 9C(1/1) 9D(1/1) 9E(5/5) A0(4/4) A5(1/1) AB(5/66) AC(2/19) AD(1/5) AE(2/13) B5(5/5) B6(7/7) B8(63/76) B9(48/66) BA(46/73) BB(5/5) C2(1/1) C8(4/65) C9(5/67) CB(3/64) CD(4/7) CE(6/22) CF(4/5) D2(1/1) D5(1/1) D6(1/1) D8(74/79) D9(49/55) DA(59/73) DB(69/75) DC(1/1) DF(2/2) E1(1/1) E2(4/4) E7(2/2) E8(4/65) EB(8/79) EC(6/23) EE(6/16) EF(1/7) F2(1/1) F3(4/4) F4(3/3) F8(64/66) F9(75/85) FA(76/83) FB(72/84) FC(1/1) FD(1/1) FF(1/1)
+-- PSL.C: 15 opcodes: 88(23/73) 89(10/62) 8A(17/82) 8B(24/89) 8C(3/10) 8D(2/10) 8E(4/15) 8F(1/11) A8(11/74) A9(10/78) AA(8/46) AB(15/66) AC(4/19) AD(3/5) AE(1/13)
+-- PSL.CC: 62 opcodes: 05(5/7) 08(28/56) 09(42/62) 0A(21/66) 0B(28/71) 0C(5/8) 0D(6/12) 0E(10/22) 0F(9/14) 26(1/3) 28(45/83) 29(23/46) 2A(32/61) 2B(34/75) 2C(3/14) 2D(7/13) 2E(6/8) 2F(11/19) 45(1/5) 48(22/91) 49(23/73) 4A(14/49) 4B(22/90) 4C(3/8) 4D(1/21) 4E(3/3) 4F(5/17) 57(5/8) 66(1/1) 68(16/71) 69(16/61) 6A(29/70) 6B(22/72) 6D(9/17) 6F(2/9) 88(39/73) 89(34/62) 8A(39/82) 8B(41/89) 8C(8/10) 8D(2/10) 8E(7/15) 8F(6/11) A8(33/74) A9(46/78) AA(20/46) AB(28/66) AC(12/19) AD(3/5) AE(4/13) AF(1/1) B5(4/5) B6(4/7) E2(1/4) E7(1/2) E8(24/65) E9(24/89) EA(13/51) EB(23/79) EC(6/23) ED(1/14) EE(6/16)
+-- PSL.IDC: 16 opcodes: 88(33/73) 89(14/62) 8A(21/82) 8B(29/89) 8C(3/10) 8D(1/10) 8E(5/15) 8F(3/11) A8(22/74) A9(30/78) AA(14/46) AB(10/66) AC(2/19) AD(2/5) AE(4/13) AF(1/1)
+-- PSL.OVF: 16 opcodes: 52(4/4) 88(19/73) 89(13/62) 8A(20/82) 8B(17/89) 8C(6/10) 8D(3/10) 8E(6/15) 8F(5/11) A8(18/74) A9(12/78) AA(5/46) AB(11/66) AC(3/19) AD(2/5) AE(3/13)
+-- R0: 31 opcodes: 08(56/56) 0C(8/8) 0D(12/12) 0E(12/22) 0F(14/14) 28(79/83) 2C(14/14) 2D(13/13) 2E(4/8) 2F(13/19) 44(1/1) 48(77/91) 4C(8/8) 4D(13/21) 4E(3/3) 4F(10/17) 68(63/71) 6C(2/8) 6D(17/17) 6E(6/12) 6F(6/9) 88(73/73) 8C(10/10) 8D(5/10) 8E(15/15) 8F(11/11) A8(74/74) AC(17/19) AD(5/5) AE(13/13) AF(1/1)
+-- RAS top: 9 opcodes: 3D(1/3) 3F(1/1) 7A(2/56) 7B(2/64) 7C(2/2) 7E(1/1) 7F(2/2) B8(3/76) BB(4/5)
+-- Rn: 33 opcodes: 05(5/7) 09(62/62) 0A(66/66) 0B(71/71) 0E(8/22) 25(3/3) 26(2/3) 29(43/46) 2A(61/61) 2B(64/75) 2E(3/8) 2F(6/19) 45(1/5) 49(57/73) 4A(36/49) 4B(68/90) 4F(1/17) 57(8/8) 66(1/1) 69(42/61) 6A(67/70) 6B(60/72) 89(62/62) 8A(80/82) 8B(89/89) 8E(1/15) A5(1/1) A9(78/78) AA(46/46) AB(66/66) AD(1/5) EE(1/16) EF(1/7)
+-- cycles: 50 opcodes: 0C(3/8) 0E(1/22) 16(4/4) 18(8/69) 19(8/61) 1A(10/63) 1B(20/74) 2E(3/8) 2F(6/19) 38(1/69) 39(12/50) 3A(14/67) 3B(20/46) 49(1/73) 4C(3/8) 58(44/84) 59(20/64) 5A(24/70) 5B(16/93) 6B(3/72) 78(23/58) 79(20/57) 7A(26/56) 7B(24/64) 7C(1/2) 8E(1/15) 98(31/90) 99(22/73) 9A(10/48) AD(1/5) B6(7/7) B8(26/76) B9(11/66) BA(16/73) BB(5/5) C9(3/67) CB(1/64) CD(4/7) CF(3/5) D8(35/79) D9(24/55) DA(22/73) DB(18/75) EE(1/16) EF(1/7) F8(15/66) F9(24/85) FA(37/83) FB(34/84) FD(1/1)
+-- writes: 8 opcodes: C8(65/65) C9(67/67) CA(46/46) CB(63/64) CC(15/15) CD(7/7) CE(22/22) CF(4/5)
+== page-crossing instructions examples
+[01 IAR] 01 @7FFF: IAR rtl=0 mame=6000 | before pc=7FFF r0=B3 r1-3=89,E8,4C r1'-3'=42,FF,01 psl=B3 psu=05
+[05 IAR] 05 04 @7FFF: IAR rtl=1 mame=6001 | before pc=7FFF r0=89 r1-3=05,36,01 r1'-3'=A1,FF,E6 psl=84 psu=C2
+[05 PSL.CC] 05 04 @7FFF: PSL rtl=44 mame=84 | before pc=7FFF r0=89 r1-3=05,36,01 r1'-3'=A1,FF,E6 psl=84 psu=C2
+[05 Rn] 05 04 @7FFF: R1 rtl=4 mame=AE | before pc=7FFF r0=89 r1-3=05,36,01 r1'-3'=A1,FF,E6 psl=84 psu=C2
+[07 IAR] 07 6B @1FFE: IAR rtl=2000 mame=0 | before pc=1FFE r0=10 r1-3=01,01,01 r1'-3'=00,2B,10 psl=79 psu=41
+[08 PSL.CC] 08 4C @001A: PSL rtl=4C mame=8C | before pc=001A r0=2A r1-3=82,2A,01 r1'-3'=00,01,EE psl=4C psu=85
+[08 R0] 08 9C @5FE4: R0 rtl=6D mame=19 | before pc=5FE4 r0=FE r1-3=FF,2F,22 r1'-3'=A8,C0,91 psl=BB psu=E7
+[09 PSL.CC] 09 D1 @001D: PSL rtl=80 mame=40 | before pc=001D r0=17 r1-3=55,A9,9F r1'-3'=0D,E7,01 psl=80 psu=05
+[09 Rn] 09 D1 @001D: R1 rtl=86 mame=4F | before pc=001D r0=17 r1-3=55,A9,9F r1'-3'=0D,E7,01 psl=80 psu=05
+[0A IAR] 0A 04 @7FFF: IAR rtl=1 mame=6001 | before pc=7FFF r0=33 r1-3=7B,B6,5E r1'-3'=00,94,FF psl=33 psu=45
+[0A PSL.CC] 0A 4D @0017: PSL rtl=65 mame=A5 | before pc=0017 r0=65 r1-3=FF,D5,01 r1'-3'=51,DF,00 psl=65 psu=00
+[0A Rn] 0A CA @0019: R2 rtl=CB mame=AC | before pc=0019 r0=00 r1-3=AF,00,40 r1'-3'=01,01,00 psl=2B psu=01
+[0B PSL.CC] 0B BB @1FED: PSL rtl=69 mame=A9 | before pc=1FED r0=00 r1-3=00,00,F4 r1'-3'=FF,C1,00 psl=29 psu=45
+[0B Rn] 0B BB @1FED: R3 rtl=37 mame=F9 | before pc=1FED r0=00 r1-3=00,00,F4 r1'-3'=FF,C1,00 psl=29 psu=45
+[0C IAR] 0C 04 C3 @7FFF: IAR rtl=2 mame=6002 | before pc=7FFF r0=FA r1-3=8C,58,01 r1'-3'=B7,00,56 psl=42 psu=C2
+[0C PSL.CC] 0C A4 27 @7DF4: PSL rtl=56 mame=96 | before pc=7DF4 r0=40 r1-3=01,A9,FF r1'-3'=C9,A8,2A psl=96 psu=41
+[0C R0] 0C A4 27 @7DF4: R0 rtl=4B mame=93 | before pc=7DF4 r0=40 r1-3=01,A9,FF r1'-3'=C9,A8,2A psl=96 psu=41
+[0C cycles] 0C 04 C3 @7FFF: cycles rtl=4 mame=6 | before pc=7FFF r0=FA r1-3=8C,58,01 r1'-3'=B7,00,56 psl=42 psu=C2
+[0D PSL.CC] 0D 5F AB @450D: PSL rtl=5A mame=9A | before pc=450D r0=BC r1-3=00,01,15 r1'-3'=9D,6B,CA psl=5A psu=C6
+[0D R0] 0D 5F AB @450D: R0 rtl=27 mame=DF | before pc=450D r0=BC r1-3=00,01,15 r1'-3'=9D,6B,CA psl=5A psu=C6
+[0E IAR] 0E 04 EE @7FFF: IAR rtl=2 mame=6002 | before pc=7FFF r0=27 r1-3=E0,F9,00 r1'-3'=FF,24,01 psl=6B psu=06
+[0E PSL.CC] 0E 04 EE @7FFF: PSL rtl=AB mame=6B | before pc=7FFF r0=27 r1-3=E0,F9,00 r1'-3'=FF,24,01 psl=6B psu=06
+[0E R0] 0E 04 EE @7FFF: R0 rtl=27 mame=18 | before pc=7FFF r0=27 r1-3=E0,F9,00 r1'-3'=FF,24,01 psl=6B psu=06
+[0E Rn] 0E 04 EE @7FFF: R2 rtl=DF mame=F8 | before pc=7FFF r0=27 r1-3=E0,F9,00 r1'-3'=FF,24,01 psl=6B psu=06
+[0E cycles] 0E FE 91 @1FFF: cycles rtl=6 mame=4 | before pc=1FFF r0=09 r1-3=82,8C,00 r1'-3'=FF,FF,00 psl=4C psu=02
+[0F PSL.CC] 0F FD 2A @4EA4: PSL rtl=63 mame=A3 | before pc=4EA4 r0=63 r1-3=F5,B6,FF r1'-3'=F5,01,3D psl=A3 psu=85
+[0F R0] 0F 3F 39 @324B: R0 rtl=6A mame=A | before pc=324B r0=08 r1-3=11,01,2D r1'-3'=A8,E8,EA psl=98 psu=81
+[12 IAR] 12 @1FFF: IAR rtl=2000 mame=0 | before pc=1FFF r0=A8 r1-3=3F,ED,5D r1'-3'=3B,1D,28 psl=6A psu=02
+[14 IAR] 14 @7FFF: IAR rtl=0 mame=6000 | before pc=7FFF r0=FE r1-3=00,FF,00 r1'-3'=35,4F,1E psl=FE psu=C1
+[15 IAR] 15 @3FFF: IAR rtl=4000 mame=2000 | before pc=3FFF r0=84 r1-3=C4,D1,05 r1'-3'=FF,5F,05 psl=A2 psu=C0
+[16 cycles] 16 @7FFF: cycles rtl=3 mame=5 | before pc=7FFF r0=CB r1-3=48,F9,00 r1'-3'=82,12,01 psl=8B psu=C0
+[18 IAR] 18 9C @1FF9: IAR rtl=15B1 mame=4F7 | before pc=1FF9 r0=6A r1-3=00,23,91 r1'-3'=54,01,00 psl=2A psu=80
+[18 cycles] 18 9C @1FF9: cycles rtl=4 mame=5 | before pc=1FF9 r0=6A r1-3=00,23,91 r1'-3'=54,01,00 psl=2A psu=80
+[19 IAR] 19 59 @001C: IAR rtl=7FF7 mame=1FF7 | before pc=001C r0=D7 r1-3=A0,93,00 r1'-3'=00,53,DB psl=57 psu=00
+[19 cycles] 19 D1 @0017: cycles rtl=4 mame=5 | before pc=0017 r0=69 r1-3=00,3B,C3 r1'-3'=FF,FF,7D psl=69 psu=01
+[1A IAR] 1A 1E @7FF3: IAR rtl=13 mame=6013 | before pc=7FF3 r0=CC r1-3=FE,1C,BB r1'-3'=FF,83,FF psl=88 psu=03
+[1A cycles] 1A CF @0017: cycles rtl=4 mame=5 | before pc=0017 r0=A0 r1-3=09,76,01 r1'-3'=00,F8,CA psl=A0 psu=01
+[1B IAR] 1B 59 @0024: IAR rtl=7FFF mame=1FFF | before pc=0024 r0=7C r1-3=01,00,7B r1'-3'=2D,3F,A9 psl=48 psu=C6
+[1B cycles] 1B DB @0017: cycles rtl=4 mame=5 | before pc=0017 r0=E5 r1-3=E7,01,00 r1'-3'=FF,45,E1 psl=E5 psu=40
+[1C IAR] 1C 90 81 @7FFD: IAR rtl=0 mame=6000 | before pc=7FFD r0=FE r1-3=63,EE,26 r1'-3'=08,FF,FF psl=A9 psu=82
+[1F IAR] 1F 35 D1 @1FFE: IAR rtl=35D1 mame=3504 | before pc=1FFE r0=AC r1-3=FF,F7,EA r1'-3'=E1,00,FF psl=AC psu=46
+[22 IAR] 22 @7FFF: IAR rtl=0 mame=6000 | before pc=7FFF r0=D7 r1-3=59,C8,7A r1'-3'=FF,D4,39 psl=8A psu=83
+[25 IAR] 25 04 @7FFF: IAR rtl=1 mame=6001 | before pc=7FFF r0=00 r1-3=97,02,FF r1'-3'=D9,01,00 psl=0E psu=63
+[25 Rn] 25 04 @7FFF: R1 rtl=93 mame=FF | before pc=7FFF r0=00 r1-3=97,02,FF r1'-3'=D9,01,00 psl=0E psu=63
+[26 IAR] 26 04 @7FFF: IAR rtl=1 mame=6001 | before pc=7FFF r0=D4 r1-3=FF,00,01 r1'-3'=00,01,38 psl=7D psu=81
+[26 PSL.CC] 26 04 @7FFF: PSL rtl=7D mame=BD | before pc=7FFF r0=D4 r1-3=FF,00,01 r1'-3'=00,01,38 psl=7D psu=81
+[26 Rn] 26 04 @7FFF: R2' rtl=5 mame=C4 | before pc=7FFF r0=D4 r1-3=FF,00,01 r1'-3'=00,01,38 psl=7D psu=81
+[28 IAR] 28 EE @7FFE: IAR rtl=0 mame=6000 | before pc=7FFE r0=09 r1-3=01,F0,FD r1'-3'=00,77,0A psl=48 psu=87
+[28 PSL.CC] 28 40 @0019: PSL rtl=8D mame=4D | before pc=0019 r0=0D r1-3=01,EE,00 r1'-3'=AA,A2,C9 psl=8D psu=80
+[28 R0] 28 B0 @7FF7: R0 rtl=9A mame=C7 | before pc=7FF7 r0=C9 r1-3=57,E5,B6 r1'-3'=D2,39,7A psl=89 psu=44
+[29 IAR] 29 ED @7FFE: IAR rtl=0 mame=6000 | before pc=7FFE r0=83 r1-3=FF,AD,4E r1'-3'=FF,01,18 psl=40 psu=46
+[29 PSL.CC] 29 45 @001A: PSL rtl=40 mame=80 | before pc=001A r0=00 r1-3=BF,FF,81 r1'-3'=01,FF,01 psl=00 psu=06
+[29 Rn] 29 45 @001A: R1 rtl=71 mame=A2 | before pc=001A r0=00 r1-3=BF,FF,81 r1'-3'=01,FF,01 psl=00 psu=06
+[2A PSL.CC] 2A 4A @0020: PSL rtl=89 mame=49 | before pc=0020 r0=FF r1-3=FF,01,4D r1'-3'=01,FF,01 psl=49 psu=00
+[2A Rn] 2A 4A @0020: R2 rtl=F0 mame=25 | before pc=0020 r0=FF r1-3=FF,01,4D r1'-3'=01,FF,01 psl=49 psu=00
+[2B IAR] 2B 04 @7FFF: IAR rtl=1 mame=6001 | before pc=7FFF r0=9D r1-3=C8,F0,C7 r1'-3'=26,FF,FF psl=A3 psu=83
+[2B PSL.CC] 2B 5B @0022: PSL rtl=50 mame=90 | before pc=0022 r0=01 r1-3=00,1D,40 r1'-3'=01,EF,97 psl=50 psu=C5
+[2B Rn] 2B 5B @0022: R3' rtl=67 mame=F9 | before pc=0022 r0=01 r1-3=00,1D,40 r1'-3'=01,EF,97 psl=50 psu=C5
+[2C IAR] 2C 04 C1 @7FFF: IAR rtl=2 mame=6002 | before pc=7FFF r0=4C r1-3=C2,3F,99 r1'-3'=A7,00,7A psl=91 psu=07
+[2C PSL.CC] 2C CE 31 @6D9C: PSL rtl=4F mame=8F | before pc=6D9C r0=FF r1-3=00,0D,CA r1'-3'=0E,FF,00 psl=8F psu=C6
+[2C R0] 2C C0 BD @5777: R0 rtl=94 mame=A9 | before pc=5777 r0=C8 r1-3=00,C9,01 r1'-3'=81,92,01 psl=B0 psu=03
+[2D IAR] 2D 2F 49 @1FFE: IAR rtl=2001 mame=1 | before pc=1FFE r0=6E r1-3=8E,25,00 r1'-3'=D4,F4,DB psl=4D psu=C1
+[2D PSL.CC] 2D 3F 4F @4C1B: PSL rtl=48 mame=88 | before pc=4C1B r0=C3 r1-3=D7,3A,4B r1'-3'=FF,E0,72 psl=48 psu=66
+[2D R0] 2D 3F 4F @4C1B: R0 rtl=1E mame=BC | before pc=4C1B r0=C3 r1-3=D7,3A,4B r1'-3'=FF,E0,72 psl=48 psu=66
+[2E IAR] 2E 04 CE @7FFF: IAR rtl=2 mame=6002 | before pc=7FFF r0=34 r1-3=4B,FA,75 r1'-3'=4D,77,DB psl=4B psu=87
+[2E PSL.CC] 2E EC 35 @5480: PSL rtl=6F mame=AF | before pc=5480 r0=D5 r1-3=FD,3D,A9 r1'-3'=00,00,FF psl=AF psu=01
+[2E R0] 2E EC 35 @5480: R0 rtl=35 mame=BD | before pc=5480 r0=D5 r1-3=FD,3D,A9 r1'-3'=00,00,FF psl=AF psu=01
+[2E Rn] 2E 04 CE @7FFF: R2 rtl=9C mame=11 | before pc=7FFF r0=34 r1-3=4B,FA,75 r1'-3'=4D,77,DB psl=4B psu=87
+[2E cycles] 2E 04 CE @7FFF: cycles rtl=4 mame=6 | before pc=7FFF r0=34 r1-3=4B,FA,75 r1'-3'=4D,77,DB psl=4B psu=87
+[2F IAR] 2F 04 0E @7FFF: IAR rtl=2 mame=6002 | before pc=7FFF r0=0E r1-3=C8,FF,07 r1'-3'=24,FF,01 psl=0E psu=42
+[2F PSL.CC] 2F 7F D1 @7145: PSL rtl=4E mame=8E | before pc=7145 r0=FC r1-3=9B,58,A6 r1'-3'=01,AC,54 psl=8E psu=A1
+[2F R0] 2F 7F D1 @7145: R0 rtl=27 mame=AB | before pc=7145 r0=FC r1-3=9B,58,A6 r1'-3'=01,AC,54 psl=8E psu=A1
+[2F Rn] 2F 04 0E @7FFF: R3 rtl=3 mame=FC | before pc=7FFF r0=0E r1-3=C8,FF,07 r1'-3'=24,FF,01 psl=0E psu=42
+[2F cycles] 2F 04 0E @7FFF: cycles rtl=4 mame=6 | before pc=7FFF r0=0E r1-3=C8,FF,07 r1'-3'=24,FF,01 psl=0E psu=42
+[31 IAR] 31 @7FFF: IAR rtl=0 mame=6000 | before pc=7FFF r0=4B r1-3=26,7C,01 r1'-3'=18,FF,00 psl=4D psu=C3
+[34 IAR] 34 @7FFF: IAR rtl=0 mame=6000 | before pc=7FFF r0=D8 r1-3=53,B9,01 r1'-3'=FE,D1,BF psl=92 psu=43
+[35 IAR] 35 @1FFF: IAR rtl=2000 mame=0 | before pc=1FFF r0=8A r1-3=B3,AB,F1 r1'-3'=01,E8,DF psl=89 psu=80
+[36 IAR] 36 @1FFF: IAR rtl=2000 mame=0 | before pc=1FFF r0=04 r1-3=36,4B,04 r1'-3'=00,01,18 psl=43 psu=E5
+[38 IAR] 38 D0 @0018: IAR rtl=2AB3 mame=5ACA | before pc=0018 r0=19 r1-3=01,4B,6D r1'-3'=84,17,F6 psl=19 psu=43
+[38 cycles] 38 D0 @0018: cycles rtl=4 mame=5 | before pc=0018 r0=19 r1-3=01,4B,6D r1'-3'=84,17,F6 psl=19 psu=43
+[39 IAR] 39 C1 @0018: IAR rtl=6AD0 mame=55AE | before pc=0018 r0=6C r1-3=6C,00,01 r1'-3'=33,47,FA psl=46 psu=C3
+[39 cycles] 39 C1 @0018: cycles rtl=4 mame=5 | before pc=0018 r0=6C r1-3=6C,00,01 r1'-3'=33,47,FA psl=46 psu=C3
+[3A IAR] 3A 56 @0017: IAR rtl=7FEF mame=1FEF | before pc=0017 r0=82 r1-3=13,CC,F9 r1'-3'=00,AA,57 psl=82 psu=45
+[3A cycles] 3A CE @0017: cycles rtl=4 mame=5 | before pc=0017 r0=B1 r1-3=22,00,F5 r1'-3'=00,01,FF psl=B1 psu=41
+[3B IAR] 3B DB @001D: IAR rtl=579D mame=315C | before pc=001D r0=12 r1-3=01,CC,4F r1'-3'=BB,00,F8 psl=60 psu=47
+[3B cycles] 3B DB @001D: cycles rtl=4 mame=5 | before pc=001D r0=12 r1-3=01,CC,4F r1'-3'=BB,00,F8 psl=60 psu=47
+[3C IAR] 3C 7C 04 @7FFE: IAR rtl=1 mame=6001 | before pc=7FFE r0=9E r1-3=9F,02,71 r1'-3'=7A,FF,00 psl=4D psu=C7
+[3D IAR] 3D 39 B5 @7FFD: IAR rtl=0 mame=6000 | before pc=7FFD r0=A5 r1-3=83,E7,00 r1'-3'=3F,89,00 psl=80 psu=A5
+[3D RAS top] 3D D7 04 @7FFE: RAS rtl=1 mame=6001 | before pc=7FFE r0=19 r1-3=FF,31,22 r1'-3'=4D,34,FF psl=53 psu=46
+[3F RAS top] 3F 13 7B @7FFD: RAS rtl=0 mame=6000 | before pc=7FFD r0=3A r1-3=01,00,BD r1'-3'=FF,F9,00 psl=AB psu=86
+[44 IAR] 44 04 @7FFF: IAR rtl=1 mame=6001 | before pc=7FFF r0=FE r1-3=FF,AE,30 r1'-3'=E2,00,00 psl=7E psu=C6
+[44 R0] 44 04 @7FFF: R0 rtl=4 mame=36 | before pc=7FFF r0=FE r1-3=FF,AE,30 r1'-3'=E2,00,00 psl=7E psu=C6
+[45 IAR] 45 04 @7FFF: IAR rtl=1 mame=6001 | before pc=7FFF r0=DB r1-3=D8,22,DB r1'-3'=17,CF,00 psl=AB psu=C3
+[45 PSL.CC] 45 04 @7FFF: PSL rtl=2B mame=AB | before pc=7FFF r0=DB r1-3=D8,22,DB r1'-3'=17,CF,00 psl=AB psu=C3
+[45 Rn] 45 04 @7FFF: R1 rtl=0 mame=90 | before pc=7FFF r0=DB r1-3=D8,22,DB r1'-3'=17,CF,00 psl=AB psu=C3
+[46 IAR] 46 F6 @7FFE: IAR rtl=0 mame=6000 | before pc=7FFE r0=80 r1-3=01,01,2C r1'-3'=00,14,95 psl=B9 psu=C7
+[47 IAR] 47 03 @1FFE: IAR rtl=2000 mame=0 | before pc=1FFE r0=64 r1-3=6E,1B,A9 r1'-3'=80,41,92 psl=64 psu=66
+[48 IAR] 48 7C @1FFF: IAR rtl=2001 mame=1 | before pc=1FFF r0=29 r1-3=91,FF,2B r1'-3'=89,CD,7A psl=79 psu=80
+[48 PSL.CC] 48 D9 @0018: PSL rtl=A1 mame=61 | before pc=0018 r0=E1 r1-3=D3,01,AA r1'-3'=2F,1A,01 psl=A1 psu=41
+[48 R0] 48 D9 @0018: R0 rtl=C1 mame=1 | before pc=0018 r0=E1 r1-3=D3,01,AA r1'-3'=2F,1A,01 psl=A1 psu=41
+[49 IAR] 49 04 @7FFF: IAR rtl=1 mame=6001 | before pc=7FFF r0=50 r1-3=FF,D9,FF r1'-3'=34,00,84 psl=57 psu=C6
+[49 PSL.CC] 49 61 @0018: PSL rtl=4C mame=8C | before pc=0018 r0=8C r1-3=CB,00,01 r1'-3'=FF,A2,D0 psl=8C psu=43
+[49 Rn] 49 42 @0018: R1 rtl=CF mame=9D | before pc=0018 r0=01 r1-3=FF,FF,00 r1'-3'=01,AB,01 psl=69 psu=01
+[49 cycles] 49 04 @7FFF: cycles rtl=3 mame=5 | before pc=7FFF r0=50 r1-3=FF,D9,FF r1'-3'=34,00,84 psl=57 psu=C6
+[4A IAR] 4A B6 @1FFE: IAR rtl=2000 mame=0 | before pc=1FFE r0=AE r1-3=80,2F,69 r1'-3'=7D,34,FF psl=80 psu=03
+[4A PSL.CC] 4A 46 @001C: PSL rtl=1F mame=5F | before pc=001C r0=00 r1-3=08,FF,22 r1'-3'=FF,01,35 psl=1F psu=47
+[4A Rn] 4A 46 @001C: R2' rtl=0 mame=1 | before pc=001C r0=00 r1-3=08,FF,22 r1'-3'=FF,01,35 psl=1F psu=47
+[4B IAR] 4B 04 @7FFF: IAR rtl=1 mame=6001 | before pc=7FFF r0=73 r1-3=D7,89,4E r1'-3'=01,E4,66 psl=8A psu=C2
+[4B PSL.CC] 4B 53 @001B: PSL rtl=63 mame=23 | before pc=001B r0=A9 r1-3=60,FF,EF r1'-3'=00,8B,01 psl=63 psu=C1
+[4B Rn] 4B 53 @001B: R3 rtl=C mame=0 | before pc=001B r0=A9 r1-3=60,FF,EF r1'-3'=00,8B,01 psl=63 psu=C1
+[4C IAR] 4C 04 EF @7FFF: IAR rtl=2 mame=6002 | before pc=7FFF r0=FF r1-3=8A,48,00 r1'-3'=40,02,9D psl=5A psu=C5
+[4C PSL.CC] 4C C2 EF @2094: PSL rtl=A4 mame=64 | before pc=2094 r0=E4 r1-3=89,F8,FF r1'-3'=E2,BB,FF psl=E4 psu=85
+[4C R0] 4C C2 EF @2094: R0 rtl=80 mame=23 | before pc=2094 r0=E4 r1-3=89,F8,FF r1'-3'=E2,BB,FF psl=E4 psu=85
+[4C cycles] 4C 04 EF @7FFF: cycles rtl=4 mame=6 | before pc=7FFF r0=FF r1-3=8A,48,00 r1'-3'=40,02,9D psl=5A psu=C5
+[4D IAR] 4D 03 C1 @7FFD: IAR rtl=0 mame=6000 | before pc=7FFD r0=A4 r1-3=8A,14,A3 r1'-3'=DA,74,00 psl=A4 psu=43
+[4D PSL.CC] 4D EF 52 @47CD: PSL rtl=80 mame=40 | before pc=47CD r0=CA r1-3=F5,C9,00 r1'-3'=6A,01,9A psl=80 psu=45
+[4D R0] 4D 3F D5 @0020: R0 rtl=80 mame=88 | before pc=0020 r0=98 r1-3=B7,01,8A r1'-3'=00,FF,27 psl=83 psu=05
+[4E PSL.CC] 4E B6 89 @636D: PSL rtl=A1 mame=61 | before pc=636D r0=88 r1-3=AE,73,19 r1'-3'=FF,FF,01 psl=A1 psu=01
+[4E R0] 4E B6 89 @636D: R0 rtl=80 mame=8 | before pc=636D r0=88 r1-3=AE,73,19 r1'-3'=FF,FF,01 psl=A1 psu=01
+[4F IAR] 4F 73 55 @1FFF: IAR rtl=2002 mame=2 | before pc=1FFF r0=00 r1-3=A9,BD,0E r1'-3'=EF,01,3D psl=42 psu=82
+[4F PSL.CC] 4F 7F B1 @66C0: PSL rtl=88 mame=8 | before pc=66C0 r0=B0 r1-3=61,80,87 r1'-3'=90,B8,65 psl=88 psu=41
+[4F R0] 4F 5F 61 @418D: R0 rtl=7B mame=3A | before pc=418D r0=7B r1-3=52,01,01 r1'-3'=7B,F4,C1 psl=BC psu=C6
+[4F Rn] 4F 8D 56 @3FFF: R3' rtl=65 mame=6D | before pc=3FFF r0=E7 r1-3=FF,01,42 r1'-3'=FB,98,6D psl=B1 psu=E7
+[52 IAR] 52 @7FFF: IAR rtl=0 mame=6000 | before pc=7FFF r0=AB r1-3=00,4A,C7 r1'-3'=00,53,33 psl=AB psu=02
+[52 PSL.OVF] 52 @7FFF: PSL rtl=AA mame=AE | before pc=7FFF r0=AB r1-3=00,4A,C7 r1'-3'=00,53,33 psl=AB psu=02
+[57 I/O reads] 57 2B @1FFF: bus rtl={Er[2B]=6A } mame={Er[4]=BF } | before pc=1FFF r0=8A r1-3=A5,F8,66 r1'-3'=00,01,B5 psl=82 psu=C7
+[57 IAR] 57 2B @1FFF: IAR rtl=2001 mame=1 | before pc=1FFF r0=8A r1-3=A5,F8,66 r1'-3'=00,01,B5 psl=82 psu=C7
+[57 PSL.CC] 57 2B @1FFF: PSL rtl=42 mame=82 | before pc=1FFF r0=8A r1-3=A5,F8,66 r1'-3'=00,01,B5 psl=82 psu=C7
+[57 Rn] 57 2B @1FFF: R3 rtl=6A mame=BF | before pc=1FFF r0=8A r1-3=A5,F8,66 r1'-3'=00,01,B5 psl=82 psu=C7
+[58 IAR] 58 CE @001E: IAR rtl=67CB mame=243A | before pc=001E r0=06 r1-3=EC,47,1B r1'-3'=74,FF,8D psl=69 psu=46
+[58 cycles] 58 CE @001E: cycles rtl=4 mame=5 | before pc=001E r0=06 r1-3=EC,47,1B r1'-3'=74,FF,8D psl=69 psu=46
+[59 IAR] 59 CF @0025: IAR rtl=5AC1 mame=3FDF | before pc=0025 r0=00 r1-3=08,1B,DB r1'-3'=00,FC,78 psl=21 psu=86
+[59 cycles] 59 CF @0025: cycles rtl=4 mame=5 | before pc=0025 r0=00 r1-3=08,1B,DB r1'-3'=00,FC,78 psl=21 psu=86
+[5A IAR] 5A 52 @0023: IAR rtl=7FF7 mame=1FF7 | before pc=0023 r0=C9 r1-3=57,E5,B6 r1'-3'=D2,39,7A psl=89 psu=44
+[5A cycles] 5A B8 @1FD6: cycles rtl=4 mame=5 | before pc=1FD6 r0=65 r1-3=FF,DB,FF r1'-3'=01,01,01 psl=48 psu=40
+[5B IAR] 5B 44 @0019: IAR rtl=7FDF mame=1FDF | before pc=0019 r0=78 r1-3=01,75,7F r1'-3'=DE,EC,1C psl=B8 psu=86
+[5B cycles] 5B D7 @0018: cycles rtl=4 mame=5 | before pc=0018 r0=9E r1-3=A9,01,00 r1'-3'=00,D2,97 psl=9E psu=84
+[5E IAR] 5E 94 04 @7FFE: IAR rtl=4D31 mame=3C0B | before pc=7FFE r0=67 r1-3=FF,FF,BB r1'-3'=67,A3,22 psl=7C psu=04
+[66 IAR] 66 94 @3FFF: IAR rtl=4001 mame=2001 | before pc=3FFF r0=63 r1-3=00,BA,09 r1'-3'=17,54,34 psl=77 psu=86
+[66 PSL.CC] 66 94 @3FFF: PSL rtl=B7 mame=77 | before pc=3FFF r0=63 r1-3=00,BA,09 r1'-3'=17,54,34 psl=77 psu=86
+[66 Rn] 66 94 @3FFF: R2' rtl=D4 mame=56 | before pc=3FFF r0=63 r1-3=00,BA,09 r1'-3'=17,54,34 psl=77 psu=86
+[67 IAR] 67 99 @7FFE: IAR rtl=0 mame=6000 | before pc=7FFE r0=EB r1-3=FA,59,E0 r1'-3'=41,FA,A3 psl=A0 psu=C5
+[68 IAR] 68 02 @7FFE: IAR rtl=0 mame=6000 | before pc=7FFE r0=3F r1-3=AD,37,63 r1'-3'=29,92,46 psl=3F psu=87
+[68 PSL.CC] 68 CA @001D: PSL rtl=9D mame=5D | before pc=001D r0=5D r1-3=FA,B0,67 r1'-3'=46,01,32 psl=5D psu=07
+[68 R0] 68 49 @0018: R0 rtl=7D mame=1E | before pc=0018 r0=0C r1-3=FF,96,14 r1'-3'=00,01,01 psl=4C psu=85
+[69 PSL.CC] 69 55 @0022: PSL rtl=A4 mame=64 | before pc=0022 r0=64 r1-3=01,3D,BB r1'-3'=01,01,01 psl=64 psu=07
+[69 Rn] 69 49 @0018: R1 rtl=A3 mame=E9 | before pc=0018 r0=01 r1-3=A1,01,FF r1'-3'=FF,01,BF psl=6B psu=82
+[6A IAR] 6A 20 @1FFE: IAR rtl=2000 mame=0 | before pc=1FFE r0=08 r1-3=7F,EB,53 r1'-3'=50,B6,88 psl=40 psu=00
+[6A PSL.CC] 6A C2 @001B: PSL rtl=A5 mame=65 | before pc=001B r0=AB r1-3=4B,21,C6 r1'-3'=93,01,0D psl=A5 psu=C1
+[6A Rn] 6A C4 @001B: R2 rtl=FB mame=AF | before pc=001B r0=DC r1-3=01,AB,FF r1'-3'=F2,FB,00 psl=AB psu=85
+[6B IAR] 6B 04 @7FFF: IAR rtl=1 mame=6001 | before pc=7FFF r0=6A r1-3=18,63,7A r1'-3'=01,25,0C psl=60 psu=05
+[6B PSL.CC] 6B 47 @002C: PSL rtl=42 mame=82 | before pc=002C r0=6D r1-3=BD,7E,7F r1'-3'=01,01,00 psl=42 psu=85
+[6B Rn] 6B 47 @002C: R3 rtl=7F mame=FF | before pc=002C r0=6D r1-3=BD,7E,7F r1'-3'=01,01,00 psl=42 psu=85
+[6B cycles] 6B 04 @7FFF: cycles rtl=3 mame=5 | before pc=7FFF r0=6A r1-3=18,63,7A r1'-3'=01,25,0C psl=60 psu=05
+[6C R0] 6C BE E3 @594E: R0 rtl=F7 mame=E7 | before pc=594E r0=E4 r1-3=FF,01,EF r1'-3'=FF,FF,D2 psl=4A psu=02
+[6D PSL.CC] 6D 5F B7 @4D25: PSL rtl=84 mame=44 | before pc=4D25 r0=00 r1-3=D4,1D,C3 r1'-3'=15,87,FF psl=04 psu=03
+[6D R0] 6D 5F B7 @4D25: R0 rtl=FA mame=7D | before pc=4D25 r0=00 r1-3=D4,1D,C3 r1'-3'=15,87,FF psl=04 psu=03
+[6E IAR] 6E 12 AC @7FFD: IAR rtl=0 mame=6000 | before pc=7FFD r0=9E r1-3=E7,01,01 r1'-3'=00,89,29 psl=B6 psu=06
+[6E R0] 6E EA 6B @59B8: R0 rtl=D7 mame=DF | before pc=59B8 r0=D5 r1-3=90,F8,04 r1'-3'=FF,64,00 psl=AA psu=87
+[6F IAR] 6F C1 9E @1FFD: IAR rtl=2000 mame=0 | before pc=1FFD r0=E4 r1-3=DF,FF,00 r1'-3'=FF,00,00 psl=A1 psu=06
+[6F PSL.CC] 6F 3F DB @0034: PSL rtl=A8 mame=68 | before pc=0034 r0=01 r1-3=69,A9,E5 r1'-3'=57,C3,01 psl=68 psu=47
+[6F R0] 6F 3F DB @0034: R0 rtl=85 mame=D | before pc=0034 r0=01 r1-3=69,A9,E5 r1'-3'=57,C3,01 psl=68 psu=47
+[70 IAR] 70 @7FFF: IAR rtl=0 mame=6000 | before pc=7FFF r0=F0 r1-3=00,01,A7 r1'-3'=FF,00,FC psl=F0 psu=45
+[74 IAR] 74 04 @7FFF: IAR rtl=1 mame=6001 | before pc=7FFF r0=C0 r1-3=42,BD,8F r1'-3'=4A,92,93 psl=42 psu=00
+[75 IAR] 75 FD @7FFE: IAR rtl=0 mame=6000 | before pc=7FFE r0=B9 r1-3=C1,01,00 r1'-3'=7E,00,00 psl=B9 psu=44
+[78 IAR] 78 D0 @001D: IAR rtl=6DC3 mame=12D0 | before pc=001D r0=A7 r1-3=00,FF,FF r1'-3'=01,53,A7 psl=89 psu=82
+[78 cycles] 78 D0 @001D: cycles rtl=4 mame=5 | before pc=001D r0=A7 r1-3=00,FF,FF r1'-3'=01,53,A7 psl=89 psu=82
+[79 IAR] 79 D3 @001D: IAR rtl=4940 mame=6577 | before pc=001D r0=FF r1-3=FF,01,B3 r1'-3'=FF,00,00 psl=B8 psu=03
+[79 cycles] 79 D3 @001D: cycles rtl=4 mame=5 | before pc=001D r0=FF r1-3=FF,01,B3 r1'-3'=FF,00,00 psl=B8 psu=03
+[7A IAR] 7A D6 @4023: IAR rtl=2AFB mame=3477 | before pc=4023 r0=A6 r1-3=B5,57,FC r1'-3'=01,52,01 psl=60 psu=A0
+[7A RAS top] 7A 8E @7FFE: RAS rtl=0 mame=6000 | before pc=7FFE r0=28 r1-3=E3,DF,00 r1'-3'=21,0F,6B psl=69 psu=07
+[7A cycles] 7A D6 @4023: cycles rtl=4 mame=5 | before pc=4023 r0=A6 r1-3=B5,57,FC r1'-3'=01,52,01 psl=60 psu=A0
+[7B IAR] 7B 43 @0024: IAR rtl=7FE9 mame=1FE9 | before pc=0024 r0=48 r1-3=0B,31,FF r1'-3'=01,FF,69 psl=40 psu=C7
+[7B RAS top] 7B 04 @7FFF: RAS rtl=1 mame=6001 | before pc=7FFF r0=DE r1-3=E8,9D,01 r1'-3'=C1,03,FF psl=BB psu=44
+[7B cycles] 7B C5 @0037: cycles rtl=4 mame=5 | before pc=0037 r0=3B r1-3=FF,FC,6D r1'-3'=BC,41,E2 psl=BB psu=40
+[7C IAR] 7C 04 4E @7FFF: IAR rtl=44E mame=3990 | before pc=7FFF r0=24 r1-3=65,33,8B r1'-3'=FF,00,22 psl=AB psu=C5
+[7C RAS top] 7C 04 4E @7FFF: RAS rtl=2 mame=6002 | before pc=7FFF r0=24 r1-3=65,33,8B r1'-3'=FF,00,22 psl=AB psu=C5
+[7C cycles] 7C 04 4E @7FFF: cycles rtl=3 mame=5 | before pc=7FFF r0=24 r1-3=65,33,8B r1'-3'=FF,00,22 psl=AB psu=C5
+[7E IAR] 7E 2E A8 @1FFE: IAR rtl=2EA8 mame=2E04 | before pc=1FFE r0=37 r1-3=50,F9,37 r1'-3'=01,E4,87 psl=6A psu=45
+[7E RAS top] 7E 2E A8 @1FFE: RAS rtl=2001 mame=1 | before pc=1FFE r0=37 r1-3=50,F9,37 r1'-3'=01,E4,87 psl=6A psu=45
+[7F IAR] 7F 1B 1D @1FFE: IAR rtl=1B1D mame=1B04 | before pc=1FFE r0=72 r1-3=FF,00,01 r1'-3'=F6,07,D0 psl=59 psu=06
+[7F RAS top] 7F 1B 1D @1FFE: RAS rtl=2001 mame=1 | before pc=1FFE r0=72 r1-3=FF,00,01 r1'-3'=F6,07,D0 psl=59 psu=06
+[81 IAR] 81 @7FFF: IAR rtl=0 mame=6000 | before pc=7FFF r0=FF r1-3=A4,00,FF r1'-3'=FF,01,E1 psl=8C psu=04
+[84 IAR] 84 45 @7FFE: IAR rtl=0 mame=6000 | before pc=7FFE r0=FA r1-3=5D,6B,A7 r1'-3'=2B,35,F2 psl=60 psu=00
+[86 IAR] 86 71 @1FFE: IAR rtl=2000 mame=0 | before pc=1FFE r0=DE r1-3=EE,B4,23 r1'-3'=4D,CE,7E psl=88 psu=42
+[87 IAR] 87 E8 @7FFE: IAR rtl=0 mame=6000 | before pc=7FFE r0=10 r1-3=26,01,FF r1'-3'=6F,FF,52 psl=52 psu=00
+[88 IAR] 88 04 @7FFF: IAR rtl=1 mame=6001 | before pc=7FFF r0=45 r1-3=46,00,30 r1'-3'=FF,B4,0F psl=62 psu=03
+[88 PSL.C] 88 D3 @0022: PSL rtl=41 mame=A0 | before pc=0022 r0=C8 r1-3=89,EC,00 r1'-3'=01,2C,01 psl=80 psu=20
+[88 PSL.CC] 88 51 @001F: PSL rtl=B1 mame=55 | before pc=001F r0=D5 r1-3=96,46,FF r1'-3'=02,FF,F3 psl=95 psu=82
+[88 PSL.IDC] 88 51 @001F: PSL rtl=B1 mame=55 | before pc=001F r0=D5 r1-3=96,46,FF r1'-3'=02,FF,F3 psl=95 psu=82
+[88 PSL.OVF] 88 51 @001F: PSL rtl=B1 mame=55 | before pc=001F r0=D5 r1-3=96,46,FF r1'-3'=02,FF,F3 psl=95 psu=82
+[88 R0] 88 DA @0019: R0 rtl=D3 mame=99 | before pc=0019 r0=7B r1-3=4F,D4,C0 r1'-3'=E4,18,01 psl=7B psu=43
+[89 IAR] 89 04 @7FFF: IAR rtl=1 mame=6001 | before pc=7FFF r0=55 r1-3=BD,F3,92 r1'-3'=24,01,87 psl=65 psu=80
+[89 PSL.C] 89 54 @0028: PSL rtl=6B mame=8A | before pc=0028 r0=0F r1-3=99,12,82 r1'-3'=11,E6,F7 psl=4A psu=C2
+[89 PSL.CC] 89 54 @0028: PSL rtl=6B mame=8A | before pc=0028 r0=0F r1-3=99,12,82 r1'-3'=11,E6,F7 psl=4A psu=C2
+[89 PSL.IDC] 89 54 @0028: PSL rtl=6B mame=8A | before pc=0028 r0=0F r1-3=99,12,82 r1'-3'=11,E6,F7 psl=4A psu=C2
+[89 PSL.OVF] 89 5B @0019: PSL rtl=A6 mame=63 | before pc=0019 r0=83 r1-3=3C,01,FF r1'-3'=30,FF,BF psl=82 psu=80
+[89 Rn] 89 54 @0028: R1 rtl=12 mame=EC | before pc=0028 r0=0F r1-3=99,12,82 r1'-3'=11,E6,F7 psl=4A psu=C2
+[8A IAR] 8A 35 @7FFE: IAR rtl=0 mame=6000 | before pc=7FFE r0=C6 r1-3=02,F5,66 r1'-3'=72,FF,3C psl=A4 psu=03
+[8A PSL.C] 8A 27 @3FF0: PSL rtl=7F mame=BA | before pc=3FF0 r0=77 r1-3=81,01,9F r1'-3'=D0,9F,55 psl=BF psu=C0
+[8A PSL.CC] 8A 41 @001B: PSL rtl=80 mame=40 | before pc=001B r0=17 r1-3=55,09,9F r1'-3'=0D,E7,01 psl=41 psu=05
+[8A PSL.IDC] 8A D1 @001D: PSL rtl=4A mame=6A | before pc=001D r0=0B r1-3=01,0C,85 r1'-3'=00,CF,01 psl=4B psu=43
+[8A PSL.OVF] 8A 27 @3FF0: PSL rtl=7F mame=BA | before pc=3FF0 r0=77 r1-3=81,01,9F r1'-3'=D0,9F,55 psl=BF psu=C0
+[8A Rn] 8A 41 @001B: R2 rtl=A9 mame=1F | before pc=001B r0=17 r1-3=55,09,9F r1'-3'=0D,E7,01 psl=41 psu=05
+[8B PSL.C] 8B D8 @0021: PSL rtl=AE mame=6B | before pc=0021 r0=00 r1-3=6A,33,2C r1'-3'=FF,00,22 psl=0E psu=C4
+[8B PSL.CC] 8B 54 @001A: PSL rtl=50 mame=B0 | before pc=001A r0=74 r1-3=A0,D5,00 r1'-3'=75,A8,05 psl=71 psu=04
+[8B PSL.IDC] 8B 54 @001A: PSL rtl=50 mame=B0 | before pc=001A r0=74 r1-3=A0,D5,00 r1'-3'=75,A8,05 psl=71 psu=04
+[8B PSL.OVF] 8B 42 @001A: PSL rtl=92 mame=B6 | before pc=001A r0=E2 r1-3=00,06,FF r1'-3'=02,01,01 psl=96 psu=80
+[8B Rn] 8B 54 @001A: R3' rtl=3E mame=D3 | before pc=001A r0=74 r1-3=A0,D5,00 r1'-3'=75,A8,05 psl=71 psu=04
+[8C PSL.C] 8C 7F CD @33E3: PSL rtl=AE mame=6B | before pc=33E3 r0=79 r1-3=15,32,3C r1'-3'=0F,BE,8B psl=6A psu=00
+[8C PSL.CC] 8C 7F CD @33E3: PSL rtl=AE mame=6B | before pc=33E3 r0=79 r1-3=15,32,3C r1'-3'=0F,BE,8B psl=6A psu=00
+[8C PSL.IDC] 8C EB 8A @0017: PSL rtl=71 mame=91 | before pc=0017 r0=B5 r1-3=00,87,00 r1'-3'=01,00,00 psl=B5 psu=02
+[8C PSL.OVF] 8C 7F CD @33E3: PSL rtl=AE mame=6B | before pc=33E3 r0=79 r1-3=15,32,3C r1'-3'=0F,BE,8B psl=6A psu=00
+[8C R0] 8C 3F 4B @3366: R0 rtl=AB mame=CB | before pc=3366 r0=E7 r1-3=C2,00,4A r1'-3'=FF,00,FF psl=81 psu=04
+[8D IAR] 8D D0 37 @1FFD: IAR rtl=2000 mame=0 | before pc=1FFD r0=6F r1-3=EF,00,1E r1'-3'=66,FD,DA psl=59 psu=80
+[8D PSL.C] 8D BC DD @001A: PSL rtl=94 mame=51 | before pc=001A r0=50 r1-3=5D,56,00 r1'-3'=90,2D,23 psl=50 psu=86
+[8D PSL.CC] 8D BC DD @001A: PSL rtl=94 mame=51 | before pc=001A r0=50 r1-3=5D,56,00 r1'-3'=90,2D,23 psl=50 psu=86
+[8D PSL.IDC] 8D F6 97 @1CF6: PSL rtl=9E mame=BA | before pc=1CF6 r0=4A r1-3=CA,55,D1 r1'-3'=F8,F8,29 psl=7F psu=42
+[8D PSL.OVF] 8D F6 97 @1CF6: PSL rtl=9E mame=BA | before pc=1CF6 r0=4A r1-3=CA,55,D1 r1'-3'=F8,F8,29 psl=7F psu=42
+[8D R0] 8D F6 97 @1CF6: R0 rtl=BC mame=D5 | before pc=1CF6 r0=4A r1-3=CA,55,D1 r1'-3'=F8,F8,29 psl=7F psu=42
+[8E IAR] 8E 04 EA @7FFF: IAR rtl=2 mame=6002 | before pc=7FFF r0=64 r1-3=00,F7,83 r1'-3'=01,01,00 psl=6B psu=03
+[8E PSL.C] 8E 04 EA @7FFF: PSL rtl=8B mame=8A | before pc=7FFF r0=64 r1-3=00,F7,83 r1'-3'=01,01,00 psl=6B psu=03
+[8E PSL.CC] 8E 7F E9 @03A9: PSL rtl=B4 mame=50 | before pc=03A9 r0=12 r1-3=00,85,01 r1'-3'=00,E9,00 psl=B1 psu=81
+[8E PSL.IDC] 8E B9 AA @0F91: PSL rtl=84 mame=A0 | before pc=0F91 r0=4C r1-3=AA,F0,2C r1'-3'=01,01,00 psl=80 psu=41
+[8E PSL.OVF] 8E B9 AA @0F91: PSL rtl=84 mame=A0 | before pc=0F91 r0=4C r1-3=AA,F0,2C r1'-3'=01,01,00 psl=80 psu=41
+[8E R0] 8E B9 AA @0F91: R0 rtl=AD mame=D2 | before pc=0F91 r0=4C r1-3=AA,F0,2C r1'-3'=01,01,00 psl=80 psu=41
+[8E Rn] 8E 04 EA @7FFF: R2 rtl=AC mame=F8 | before pc=7FFF r0=64 r1-3=00,F7,83 r1'-3'=01,01,00 psl=6B psu=03
+[8E cycles] 8E 04 EA @7FFF: cycles rtl=4 mame=6 | before pc=7FFF r0=64 r1-3=00,F7,83 r1'-3'=01,01,00 psl=6B psu=03
+[8F IAR] 8F 5C 04 @7FFE: IAR rtl=1 mame=6001 | before pc=7FFE r0=00 r1-3=00,FF,00 r1'-3'=C2,00,00 psl=B1 psu=C0
+[8F PSL.C] 8F AE F5 @1FFE: PSL rtl=98 mame=5D | before pc=1FFE r0=E2 r1-3=7F,21,71 r1'-3'=BC,85,A0 psl=BC psu=87
+[8F PSL.CC] 8F DB 73 @0018: PSL rtl=AB mame=6F | before pc=0018 r0=8F r1-3=90,FF,D8 r1'-3'=55,52,FF psl=8F psu=06
+[8F PSL.IDC] 8F DE 31 @003E: PSL rtl=9A mame=BA | before pc=003E r0=09 r1-3=82,94,35 r1'-3'=E7,F7,00 psl=7F psu=81
+[8F PSL.OVF] 8F DB 73 @0018: PSL rtl=AB mame=6F | before pc=0018 r0=8F r1-3=90,FF,D8 r1'-3'=55,52,FF psl=8F psu=06
+[8F R0] 8F DE 31 @003E: R0 rtl=AA mame=D1 | before pc=003E r0=09 r1-3=82,94,35 r1'-3'=E7,F7,00 psl=7F psu=81
+[98 IAR] 98 4B @0020: IAR rtl=7FED mame=1FED | before pc=0020 r0=00 r1-3=00,39,FF r1'-3'=00,8E,1E psl=A0 psu=86
+[98 cycles] 98 C5 @001B: cycles rtl=4 mame=5 | before pc=001B r0=8D r1-3=0B,60,18 r1'-3'=95,FF,1E psl=4D psu=C6
+[99 IAR] 99 42 @001C: IAR rtl=7FE0 mame=1FE0 | before pc=001C r0=A1 r1-3=65,D7,AD r1'-3'=92,7C,00 psl=A1 psu=C0
+[99 cycles] 99 B4 @1FE0: cycles rtl=4 mame=5 | before pc=1FE0 r0=76 r1-3=53,E3,01 r1'-3'=30,A0,D8 psl=98 psu=83
+[9A IAR] 9A 4F @001F: IAR rtl=7FF0 mame=1FF0 | before pc=001F r0=0A r1-3=BB,0B,34 r1'-3'=00,CA,BB psl=42 psu=C6
+[9A cycles] 9A BB @7FDE: cycles rtl=4 mame=5 | before pc=7FDE r0=70 r1-3=29,47,D2 r1'-3'=35,00,13 psl=70 psu=85
+[9B IAR] 9B 04 @7FFF: IAR rtl=4 mame=1FFF | before pc=7FFF r0=7B r1-3=AF,FF,00 r1'-3'=FF,00,8A psl=7B psu=86
+[9C IAR] 9C B1 4A @3FFE: IAR rtl=6FAF mame=7ACB | before pc=3FFE r0=E5 r1-3=01,01,31 r1'-3'=00,19,A2 psl=90 psu=06
+[9D IAR] 9D 68 EC @1FFD: IAR rtl=2000 mame=0 | before pc=1FFD r0=74 r1-3=71,10,FD r1'-3'=01,00,01 psl=6F psu=02
+[9E IAR] 9E 0B 04 @7FFE: IAR rtl=B04 mame=BF4 | before pc=7FFE r0=D7 r1-3=A0,93,00 r1'-3'=56,53,DB psl=57 psu=00
+[A0 IAR] A0 @7FFF: IAR rtl=0 mame=6000 | before pc=7FFF r0=D7 r1-3=B4,93,01 r1'-3'=71,B0,F2 psl=84 psu=41
+[A5 IAR] A5 54 @1FFF: IAR rtl=2001 mame=1 | before pc=1FFF r0=DC r1-3=7A,CE,66 r1'-3'=95,00,6F psl=46 psu=85
+[A5 Rn] A5 54 @1FFF: R1 rtl=26 mame=76 | before pc=1FFF r0=DC r1-3=7A,CE,66 r1'-3'=95,00,6F psl=46 psu=85
+[A8 PSL.C] A8 59 @0024: PSL rtl=43 mame=82 | before pc=0024 r0=35 r1-3=93,01,73 r1'-3'=47,A5,01 psl=63 psu=03
+[A8 PSL.CC] A8 59 @0024: PSL rtl=43 mame=82 | before pc=0024 r0=35 r1-3=93,01,73 r1'-3'=47,A5,01 psl=63 psu=03
+[A8 PSL.IDC] A8 C7 @0026: PSL rtl=8C mame=69 | before pc=0026 r0=68 r1-3=9E,BD,14 r1'-3'=B1,00,00 psl=48 psu=82
+[A8 PSL.OVF] A8 C7 @0026: PSL rtl=8C mame=69 | before pc=0026 r0=68 r1-3=9E,BD,14 r1'-3'=B1,00,00 psl=48 psu=82
+[A8 R0] A8 55 @0022: R0 rtl=6E mame=1E | before pc=0022 r0=FF r1-3=FF,F0,4D r1'-3'=01,FF,01 psl=89 psu=00
+[A9 PSL.C] A9 52 @001B: PSL rtl=61 mame=A4 | before pc=001B r0=64 r1-3=79,06,ED r1'-3'=FF,59,56 psl=45 psu=C2
+[A9 PSL.CC] A9 C4 @001C: PSL rtl=A3 mame=47 | before pc=001C r0=35 r1-3=E3,01,01 r1'-3'=47,A5,01 psl=62 psu=03
+[A9 PSL.IDC] A9 C4 @001C: PSL rtl=A3 mame=47 | before pc=001C r0=35 r1-3=E3,01,01 r1'-3'=47,A5,01 psl=62 psu=03
+[A9 PSL.OVF] A9 C4 @001C: PSL rtl=A3 mame=47 | before pc=001C r0=35 r1-3=E3,01,01 r1'-3'=47,A5,01 psl=62 psu=03
+[A9 Rn] A9 C4 @001C: R1 rtl=93 mame=7B | before pc=001C r0=35 r1-3=E3,01,01 r1'-3'=47,A5,01 psl=62 psu=03
+[AA PSL.C] AA D3 @001B: PSL rtl=AA mame=AB | before pc=001B r0=AF r1-3=01,9D,00 r1'-3'=D1,00,F1 psl=AF psu=46
+[AA PSL.CC] AA 53 @001B: PSL rtl=4A mame=8E | before pc=001B r0=EB r1-3=00,47,47 r1'-3'=83,01,FF psl=EB psu=85
+[AA PSL.IDC] AA D7 @0022: PSL rtl=48 mame=68 | before pc=0022 r0=48 r1-3=48,02,AA r1'-3'=D8,77,D4 psl=08 psu=03
+[AA PSL.OVF] AA 53 @001B: PSL rtl=4A mame=8E | before pc=001B r0=EB r1-3=00,47,47 r1'-3'=83,01,FF psl=EB psu=85
+[AA Rn] AA 63 @001A: R2 rtl=B8 mame=D8 | before pc=001A r0=08 r1-3=D3,01,90 r1'-3'=FA,17,CD psl=88 psu=44
+[AB IAR] AB 04 @7FFF: IAR rtl=1 mame=6001 | before pc=7FFF r0=BF r1-3=D4,33,F8 r1'-3'=AD,FF,BE psl=77 psu=A7
+[AB PSL.C] AB 48 @0022: PSL rtl=75 mame=B0 | before pc=0022 r0=77 r1-3=FF,FF,B5 r1'-3'=3D,CA,8C psl=55 psu=46
+[AB PSL.CC] AB 48 @0022: PSL rtl=75 mame=B0 | before pc=0022 r0=77 r1-3=FF,FF,B5 r1'-3'=3D,CA,8C psl=55 psu=46
+[AB PSL.IDC] AB D0 @0019: PSL rtl=86 mame=A6 | before pc=0019 r0=02 r1-3=F4,E7,19 r1'-3'=FB,00,F6 psl=42 psu=01
+[AB PSL.OVF] AB 48 @0022: PSL rtl=75 mame=B0 | before pc=0022 r0=77 r1-3=FF,FF,B5 r1'-3'=3D,CA,8C psl=55 psu=46
+[AB Rn] AB D0 @0019: R3 rtl=8F mame=99 | before pc=0019 r0=02 r1-3=F4,E7,19 r1'-3'=FB,00,F6 psl=42 psu=01
+[AC IAR] AC 27 19 @7FFD: IAR rtl=0 mame=6000 | before pc=7FFD r0=2A r1-3=00,34,2A r1'-3'=00,1C,FF psl=4C psu=83
+[AC PSL.C] AC FD 06 @0021: PSL rtl=B6 mame=53 | before pc=0021 r0=56 r1-3=FF,FD,01 r1'-3'=00,98,4B psl=97 psu=C7
+[AC PSL.CC] AC FD 06 @0021: PSL rtl=B6 mame=53 | before pc=0021 r0=56 r1-3=FF,FD,01 r1'-3'=00,98,4B psl=97 psu=C7
+[AC PSL.IDC] AC FD 06 @0021: PSL rtl=B6 mame=53 | before pc=0021 r0=56 r1-3=FF,FD,01 r1'-3'=00,98,4B psl=97 psu=C7
+[AC PSL.OVF] AC FD 06 @0021: PSL rtl=B6 mame=53 | before pc=0021 r0=56 r1-3=FF,FD,01 r1'-3'=00,98,4B psl=97 psu=C7
+[AC R0] AC FD 06 @0021: R0 rtl=B2 mame=2A | before pc=0021 r0=56 r1-3=FF,FD,01 r1'-3'=00,98,4B psl=97 psu=C7
+[AD IAR] AD BC B3 @1FFF: IAR rtl=2002 mame=2 | before pc=1FFF r0=08 r1-3=EC,5B,9C r1'-3'=8C,FB,D8 psl=98 psu=E7
+[AD PSL.C] AD BC B3 @1FFF: PSL rtl=98 mame=7D | before pc=1FFF r0=08 r1-3=EC,5B,9C r1'-3'=8C,FB,D8 psl=98 psu=E7
+[AD PSL.CC] AD BC B3 @1FFF: PSL rtl=98 mame=7D | before pc=1FFF r0=08 r1-3=EC,5B,9C r1'-3'=8C,FB,D8 psl=98 psu=E7
+[AD PSL.IDC] AD BC B3 @1FFF: PSL rtl=98 mame=7D | before pc=1FFF r0=08 r1-3=EC,5B,9C r1'-3'=8C,FB,D8 psl=98 psu=E7
+[AD PSL.OVF] AD BC B3 @1FFF: PSL rtl=98 mame=7D | before pc=1FFF r0=08 r1-3=EC,5B,9C r1'-3'=8C,FB,D8 psl=98 psu=E7
+[AD R0] AD BC B3 @1FFF: R0 rtl=EC mame=8 | before pc=1FFF r0=08 r1-3=EC,5B,9C r1'-3'=8C,FB,D8 psl=98 psu=E7
+[AD Rn] AD BC B3 @1FFF: R1' rtl=8D mame=49 | before pc=1FFF r0=08 r1-3=EC,5B,9C r1'-3'=8C,FB,D8 psl=98 psu=E7
+[AD cycles] AD BC B3 @1FFF: cycles rtl=6 mame=4 | before pc=1FFF r0=08 r1-3=EC,5B,9C r1'-3'=8C,FB,D8 psl=98 psu=E7
+[AE IAR] AE 5D 04 @7FFE: IAR rtl=1 mame=6001 | before pc=7FFE r0=00 r1-3=7A,00,CD r1'-3'=FF,91,DA psl=BA psu=C6
+[AE PSL.C] AE FD B4 @4971: PSL rtl=84 mame=61 | before pc=4971 r0=79 r1-3=9B,A1,03 r1'-3'=1F,2C,01 psl=60 psu=05
+[AE PSL.CC] AE FD B4 @4971: PSL rtl=84 mame=61 | before pc=4971 r0=79 r1-3=9B,A1,03 r1'-3'=1F,2C,01 psl=60 psu=05
+[AE PSL.IDC] AE FD B4 @4971: PSL rtl=84 mame=61 | before pc=4971 r0=79 r1-3=9B,A1,03 r1'-3'=1F,2C,01 psl=60 psu=05
+[AE PSL.OVF] AE FD B4 @4971: PSL rtl=84 mame=61 | before pc=4971 r0=79 r1-3=9B,A1,03 r1'-3'=1F,2C,01 psl=60 psu=05
+[AE R0] AE 3F BD @40F7: R0 rtl=E2 mame=C9 | before pc=40F7 r0=00 r1-3=00,7F,06 r1'-3'=01,00,23 psl=49 psu=01
+[AF PSL.CC] AF C6 31 @001A: PSL rtl=A2 mame=42 | before pc=001A r0=26 r1-3=FF,91,FF r1'-3'=FF,00,83 psl=26 psu=00
+[AF PSL.IDC] AF C6 31 @001A: PSL rtl=A2 mame=42 | before pc=001A r0=26 r1-3=FF,91,FF r1'-3'=FF,00,83 psl=26 psu=00
+[AF R0] AF C6 31 @001A: R0 rtl=C0 mame=79 | before pc=001A r0=26 r1-3=FF,91,FF r1'-3'=FF,00,83 psl=26 psu=00
+[B5 IAR] B5 04 @7FFF: IAR rtl=1 mame=6001 | before pc=7FFF r0=B0 r1-3=FF,01,C2 r1'-3'=30,FF,D2 psl=A1 psu=00
+[B5 PSL.CC] B5 04 @7FFF: PSL rtl=A1 mame=21 | before pc=7FFF r0=B0 r1-3=FF,01,C2 r1'-3'=30,FF,D2 psl=A1 psu=00
+[B6 IAR] B6 04 @7FFF: IAR rtl=1 mame=6000 | before pc=7FFF r0=CA r1-3=FF,22,FF r1'-3'=FE,77,01 psl=55 psu=44
+[B6 PSL.CC] B6 04 @7FFF: PSL rtl=15 mame=55 | before pc=7FFF r0=CA r1-3=FF,22,FF r1'-3'=FE,77,01 psl=55 psu=44
+[B6 cycles] B6 04 @7FFF: cycles rtl=3 mame=2 | before pc=7FFF r0=CA r1-3=FF,22,FF r1'-3'=FE,77,01 psl=55 psu=44
+[B8 IAR] B8 D3 @001A: IAR rtl=393D mame=6044 | before pc=001A r0=4C r1-3=01,D5,87 r1'-3'=E4,AC,A4 psl=4C psu=81
+[B8 RAS top] B8 04 @7FFF: RAS rtl=1 mame=6001 | before pc=7FFF r0=E2 r1-3=4D,DD,00 r1'-3'=3C,00,FF psl=AE psu=C3
+[B8 cycles] B8 D3 @001A: cycles rtl=4 mame=5 | before pc=001A r0=4C r1-3=01,D5,87 r1'-3'=E4,AC,A4 psl=4C psu=81
+[B9 IAR] B9 40 @001B: IAR rtl=7FDD mame=1FDD | before pc=001B r0=63 r1-3=4C,FF,2C r1'-3'=01,FF,A0 psl=10 psu=85
+[B9 cycles] B9 C6 @0026: cycles rtl=4 mame=5 | before pc=0026 r0=B3 r1-3=87,00,FE r1'-3'=01,01,8E psl=8B psu=41
+[BA IAR] BA F3 @2001: IAR rtl=F71 mame=1E91 | before pc=2001 r0=01 r1-3=91,FF,2B r1'-3'=89,CD,7A psl=79 psu=80
+[BA cycles] BA F3 @2001: cycles rtl=4 mame=5 | before pc=2001 r0=01 r1-3=91,FF,2B r1'-3'=89,CD,7A psl=79 psu=80
+[BB IAR] BB 04 @7FFF: IAR rtl=4 mame=6EB3 | before pc=7FFF r0=FE r1-3=8C,19,D4 r1'-3'=FB,01,F8 psl=93 psu=02
+[BB RAS top] BB 04 @7FFF: RAS rtl=1 mame=6001 | before pc=7FFF r0=FE r1-3=8C,19,D4 r1'-3'=FB,01,F8 psl=93 psu=02
+[BB cycles] BB 04 @7FFF: cycles rtl=3 mame=5 | before pc=7FFF r0=FE r1-3=8C,19,D4 r1'-3'=FB,01,F8 psl=93 psu=02
+[C2 IAR] C2 @1FFF: IAR rtl=2000 mame=0 | before pc=1FFF r0=1D r1-3=FF,85,FB r1'-3'=01,46,01 psl=81 psu=87
+[C8 IAR] C8 04 @7FFF: IAR rtl=1 mame=6001 | before pc=7FFF r0=6D r1-3=4F,DE,C0 r1'-3'=E2,2F,B2 psl=AD psu=07
+[C8 writes] C8 C9 @001C: bus rtl={Mw[75F0]=08 } mame={Mw[495C]=08 } | before pc=001C r0=08 r1-3=0A,00,FE r1'-3'=44,FF,25 psl=6B psu=C3
+[C9 IAR] C9 04 @7FFF: IAR rtl=1 mame=6001 | before pc=7FFF r0=7C r1-3=01,00,7B r1'-3'=2D,3F,A9 psl=48 psu=C6
+[C9 cycles] C9 04 @7FFF: cycles rtl=3 mame=5 | before pc=7FFF r0=7C r1-3=01,00,7B r1'-3'=2D,3F,A9 psl=48 psu=C6
+[C9 writes] C9 4C @001A: bus rtl={Mw[7FE8]=DA } mame={Mw[1FE8]=DA } | before pc=001A r0=6C r1-3=DA,9F,FF r1'-3'=FF,FF,D3 psl=4F psu=00
+[CA writes] CA D5 @0020: bus rtl={Mw[56CF]=95 } mame={Mw[79B3]=95 } | before pc=0020 r0=BB r1-3=FF,01,00 r1'-3'=00,95,00 psl=B7 psu=87
+[CB IAR] CB C6 @1FFE: IAR rtl=2000 mame=0 | before pc=1FFE r0=92 r1-3=FF,0A,01 r1'-3'=FF,FF,00 psl=FD psu=85
+[CB cycles] CB 10 @5FFF: cycles rtl=3 mame=5 | before pc=5FFF r0=02 r1-3=00,FF,75 r1'-3'=08,01,01 psl=83 psu=43
+[CB writes] CB 4A @0026: bus rtl={Mw[7FF2]=01 } mame={Mw[1FF2]=01 } | before pc=0026 r0=DA r1-3=01,FE,00 r1'-3'=85,00,01 psl=9A psu=42
+[CC writes] CC D7 48 @7023: bus rtl={Mw[4033]=00 } mame={Mw[2033]=FF } | before pc=7023 r0=00 r1-3=03,17,00 r1'-3'=94,3C,46 psl=43 psu=07
+[CD IAR] CD 04 21 @7FFF: IAR rtl=2 mame=6002 | before pc=7FFF r0=89 r1-3=0C,E0,7E r1'-3'=01,05,C8 psl=61 psu=C2
+[CD cycles] CD 04 21 @7FFF: cycles rtl=4 mame=6 | before pc=7FFF r0=89 r1-3=0C,E0,7E r1'-3'=01,05,C8 psl=61 psu=C2
+[CD writes] CD 04 21 @7FFF: bus rtl={Mw[421]=0C } mame={Mw[7039]=89 } | before pc=7FFF r0=89 r1-3=0C,E0,7E r1'-3'=01,05,C8 psl=61 psu=C2
+[CE IAR] CE 04 6D @7FFF: IAR rtl=2 mame=6002 | before pc=7FFF r0=55 r1-3=FF,1E,01 r1'-3'=00,57,11 psl=AD psu=C7
+[CE writes] CE 7F 2D @5858: bus rtl={Mw[6015]=A1 } mame={Mw[4015]=A1 } | before pc=5858 r0=A1 r1-3=60,E8,B3 r1'-3'=AB,01,01 psl=88 psu=40
+[CF IAR] CF 04 43 @7FFF: IAR rtl=2 mame=6002 | before pc=7FFF r0=03 r1-3=E6,AD,EB r1'-3'=A3,00,01 psl=83 psu=43
+[CF cycles] CF 04 43 @7FFF: cycles rtl=4 mame=6 | before pc=7FFF r0=03 r1-3=E6,AD,EB r1'-3'=A3,00,01 psl=83 psu=43
+[CF writes] CF A4 54 @0018: bus rtl={Mw[3E]=E1 } mame={Mw[603E]=E1 } | before pc=0018 r0=E1 r1-3=00,01,B4 r1'-3'=C4,BB,00 psl=A1 psu=40
+[D2 IAR] D2 @1FFF: IAR rtl=2000 mame=0 | before pc=1FFF r0=C7 r1-3=B6,09,6F r1'-3'=01,5D,64 psl=88 psu=84
+[D5 IAR] D5 B8 @7FFE: IAR rtl=0 mame=6000 | before pc=7FFE r0=DF r1-3=9A,C0,85 r1'-3'=DE,74,FF psl=80 psu=47
+[D6 IAR] D6 63 @3FFE: IAR rtl=4000 mame=2000 | before pc=3FFE r0=14 r1-3=FF,A4,BC r1'-3'=F2,68,00 psl=4D psu=84
+[D8 IAR] D8 8D @7FF2: IAR rtl=6093 mame=622C | before pc=7FF2 r0=00 r1-3=00,39,FF r1'-3'=00,8E,1E psl=A0 psu=86
+[D8 cycles] D8 8D @7FF2: cycles rtl=4 mame=5 | before pc=7FF2 r0=00 r1-3=00,39,FF r1'-3'=00,8E,1E psl=A0 psu=86
+[D9 IAR] D9 CA @001E: IAR rtl=6634 mame=EBB | before pc=001E r0=00 r1-3=00,FF,BA r1'-3'=32,9F,00 psl=B5 psu=80
+[D9 cycles] D9 CA @001E: cycles rtl=4 mame=5 | before pc=001E r0=00 r1-3=00,FF,BA r1'-3'=32,9F,00 psl=B5 psu=80
+[DA IAR] DA 54 @0018: IAR rtl=7FEE mame=1FEE | before pc=0018 r0=92 r1-3=B7,FF,01 r1'-3'=00,44,01 psl=92 psu=07
+[DA cycles] DA D1 @001D: cycles rtl=4 mame=5 | before pc=001D r0=B3 r1-3=FF,F4,FF r1'-3'=01,7E,FF psl=4C psu=03
+[DB IAR] DB 42 @001D: IAR rtl=7FE1 mame=1FE1 | before pc=001D r0=09 r1-3=00,0C,00 r1'-3'=00,FF,00 psl=4D psu=C6
+[DB cycles] DB C8 @0020: cycles rtl=4 mame=5 | before pc=0020 r0=26 r1-3=00,00,EC r1'-3'=5F,FA,3F psl=79 psu=45
+[DC IAR] DC 89 04 @7FFE: IAR rtl=3D8A mame=40B9 | before pc=7FFE r0=2C r1-3=C7,5F,F9 r1'-3'=5E,FF,FF psl=69 psu=60
+[DF IAR] DF B2 04 @7FFE: IAR rtl=1 mame=6001 | before pc=7FFE r0=FF r1-3=E6,0E,FF r1'-3'=01,01,FF psl=41 psu=C7
+[E1 IAR] E1 @1FFF: IAR rtl=2000 mame=0 | before pc=1FFF r0=BB r1-3=01,82,DF r1'-3'=09,15,4C psl=88 psu=81
+[E2 IAR] E2 @1FFF: IAR rtl=2000 mame=0 | before pc=1FFF r0=A6 r1-3=00,F0,FF r1'-3'=00,00,00 psl=AC psu=40
+[E2 PSL.CC] E2 @1FFF: PSL rtl=6C mame=AC | before pc=1FFF r0=A6 r1-3=00,F0,FF r1'-3'=00,00,00 psl=AC psu=40
+[E7 IAR] E7 C6 @3FFE: IAR rtl=4000 mame=2000 | before pc=3FFE r0=30 r1-3=49,7F,9B r1'-3'=01,00,01 psl=81 psu=05
+[E7 PSL.CC] E7 C6 @3FFE: PSL rtl=41 mame=81 | before pc=3FFE r0=30 r1-3=49,7F,9B r1'-3'=01,00,01 psl=81 psu=05
+[E8 IAR] E8 ED @7FFE: IAR rtl=0 mame=6000 | before pc=7FFE r0=63 r1-3=62,01,9F r1'-3'=89,01,00 psl=42 psu=00
+[E8 PSL.CC] E8 4D @001A: PSL rtl=0 mame=80 | before pc=001A r0=00 r1-3=00,00,00 r1'-3'=00,95,FF psl=00 psu=84
+[E9 PSL.CC] E9 C6 @001F: PSL rtl=BD mame=7D | before pc=001F r0=7D r1-3=AB,00,8B r1'-3'=00,01,1B psl=7D psu=05
+[EA PSL.CC] EA 5D @001C: PSL rtl=71 mame=B1 | before pc=001C r0=71 r1-3=FF,01,00 r1'-3'=16,00,01 psl=71 psu=83
+[EB IAR] EB 24 @7FFE: IAR rtl=0 mame=6000 | before pc=7FFE r0=F7 r1-3=0E,6C,41 r1'-3'=2E,FF,45 psl=82 psu=E7
+[EB PSL.CC] EB C1 @0019: PSL rtl=49 mame=89 | before pc=0019 r0=C9 r1-3=36,17,23 r1'-3'=18,00,01 psl=49 psu=C1
+[EC IAR] EC 04 88 @7FFF: IAR rtl=2 mame=6002 | before pc=7FFF r0=DE r1-3=FF,FF,81 r1'-3'=FF,65,76 psl=28 psu=40
+[EC PSL.CC] EC BF 00 @0500: PSL rtl=44 mame=84 | before pc=0500 r0=84 r1-3=25,5A,20 r1'-3'=00,6E,00 psl=44 psu=83
+[ED PSL.CC] ED CA 5D @269C: PSL rtl=6A mame=AA | before pc=269C r0=AA r1-3=9D,AE,FB r1'-3'=E4,D6,DC psl=AA psu=C4
+[EE IAR] EE A1 24 @1FFF: IAR rtl=2002 mame=2 | before pc=1FFF r0=89 r1-3=71,B8,03 r1'-3'=A7,01,10 psl=81 psu=C5
+[EE PSL.CC] EE D1 E8 @4003: PSL rtl=88 mame=48 | before pc=4003 r0=D1 r1-3=B2,FC,4F r1'-3'=01,00,FF psl=88 psu=C1
+[EE Rn] EE A1 24 @1FFF: R2 rtl=B9 mame=B8 | before pc=1FFF r0=89 r1-3=71,B8,03 r1'-3'=A7,01,10 psl=81 psu=C5
+[EE cycles] EE A1 24 @1FFF: cycles rtl=6 mame=4 | before pc=1FFF r0=89 r1-3=71,B8,03 r1'-3'=A7,01,10 psl=81 psu=C5
+[EF IAR] EF 54 1E @5FFF: IAR rtl=6002 mame=4002 | before pc=5FFF r0=81 r1-3=00,3E,FD r1'-3'=D0,3E,01 psl=68 psu=81
+[EF Rn] EF 54 1E @5FFF: R3 rtl=FC mame=FE | before pc=5FFF r0=81 r1-3=00,3E,FD r1'-3'=D0,3E,01 psl=68 psu=81
+[EF cycles] EF 54 1E @5FFF: cycles rtl=4 mame=6 | before pc=5FFF r0=81 r1-3=00,3E,FD r1'-3'=D0,3E,01 psl=68 psu=81
+[F2 IAR] F2 @1FFF: IAR rtl=2000 mame=0 | before pc=1FFF r0=B0 r1-3=00,01,95 r1'-3'=02,A5,7F psl=95 psu=A7
+[F3 IAR] F3 @7FFF: IAR rtl=0 mame=6000 | before pc=7FFF r0=FF r1-3=FF,00,01 r1'-3'=01,BB,00 psl=AF psu=85
+[F4 IAR] F4 04 @7FFF: IAR rtl=1 mame=6001 | before pc=7FFF r0=80 r1-3=26,00,01 r1'-3'=01,68,B2 psl=98 psu=42
+[F8 IAR] F8 55 @001E: IAR rtl=7FF5 mame=1FF5 | before pc=001E r0=7A r1-3=82,2A,01 r1'-3'=00,01,EE psl=4C psu=85
+[F8 cycles] F8 D7 @001D: cycles rtl=4 mame=5 | before pc=001D r0=AD r1-3=AD,9B,01 r1'-3'=2B,26,00 psl=AA psu=47
+[F9 IAR] F9 D6 @0022: IAR rtl=3D2C mame=71B5 | before pc=0022 r0=BA r1-3=6A,00,FF r1'-3'=28,01,01 psl=66 psu=80
+[F9 cycles] F9 D6 @0022: cycles rtl=4 mame=5 | before pc=0022 r0=BA r1-3=6A,00,FF r1'-3'=28,01,01 psl=66 psu=80
+[FA IAR] FA 47 @001E: IAR rtl=7FE7 mame=1FE7 | before pc=001E r0=00 r1-3=4B,1D,7A r1'-3'=01,21,B9 psl=50 psu=82
+[FA cycles] FA DF @001D: cycles rtl=4 mame=5 | before pc=001D r0=B7 r1-3=00,00,CB r1'-3'=00,A7,B7 psl=B7 psu=44
+[FB IAR] FB CE @0023: IAR rtl=3EC6 mame=3DD7 | before pc=0023 r0=E2 r1-3=FF,1F,7E r1'-3'=00,4D,E4 psl=62 psu=02
+[FB cycles] FB CE @0023: cycles rtl=4 mame=5 | before pc=0023 r0=E2 r1-3=FF,1F,7E r1'-3'=00,4D,E4 psl=62 psu=02
+[FC IAR] FC 77 BB @1FFE: IAR rtl=77BB mame=7704 | before pc=1FFE r0=B6 r1-3=DB,00,51 r1'-3'=3D,A9,08 psl=50 psu=63
+[FD IAR] FD 04 EA @7FFF: IAR rtl=4EA mame=77DD | before pc=7FFF r0=2B r1-3=01,FF,11 r1'-3'=23,34,FF psl=7A psu=01
+[FD cycles] FD 04 EA @7FFF: cycles rtl=3 mame=5 | before pc=7FFF r0=2B r1-3=01,FF,11 r1'-3'=23,34,FF psl=7A psu=01
+[FF IAR] FF 14 04 @7FFE: IAR rtl=1404 mame=148F | before pc=7FFE r0=9F r1-3=91,01,00 r1'-3'=00,01,9D psl=BB psu=C0
+== opcodes never compared: 7, interrupt entries compared: 0 direct, 0 indirect vector
+(RTL lockstep req/ad mismatches during these runs: 0)

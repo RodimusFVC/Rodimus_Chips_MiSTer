@@ -1,0 +1,505 @@
+{
+ "fleet_8039_extrom": {
+  "use": "Nintendo / Galaxian / Konami82",
+  "ref": {
+   "cells": {
+    "MISTRAL_ALUT2": 118,
+    "MISTRAL_ALUT3": 133,
+    "MISTRAL_ALUT4": 196,
+    "MISTRAL_ALUT5": 421,
+    "MISTRAL_ALUT6": 185,
+    "MISTRAL_ALUT_ARITH": 48,
+    "MISTRAL_CLKBUF": 1,
+    "MISTRAL_FF": 171,
+    "MISTRAL_MLAB": 32,
+    "MISTRAL_NOT": 21
+   },
+   "luts": 1122,
+   "ff": 171,
+   "mlab": 32,
+   "m10k": 0,
+   "est_alm": 642,
+   "levels": 14,
+   "carry": 0,
+   "est_ns": 8.2
+  },
+  "t48sv": {
+   "cells": {
+    "MISTRAL_ALUT2": 109,
+    "MISTRAL_ALUT3": 125,
+    "MISTRAL_ALUT4": 163,
+    "MISTRAL_ALUT5": 272,
+    "MISTRAL_ALUT6": 154,
+    "MISTRAL_ALUT_ARITH": 51,
+    "MISTRAL_CLKBUF": 1,
+    "MISTRAL_FF": 168,
+    "MISTRAL_MLAB": 32,
+    "MISTRAL_NOT": 22
+   },
+   "luts": 896,
+   "ff": 168,
+   "mlab": 32,
+   "m10k": 0,
+   "est_alm": 513,
+   "levels": 14,
+   "carry": 0,
+   "est_ns": 8.2
+  }
+ },
+ "fleet_8035_extrom": {
+  "use": "SegaG80 speech",
+  "ref": {
+   "cells": {
+    "MISTRAL_ALUT2": 118,
+    "MISTRAL_ALUT3": 129,
+    "MISTRAL_ALUT4": 203,
+    "MISTRAL_ALUT5": 405,
+    "MISTRAL_ALUT6": 185,
+    "MISTRAL_ALUT_ARITH": 48,
+    "MISTRAL_CLKBUF": 1,
+    "MISTRAL_FF": 169,
+    "MISTRAL_MLAB": 16,
+    "MISTRAL_NOT": 21
+   },
+   "luts": 1109,
+   "ff": 169,
+   "mlab": 16,
+   "m10k": 0,
+   "est_alm": 635,
+   "levels": 14,
+   "carry": 0,
+   "est_ns": 8.2
+  },
+  "t48sv": {
+   "cells": {
+    "MISTRAL_ALUT2": 112,
+    "MISTRAL_ALUT3": 127,
+    "MISTRAL_ALUT4": 168,
+    "MISTRAL_ALUT5": 280,
+    "MISTRAL_ALUT6": 136,
+    "MISTRAL_ALUT_ARITH": 51,
+    "MISTRAL_CLKBUF": 1,
+    "MISTRAL_FF": 166,
+    "MISTRAL_MLAB": 16,
+    "MISTRAL_NOT": 22
+   },
+   "luts": 896,
+   "ff": 166,
+   "mlab": 16,
+   "m10k": 0,
+   "est_alm": 504,
+   "levels": 14,
+   "carry": 0,
+   "est_ns": 8.2
+  }
+ },
+ "fleet_t48_core": {
+  "use": "SegaG80 USB (i8035.v)",
+  "ref": {
+   "cells": {
+    "MISTRAL_ALUT2": 119,
+    "MISTRAL_ALUT3": 136,
+    "MISTRAL_ALUT4": 201,
+    "MISTRAL_ALUT5": 377,
+    "MISTRAL_ALUT6": 198,
+    "MISTRAL_ALUT_ARITH": 48,
+    "MISTRAL_CLKBUF": 2,
+    "MISTRAL_FF": 166,
+    "MISTRAL_NOT": 21
+   },
+   "luts": 1100,
+   "ff": 166,
+   "mlab": 0,
+   "m10k": 0,
+   "est_alm": 637,
+   "levels": 14,
+   "carry": 0,
+   "est_ns": 8.2
+  },
+  "t48sv": {
+   "cells": {
+    "MISTRAL_ALUT2": 107,
+    "MISTRAL_ALUT3": 124,
+    "MISTRAL_ALUT4": 171,
+    "MISTRAL_ALUT5": 272,
+    "MISTRAL_ALUT6": 138,
+    "MISTRAL_ALUT_ARITH": 51,
+    "MISTRAL_CLKBUF": 2,
+    "MISTRAL_FF": 163,
+    "MISTRAL_NOT": 22
+   },
+   "luts": 885,
+   "ff": 163,
+   "mlab": 0,
+   "m10k": 0,
+   "est_alm": 499,
+   "levels": 14,
+   "carry": 0,
+   "est_ns": 8.2
+  }
+ },
+ "fleet_upi41_core": {
+  "use": "DECOCassette (i8041_top.v)",
+  "ref": {
+   "cells": {
+    "MISTRAL_ALUT2": 154,
+    "MISTRAL_ALUT3": 192,
+    "MISTRAL_ALUT4": 230,
+    "MISTRAL_ALUT5": 342,
+    "MISTRAL_ALUT6": 251,
+    "MISTRAL_ALUT_ARITH": 48,
+    "MISTRAL_CLKBUF": 2,
+    "MISTRAL_FF": 185,
+    "MISTRAL_NOT": 14
+   },
+   "luts": 1231,
+   "ff": 185,
+   "mlab": 0,
+   "m10k": 0,
+   "est_alm": 729,
+   "levels": 15,
+   "carry": 0,
+   "est_ns": 8.75
+  },
+  "t48sv": {
+   "cells": {
+    "MISTRAL_ALUT2": 111,
+    "MISTRAL_ALUT3": 122,
+    "MISTRAL_ALUT4": 184,
+    "MISTRAL_ALUT5": 244,
+    "MISTRAL_ALUT6": 143,
+    "MISTRAL_ALUT_ARITH": 51,
+    "MISTRAL_CLKBUF": 2,
+    "MISTRAL_FF": 182,
+    "MISTRAL_NOT": 15
+   },
+   "luts": 870,
+   "ff": 182,
+   "mlab": 0,
+   "m10k": 0,
+   "est_alm": 494,
+   "levels": 14,
+   "carry": 0,
+   "est_ns": 8.2
+  }
+ },
+ "extrom_8040": {
+  "use": "-",
+  "ref": {
+   "cells": {
+    "MISTRAL_ALUT2": 119,
+    "MISTRAL_ALUT3": 131,
+    "MISTRAL_ALUT4": 208,
+    "MISTRAL_ALUT5": 439,
+    "MISTRAL_ALUT6": 195,
+    "MISTRAL_ALUT_ARITH": 48,
+    "MISTRAL_CLKBUF": 1,
+    "MISTRAL_FF": 173,
+    "MISTRAL_MLAB": 64,
+    "MISTRAL_NOT": 21
+   },
+   "luts": 1161,
+   "ff": 173,
+   "mlab": 64,
+   "m10k": 0,
+   "est_alm": 666,
+   "levels": 14,
+   "carry": 0,
+   "est_ns": 8.2
+  },
+  "t48sv": {
+   "cells": {
+    "MISTRAL_ALUT2": 111,
+    "MISTRAL_ALUT3": 124,
+    "MISTRAL_ALUT4": 167,
+    "MISTRAL_ALUT5": 304,
+    "MISTRAL_ALUT6": 151,
+    "MISTRAL_ALUT_ARITH": 51,
+    "MISTRAL_CLKBUF": 1,
+    "MISTRAL_FF": 170,
+    "MISTRAL_MLAB": 64,
+    "MISTRAL_NOT": 22
+   },
+   "luts": 930,
+   "ff": 170,
+   "mlab": 64,
+   "m10k": 0,
+   "est_alm": 528,
+   "levels": 14,
+   "carry": 0,
+   "est_ns": 8.2
+  }
+ },
+ "B_t48_core": {
+  "use": "-",
+  "ref": {
+   "cells": {
+    "MISTRAL_ALUT2": 141,
+    "MISTRAL_ALUT3": 154,
+    "MISTRAL_ALUT4": 216,
+    "MISTRAL_ALUT5": 358,
+    "MISTRAL_ALUT6": 282,
+    "MISTRAL_ALUT_ARITH": 48,
+    "MISTRAL_CLKBUF": 2,
+    "MISTRAL_FF": 166,
+    "MISTRAL_NOT": 21
+   },
+   "luts": 1220,
+   "ff": 166,
+   "mlab": 0,
+   "m10k": 0,
+   "est_alm": 739,
+   "levels": 15,
+   "carry": 0,
+   "est_ns": 8.75
+  },
+  "t48sv": {
+   "cells": {
+    "MISTRAL_ALUT2": 107,
+    "MISTRAL_ALUT3": 124,
+    "MISTRAL_ALUT4": 171,
+    "MISTRAL_ALUT5": 272,
+    "MISTRAL_ALUT6": 138,
+    "MISTRAL_ALUT_ARITH": 51,
+    "MISTRAL_CLKBUF": 2,
+    "MISTRAL_FF": 163,
+    "MISTRAL_NOT": 22
+   },
+   "luts": 885,
+   "ff": 163,
+   "mlab": 0,
+   "m10k": 0,
+   "est_alm": 499,
+   "levels": 14,
+   "carry": 0,
+   "est_ns": 8.2
+  }
+ },
+ "B_t8039_notri": {
+  "use": "-",
+  "ref": {
+   "cells": {
+    "MISTRAL_ALUT2": 156,
+    "MISTRAL_ALUT3": 171,
+    "MISTRAL_ALUT4": 213,
+    "MISTRAL_ALUT5": 388,
+    "MISTRAL_ALUT6": 248,
+    "MISTRAL_ALUT_ARITH": 48,
+    "MISTRAL_CLKBUF": 1,
+    "MISTRAL_FF": 171,
+    "MISTRAL_MLAB": 32,
+    "MISTRAL_NOT": 21
+   },
+   "luts": 1245,
+   "ff": 171,
+   "mlab": 32,
+   "m10k": 0,
+   "est_alm": 735,
+   "levels": 14,
+   "carry": 0,
+   "est_ns": 8.2
+  },
+  "t48sv": {
+   "cells": {
+    "MISTRAL_ALUT2": 109,
+    "MISTRAL_ALUT3": 128,
+    "MISTRAL_ALUT4": 162,
+    "MISTRAL_ALUT5": 272,
+    "MISTRAL_ALUT6": 154,
+    "MISTRAL_ALUT_ARITH": 51,
+    "MISTRAL_CLKBUF": 1,
+    "MISTRAL_FF": 168,
+    "MISTRAL_MLAB": 32,
+    "MISTRAL_NOT": 22
+   },
+   "luts": 898,
+   "ff": 168,
+   "mlab": 32,
+   "m10k": 0,
+   "est_alm": 514,
+   "levels": 14,
+   "carry": 0,
+   "est_ns": 8.2
+  }
+ },
+ "B_upi41_core_a0": {
+  "use": "-",
+  "ref": {
+   "cells": {
+    "MISTRAL_ALUT2": 155,
+    "MISTRAL_ALUT3": 171,
+    "MISTRAL_ALUT4": 204,
+    "MISTRAL_ALUT5": 334,
+    "MISTRAL_ALUT6": 258,
+    "MISTRAL_ALUT_ARITH": 48,
+    "MISTRAL_CLKBUF": 2,
+    "MISTRAL_FF": 174,
+    "MISTRAL_NOT": 17
+   },
+   "luts": 1187,
+   "ff": 174,
+   "mlab": 0,
+   "m10k": 0,
+   "est_alm": 711,
+   "levels": 15,
+   "carry": 0,
+   "est_ns": 8.75
+  },
+  "t48sv": {
+   "cells": {
+    "MISTRAL_ALUT2": 118,
+    "MISTRAL_ALUT3": 117,
+    "MISTRAL_ALUT4": 176,
+    "MISTRAL_ALUT5": 234,
+    "MISTRAL_ALUT6": 144,
+    "MISTRAL_ALUT_ARITH": 51,
+    "MISTRAL_CLKBUF": 2,
+    "MISTRAL_FF": 171,
+    "MISTRAL_NOT": 18
+   },
+   "luts": 858,
+   "ff": 171,
+   "mlab": 0,
+   "m10k": 0,
+   "est_alm": 489,
+   "levels": 14,
+   "carry": 0,
+   "est_ns": 8.2
+  }
+ },
+ "B_t21_core": {
+  "use": "-",
+  "ref": {
+   "cells": {
+    "MISTRAL_ALUT2": 99,
+    "MISTRAL_ALUT3": 104,
+    "MISTRAL_ALUT4": 136,
+    "MISTRAL_ALUT5": 277,
+    "MISTRAL_ALUT6": 156,
+    "MISTRAL_ALUT_ARITH": 48,
+    "MISTRAL_CLKBUF": 2,
+    "MISTRAL_FF": 132,
+    "MISTRAL_NOT": 22
+   },
+   "luts": 842,
+   "ff": 132,
+   "mlab": 0,
+   "m10k": 0,
+   "est_alm": 487,
+   "levels": 15,
+   "carry": 0,
+   "est_ns": 8.75
+  },
+  "t48sv": {
+   "cells": {
+    "MISTRAL_ALUT2": 75,
+    "MISTRAL_ALUT3": 92,
+    "MISTRAL_ALUT4": 147,
+    "MISTRAL_ALUT5": 206,
+    "MISTRAL_ALUT6": 93,
+    "MISTRAL_ALUT_ARITH": 51,
+    "MISTRAL_CLKBUF": 2,
+    "MISTRAL_FF": 129,
+    "MISTRAL_NOT": 23
+   },
+   "luts": 687,
+   "ff": 129,
+   "mlab": 0,
+   "m10k": 0,
+   "est_alm": 378,
+   "levels": 14,
+   "carry": 0,
+   "est_ns": 8.2
+  }
+ },
+ "B_t22_core": {
+  "use": "-",
+  "ref": {
+   "cells": {
+    "MISTRAL_ALUT2": 138,
+    "MISTRAL_ALUT3": 137,
+    "MISTRAL_ALUT4": 178,
+    "MISTRAL_ALUT5": 300,
+    "MISTRAL_ALUT6": 200,
+    "MISTRAL_ALUT_ARITH": 48,
+    "MISTRAL_CLKBUF": 2,
+    "MISTRAL_FF": 176,
+    "MISTRAL_NOT": 27
+   },
+   "luts": 1028,
+   "ff": 176,
+   "mlab": 0,
+   "m10k": 0,
+   "est_alm": 602,
+   "levels": 14,
+   "carry": 0,
+   "est_ns": 8.2
+  },
+  "t48sv": {
+   "cells": {
+    "MISTRAL_ALUT2": 85,
+    "MISTRAL_ALUT3": 111,
+    "MISTRAL_ALUT4": 155,
+    "MISTRAL_ALUT5": 244,
+    "MISTRAL_ALUT6": 114,
+    "MISTRAL_ALUT_ARITH": 60,
+    "MISTRAL_CLKBUF": 2,
+    "MISTRAL_FF": 168,
+    "MISTRAL_NOT": 28
+   },
+   "luts": 797,
+   "ff": 168,
+   "mlab": 0,
+   "m10k": 0,
+   "est_alm": 441,
+   "levels": 14,
+   "carry": 0,
+   "est_ns": 8.2
+  }
+ },
+ "A_core_min": {
+  "use": "-",
+  "ref": {
+   "cells": {
+    "MISTRAL_ALUT2": 97,
+    "MISTRAL_ALUT3": 102,
+    "MISTRAL_ALUT4": 180,
+    "MISTRAL_ALUT5": 348,
+    "MISTRAL_ALUT6": 182,
+    "MISTRAL_ALUT_ARITH": 35,
+    "MISTRAL_CLKBUF": 2,
+    "MISTRAL_FF": 104,
+    "MISTRAL_NOT": 5
+   },
+   "luts": 949,
+   "ff": 104,
+   "mlab": 0,
+   "m10k": 0,
+   "est_alm": 557,
+   "levels": 14,
+   "carry": 0,
+   "est_ns": 8.2
+  },
+  "t48sv": {
+   "cells": {
+    "MISTRAL_ALUT2": 85,
+    "MISTRAL_ALUT3": 99,
+    "MISTRAL_ALUT4": 140,
+    "MISTRAL_ALUT5": 234,
+    "MISTRAL_ALUT6": 134,
+    "MISTRAL_ALUT_ARITH": 38,
+    "MISTRAL_CLKBUF": 2,
+    "MISTRAL_FF": 102,
+    "MISTRAL_NOT": 6
+   },
+   "luts": 736,
+   "ff": 102,
+   "mlab": 0,
+   "m10k": 0,
+   "est_alm": 426,
+   "levels": 12,
+   "carry": 3,
+   "est_ns": 7.25
+  }
+ }
+}

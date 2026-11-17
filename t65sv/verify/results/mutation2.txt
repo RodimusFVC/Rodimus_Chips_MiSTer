@@ -1,0 +1,8 @@
+MUT 1 irq_branch_delay: detected by directed sweep
+MUT 2 nmi_vector_entered: detected by random stream
+MUT 3 nmi_branch_delay: detected by random stream
+MUT 4 nmi_after_brk: detected by random stream
+MUT 5 really_rdy: detected by random stream
+MUT 6 busb_r_cond: detected by random stream
+MUT 7 sync_out: detected by random stream
+MUT 8 vp_n: detected by random stream

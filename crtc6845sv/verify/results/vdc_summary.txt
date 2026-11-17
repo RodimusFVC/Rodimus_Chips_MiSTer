@@ -1,0 +1,8 @@
+seed 3 exit 0
+seed 4 exit 0
+seed 2 exit 0
+seed 1 exit 0
+RESULT scenarios 400 clocks 2951898746 chars 31213097 frames 7834 lines 385253 pixels 54864281 reads 5214619 (status reads while busy 1311) r31_ops 3191 blocks 1045 8568_vs_8563_mismatches 0 intr_checks 2951505279 intr_low 5260862 intr_mismatches 0
+RESULT scenarios 400 clocks 2913267956 chars 30710292 frames 8009 lines 335951 pixels 45451769 reads 5148411 (status reads while busy 1423) r31_ops 3085 blocks 1095 8568_vs_8563_mismatches 0 intr_checks 2912900750 intr_low 5274171 intr_mismatches 0
+RESULT scenarios 400 clocks 2499225317 chars 27512302 frames 8390 lines 343256 pixels 46246779 reads 4410504 (status reads while busy 1475) r31_ops 3270 blocks 1088 8568_vs_8563_mismatches 0 intr_checks 2498916322 intr_low 7041972 intr_mismatches 0
+RESULT scenarios 400 clocks 2751772776 chars 29155940 frames 8062 lines 418669 pixels 57726550 reads 4861420 (status reads while busy 1343) r31_ops 3098 blocks 1001 8568_vs_8563_mismatches 0 intr_checks 2751301285 intr_low 5110721 intr_mismatches 0

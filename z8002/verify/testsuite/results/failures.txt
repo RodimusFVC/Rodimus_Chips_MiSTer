@@ -1,0 +1,532 @@
+op=1511 ctx=0  popl    @r1,@r1                [Z15_ssN0_ddN0]  FAIL_STATE
+  words: 1511 3038 50EF   fcw_in=40EC
+  regs_in: 55D6 8F8D 386A 7C77 CDD7 AD12 D0DB 9A4D 9B2E EE6B 92C8 69E5 8221 B9F7 A789 D1C5
+  R1  mame=EA92 rtl=8F91
+
+op=1522 ctx=0  popl    @r2,@r2                [Z15_ssN0_ddN0]  FAIL_STATE
+  words: 1522 1BDE 4740   fcw_in=4094
+  regs_in: F537 9E62 5805 4C12 D071 2510 71F9 EE9C 1174 8978 DC18 C0B0 C2AB 2539 6310 6F04
+  R2  mame=4951 rtl=5809
+
+op=1FF0 ctx=0  call    r15                    [Z1F_ddN0_0000]  FAIL_STATE
+  words: 1FF0 8FC0 D517   fcw_in=40C4
+  regs_in: 9896 ACE7 B9E6 1101 AED5 56B7 ADAA B715 2D45 1141 17CE ECC3 8ADA F2C7 0833 C1FF
+  PC  mame=C1FD rtl=C1FF
+
+op=3940 ctx=0  ldps    @r4                    [Z39_ssN0_0000]  FAIL_STATE
+  words: 3940 B0CA 6658   fcw_in=4050
+  regs_in: 1FA1 1CF3 03BB 5E3D E998 5192 1016 1DDE 245A 3AAA 93FE B8A3 82D1 C439 92C8 C8C1
+  FCW mame=5C14 rtl=DC14 (diff 8000)
+
+op=3960 ctx=0  ldps    @r6                    [Z39_ssN0_0000]  FAIL_STATE
+  words: 3960 C004 A6C2   fcw_in=4034
+  regs_in: C8C8 E1E1 F36E 6AA8 ADFE EC39 8221 56BE 75FA D706 F387 36E0 3240 D403 8F9C 7725
+  FCW mame=6006 rtl=E006 (diff 8000)
+
+op=4C00 ctx=0  comb    %967e                  [Z4C_0000_0000_addr]  FAIL_STATE
+  words: 4C00 967E 2AC7   fcw_in=4024
+  regs_in: 8342 7EDD 4A5D B924 8908 59E2 E750 3A25 7301 CAB5 FB67 9415 6A83 18E6 BC31 3F29
+  FCW mame=4024 rtl=4014 (diff 0030)
+  mem[967E] was=DD5E mame=A15E rtl=225E
+
+op=5FF0 ctx=0  call    %cfb7(r15)             [Z5F_ddN0_0000_addr]  FAIL_STATE
+  words: 5FF0 CFB7 4A42   fcw_in=4000
+  regs_in: 00FC C6C6 F737 01BD EF24 BC13 04B0 DAD5 6EC5 F2FB 06AB 3FF4 E5D3 B1A6 B2B5 8677
+  PC  mame=562C rtl=562E
+
+op=741F ctx=0  lda     pr15,r1(r15)           [Z74_ssN0_dddd_0000_xxxx_0000_0000]  FAIL_STATE
+  words: 741F 1FCF 36F3   fcw_in=4058
+  regs_in: 65BC CE62 3B9E D89E D585 6157 7114 5C68 20C2 2BFB BB36 4123 1BD5 6B04 ED43 1A4C
+  R15 mame=9CC4 rtl=E8AE
+
+op=7425 ctx=0  lda     pr5,r2(r5)             [Z74_ssN0_dddd_0000_xxxx_0000_0000]  FAIL_STATE
+  words: 7425 F5FC CA12   fcw_in=408C
+  regs_in: AB2D 0BE1 5B3F 23EF 8E1D F82B E79E B83A C2F6 6EB1 DE43 6D4B 55D4 272A C099 5F20
+  R5  mame=B67E rtl=536A
+
+op=7900 ctx=0  ldps    %8167                  [Z79_0000_0000_addr]  FAIL_STATE
+  words: 7900 8167 DC20   fcw_in=4080
+  regs_in: 5906 F934 78B1 430B 1AA5 23F9 0EED 07A3 96E8 7649 32A0 255E 4F1F 2CC8 0ADB 5E7E
+  FCW mame=5603 rtl=D603 (diff 8000)
+
+op=7980 ctx=0  ldps    %7d1a(r8)              [Z79_ssN0_0000_addr]  FAIL_STATE
+  words: 7980 7D1A 941E   fcw_in=40B0
+  regs_in: F4B2 0B0A B5D3 D32A 2664 822A 40D0 1BCA 680D CC09 5EB7 FB05 8EB6 BD62 C313 4B95
+  FCW mame=7D9C rtl=FD9C (diff 8000)
+
+op=79C0 ctx=0  ldps    %f516(r12)             [Z79_ssN0_0000_addr]  FAIL_STATE
+  words: 79C0 F516 3926   fcw_in=4098
+  regs_in: C468 0E61 4C30 5BDC 8804 83BE 9480 C860 E322 9D53 1EA1 2D3B 5786 C9D6 2F14 B678
+  FCW mame=6352 rtl=E352 (diff 8000)
+
+op=7B00 ctx=0  iret                           [Z7B_0000_0000]  FAIL_STATE
+  words: 7B00 C2D9 CB5E   fcw_in=4084
+  regs_in: F74D 4072 447F 02C7 0F39 AEF4 37B1 0426 327C 1415 7849 6B80 8524 6DC4 E7D1 9887
+  FCW mame=433A rtl=C33A (diff 8000)
+
+op=7D00 ctx=0  ldctl   r0,ctrl0               [Z7D_dddd_0ccc]  FAIL_STATE
+  words: 7D00 8283 6DE7   fcw_in=4090
+  regs_in: 5B7F F4A0 F73F 80B1 C04C 3B1C CAE0 6427 BB3F 60BD 479F 6D0F BBFA B2A1 CF14 35FC
+  R0  mame=5B7F rtl=0000
+
+op=7D01 ctx=0  ldctl   r0,ctrl1               [Z7D_dddd_0ccc]  FAIL_STATE
+  words: 7D01 DDEE 7527   fcw_in=40E4
+  regs_in: 3C48 519C 1BAD 9FBF BF51 7DB6 FE35 E4CB 7C0F D44D FD04 C950 A190 2FD6 20D7 9836
+  R0  mame=3C48 rtl=0000
+
+op=7D2A ctx=0  ldctl   fcw,r2                 [Z7D_ssss_1ccc]  FAIL_STATE
+  words: 7D2A 7CB2 78E9   fcw_in=40E0
+  regs_in: 09AD 6882 E59D 5849 7F10 392F F376 EB31 7D17 09B7 4C38 6C87 211B 08EA 0FB6 0B54
+  FCW mame=659D rtl=E59D (diff 8000)
+
+op=7D7A ctx=0  ldctl   fcw,r7                 [Z7D_ssss_1ccc]  FAIL_STATE
+  words: 7D7A 9D74 097A   fcw_in=403C
+  regs_in: 2598 A8E6 C01D 0B09 E530 0C5E 8FA1 EA72 5345 DB2C 3126 0390 D8E5 ADB3 A70F 337E
+  FCW mame=6A72 rtl=EA72 (diff 8000)
+
+op=9510 ctx=0  popl    rr0,@r1                [Z95_ssN0_dddd]  FAIL_STATE
+  words: 9510 F101 CB35   fcw_in=406C
+  regs_in: 9A46 2FA8 DBFF D8FB 4149 B371 C09A 78A6 0FE0 7EA1 6867 6246 E8E3 AD0C 1974 407E
+  R1  mame=F98A rtl=2FAC
+
+op=9511 ctx=0  popl    rr1,@r1                [Z95_ssN0_dddd]  FAIL_STATE
+  words: 9511 1CF6 0A64   fcw_in=40CC
+  regs_in: BB04 C0E6 62A8 7DF0 7C7F D321 F132 F34A C0F2 4366 E50B B3A0 6070 0E1D FDD1 D7EE
+  R1  mame=DFE0 rtl=C0EA
+
+op=9711 ctx=0  pop     r1,@r1                 [Z97_ssN0_dddd]  FAIL_STATE
+  words: 9711 97A8 29A6   fcw_in=40F8
+  regs_in: BF9C B10C 2F4A DB9A 9A1B B495 D3A8 AB93 71C4 C557 D3FF C343 141F DDF3 F10D 1B3D
+  R1  mame=0953 rtl=B10E
+
+op=9722 ctx=0  pop     r2,@r2                 [Z97_ssN0_dddd]  FAIL_STATE
+  words: 9722 F321 6E49   fcw_in=408C
+  regs_in: 0203 DC8C AD08 75CA 78AF D02A 3640 361C EDB0 D6A8 0805 9144 20BA 3409 CC26 F106
+  R2  mame=0062 rtl=AD0A
+
+op=B203 ctx=0  sdlb    rh0,r1                 [ZB2_dddd_0011_0000_ssss_0000_0000]  FAIL_STATE
+  words: B203 C18F C7E9   fcw_in=40C8
+  regs_in: 748B FFF9 8B44 862A 7D74 98AC CDAD 7973 AC96 0264 78F7 125B C577 CBF8 DF51 5717
+  FCW mame=4048 rtl=40C8 (diff 0080)
+
+op=B213 ctx=0  sdlb    rh1,r3                 [ZB2_dddd_0011_0000_ssss_0000_0000]  FAIL_STATE
+  words: B213 A32A 8C85   fcw_in=4018
+  regs_in: 0CAB 4F37 C917 FFF8 0643 A0A3 3C78 9B23 0FBF 2964 C220 5D3F BD94 9EB5 2EF1 AB5D
+  FCW mame=4058 rtl=4048 (diff 0010)
+
+op=B810 ctx=0  trib    @r1,@r4,rl0            [ZB8_ddN0_0000_0000_rrrr_ssN0_0000]  FAIL_STATE
+  words: B810 784E 7E22   fcw_in=40A4
+  regs_in: A16A 8B15 C2B4 EACF EF96 3A5A C4B2 C0BF BB26 5C50 9691 A814 B30A C198 3627 312E
+  R1  mame=8B16 rtl=8B15
+  R8  mame=BB25 rtl=BB26
+  mem[8B14] was=18CE mame=188B rtl=18CE (rtl did not write)
+
+op=B812 ctx=0  trtib   @r1,@r13,rh6           [ZB8_ddN0_0010_0000_rrrr_ssN0_0000]  FAIL_STATE
+  words: B812 06D2 B53F   fcw_in=4058
+  regs_in: BDF1 41B9 2FFE A0D5 D32A 115F B7BF 203C D293 BFE3 A0DB E122 95C5 42FC 6426 2C56
+  FCW mame=4008 rtl=4058 (diff 0050)
+  R1  mame=2CBA rtl=41B9
+  R6  mame=B7BE rtl=B7BF
+
+op=B816 ctx=0  trtirb  @r1,@r11,rl0           [ZB8_ddN0_0110_0000_rrrr_ssN0_1110]  FAIL_STATE
+  words: B816 48B0 170B   fcw_in=405C
+  regs_in: BA65 5A7D 745F DD75 2EE5 F5C2 A6BB 6200 A179 F372 5D18 5FBE EF73 5DB6 9230 9643
+  FCW mame=400C rtl=405C (diff 0050)
+  R1  mame=8C7E rtl=5A7D
+  R8  mame=A178 rtl=A179
+
+op=B818 ctx=0  trdb    @r1,@r7,rl0            [ZB8_ddN0_1000_0000_rrrr_ssN0_0000]  FAIL_STATE
+  words: B818 4870 6C04   fcw_in=40E8
+  regs_in: A237 7250 14FF CCF6 D190 7F21 50D9 6CE2 AF46 B491 8630 AB84 9EB4 FAA1 6372 10F8
+  R1  mame=D54F rtl=7250
+  R8  mame=AF45 rtl=AF46
+  mem[7250] was=A286 mame=D586 rtl=A286 (rtl did not write)
+
+op=B81A ctx=0  trtrb   @r1,@r5,rh5            [ZB8_ddN0_1010_0000_rrrr_ssN0_0000]  FAIL_STATE
+  words: B81A 4550 075E   fcw_in=4084
+  regs_in: 5CFB D5CF B5B0 FF1A AF19 2B7B 74D9 841E 58FA 1AB3 86E5 3D0D E04C 341A A84B 6C1F
+  R1  mame=B5CE rtl=D5CF
+  R5  mame=2B7A rtl=2B7B
+
+op=B81E ctx=0  trtdrb  @r1,@r10,rl5           [ZB8_ddN0_1110_0000_rrrr_ssN0_1110]  FAIL_STATE
+  words: B81E 9DA2 0952   fcw_in=40B0
+  regs_in: 513B BBC6 FAB9 F303 9155 6025 8528 BCE6 9C49 7547 7747 CD48 44A8 ABE4 C8C1 D156
+  FCW mame=40A0 rtl=40B0 (diff 0010)
+  R1  mame=EEC5 rtl=BBC6
+  R13 mame=ABE3 rtl=ABE4
+
+op=B820 ctx=0  trib    @r2,@r9,rl3            [ZB8_ddN0_0000_0000_rrrr_ssN0_0000]  FAIL_STATE
+  words: B820 BB96 058A   fcw_in=40B8
+  regs_in: 36AD CBA9 8A07 CB62 BA08 45F1 7C16 A71D 0E27 91B7 3984 C0C3 28DF 8CCA 10C8 5D56
+  FCW mame=40A8 rtl=40B8 (diff 0010)
+  R1  mame=84A9 rtl=CBA9
+  R2  mame=8A08 rtl=8A07
+  R11 mame=C0C2 rtl=C0C3
+  mem[8A06] was=6877 mame=6884 rtl=6877 (rtl did not write)
+
+op=B822 ctx=0  trtib   @r2,@r14,rl0           [ZB8_ddN0_0010_0000_rrrr_ssN0_0000]  FAIL_STATE
+  words: B822 28EE B49A   fcw_in=4048
+  regs_in: B396 302C FA85 1C91 9409 8AD7 8267 3FE2 4731 AE0B BB85 1422 83E7 D1C2 ED10 CF98
+  FCW mame=4008 rtl=4048 (diff 0040)
+  R1  mame=EE2C rtl=302C
+  R2  mame=FA86 rtl=FA85
+  R8  mame=4730 rtl=4731
+
+op=B826 ctx=0  trtirb  @r2,@r15,rl3           [ZB8_ddN0_0110_0000_rrrr_ssN0_1110]  FAIL_STATE
+  words: B826 FBFF 8BEC   fcw_in=40A4
+  regs_in: 56DD DB9C 9096 4EB4 1F8E 38B7 8D45 2378 843D 3554 2701 C077 4FA6 A8DB E516 42EA
+  R1  mame=A99C rtl=DB9C
+  R2  mame=9097 rtl=9096
+  R11 mame=C076 rtl=C077
+
+op=B828 ctx=0  trdb    @r2,@r7,rh3            [ZB8_ddN0_1000_0000_rrrr_ssN0_0000]  FAIL_STATE
+  words: B828 C374 144F   fcw_in=401C
+  regs_in: 9A96 300E 6380 E871 5668 3D85 BB99 0321 ABB1 45A6 DFA4 53CD 406B FCCC 2EBA 546C
+  FCW mame=400C rtl=401C (diff 0010)
+  R1  mame=190E rtl=300E
+  R2  mame=637F rtl=6380
+  R3  mame=E870 rtl=E871
+  mem[6380] was=BC84 mame=1984 rtl=BC84 (rtl did not write)
+
+op=B82A ctx=0  trtrb   @r2,@r0,rl4            [ZB8_ddN0_1010_0000_rrrr_ssN0_0000]  FAIL_STATE
+  words: B82A AC09 5350   fcw_in=4034
+  regs_in: 26E2 37E5 197E 04D7 88DC B36A 7204 6A6C 7113 E356 844B 031A E190 1D6E FEB2 7238
+  FCW mame=4024 rtl=4034 (diff 0010)
+  R1  mame=FBE5 rtl=37E5
+  R2  mame=197D rtl=197E
+  R12 mame=E18F rtl=E190
+
+op=B82E ctx=0  trtdrb  @r2,@r0,rl4            [ZB8_ddN0_1110_0000_rrrr_ssN0_1110]  FAIL_STATE
+  words: B82E 9C04 2033   fcw_in=4038
+  regs_in: 5723 142A 6FE0 4F2F B020 B4CF BA3F 02CB 5E3C C7BD 1EDB 72BB 5C34 7BCF 470A 1543
+  FCW mame=4028 rtl=4038 (diff 0010)
+  R1  mame=7E2A rtl=142A
+  R2  mame=6FDF rtl=6FE0
+  R12 mame=5C33 rtl=5C34
+
+op=BA10 ctx=0  cpib    rh0,@r1,r3,pe/ov       [ZBA_ssN0_0000_0000_rrrr_dddd_cccc]  FAIL_STATE
+  words: BA10 F304 5F84   fcw_in=4014
+  regs_in: B798 2C78 DE7F E190 5D2D 4031 3411 6441 2D89 FA44 B3BB A9A6 0A43 2822 1058 DAEB
+  FCW mame=4004 rtl=4014 (diff 0010)
+  R1  mame=2C79 rtl=2C78
+  R3  mame=E18F rtl=E190
+
+op=BA11 ctx=0  ldirb   @r11,@r1,r4            [ZBA_ssN0_0001_0000_rrrr_ddN0_x000]  FAIL_STATE
+  words: BA11 94BA 9DF8   fcw_in=403C
+  regs_in: D27C 6C46 2FB7 0492 4FB3 DDB9 3219 D1E4 BEDA 5FA8 111C F89D 525B 9BCA F0D2 0B52
+  FCW mame=402C rtl=403C (diff 0010)
+  R1  mame=6C47 rtl=6C46
+  R4  mame=4FB2 rtl=4FB3
+  R11 mame=F89E rtl=F89D
+  mem[F89C] was=EB88 mame=EBAB rtl=EB88 (rtl did not write)
+
+op=BA12 ctx=0  cpsib   @r6,@r1,r15,mi         [ZBA_ssN0_0010_0000_rrrr_ddN0_cccc]  FAIL_STATE
+  words: BA12 DF65 664E   fcw_in=4000
+  regs_in: E2E0 3AB7 A390 777D 2B61 AC60 C529 C8FC 7C8E A3CC A9E3 F4F9 467C 65D9 097B 1103
+  FCW mame=40E0 rtl=4000 (diff 00E0)
+  R1  mame=3ABA rtl=3AB7
+  R6  mame=C52C rtl=C529
+  R15 mame=1100 rtl=1103
+
+op=BA14 ctx=0  cpirb   rl1,@r1,r9,nc/uge      [ZBA_ssN0_0100_0000_rrrr_dddd_cccc]  FAIL_STATE
+  words: BA14 599F 448F   fcw_in=4040
+  regs_in: B830 7635 D331 01C5 800E 3C83 D38C 6013 51A5 1FDA 6C8F 6E97 F24D 8F68 3197 DA4C
+  R1  mame=763D rtl=7635
+  R9  mame=1FD2 rtl=1FDA
+
+op=BA18 ctx=0  cpdb    rl6,@r1,r3,ge          [ZBA_ssN0_1000_0000_rrrr_dddd_cccc]  FAIL_STATE
+  words: BA18 33E9 DC52   fcw_in=4078
+  regs_in: E5CE 050C 9B1B 3941 D8B3 47F3 5EE0 CAAD C933 8E15 9671 B409 CCDF A90B 68AA 08C7
+  FCW mame=4028 rtl=4078 (diff 0050)
+  R1  mame=050B rtl=050C
+  R3  mame=3940 rtl=3941
+
+op=BA19 ctx=0  lddrb   @r1,@r11,r2            [ZBA_ssN0_1001_0000_rrrr_ddN0_x000]  FAIL_STATE
+  words: BA19 12B1 BC16   fcw_in=4030
+  regs_in: ADA9 5414 606E F8FD 6E08 E39C 1DA2 4138 38CF FC7F 9181 AC15 ED57 DA22 2560 E80A
+  FCW mame=4020 rtl=4030 (diff 0010)
+  R1  mame=5413 rtl=5414
+  R2  mame=606D rtl=606E
+  R11 mame=AC14 rtl=AC15
+  mem[AC14] was=D321 mame=D303 rtl=D321 (rtl did not write)
+
+op=BA1A ctx=0  cpsdb   @r8,@r1,r11,mi         [ZBA_ssN0_1010_0000_rrrr_ddN0_cccc]  FAIL_STATE
+  words: BA1A 8B85 9CD7   fcw_in=404C
+  regs_in: C02D D778 C0E5 EA75 00FD 5195 8C6F 5206 1204 9975 F2A6 A8EF 9AC7 AAC9 E031 5454
+  FCW mame=400C rtl=404C (diff 0040)
+  R1  mame=D777 rtl=D778
+  R8  mame=1203 rtl=1204
+  R11 mame=A8EE rtl=A8EF
+
+op=BA1C ctx=0  cpdrb   rl3,@r1,r12,           [ZBA_ssN0_1100_0000_rrrr_dddd_cccc]  FAIL_STATE
+  words: BA1C 7CB8 46D7   fcw_in=4028
+  regs_in: 6512 27C4 E034 A9F9 CADC C239 962E 3986 9BAF 69C6 E3DF 7EF6 536D 47A7 5734 9B82
+  FCW mame=4068 rtl=4028 (diff 0040)
+  R1  mame=27C3 rtl=27C4
+  R12 mame=536C rtl=536D
+
+op=BA1E ctx=0  cpsdrb  @r3,@r1,r5,ugt         [ZBA_ssN0_1110_0000_rrrr_ddN0_cccc]  FAIL_STATE
+  words: BA1E 453B BE20   fcw_in=4000
+  regs_in: 0996 B755 0DFF 9653 A966 B22F B316 196B 2B9E C5CE 4F56 335B E3BA AE5F AB60 680F
+  FCW mame=4040 rtl=4000 (diff 0040)
+  R1  mame=B754 rtl=B755
+  R3  mame=9652 rtl=9653
+  R5  mame=B22E rtl=B22F
+
+op=BA20 ctx=0  cpib    rl2,@r2,r5,po/nov      [ZBA_ssN0_0000_0000_rrrr_dddd_cccc]  FAIL_STATE
+  words: BA20 B5AC 3603   fcw_in=4054
+  regs_in: 1327 A4BF 3CA7 B6B0 98BD D78F 8D77 63BB E6A0 FCDD C7D3 4C02 7B52 C91C 0219 839A
+  FCW mame=40E4 rtl=4054 (diff 00B0)
+  R2  mame=3CA8 rtl=3CA7
+  R5  mame=D78E rtl=D78F
+
+op=BA21 ctx=0  ldirb   @r4,@r2,r15            [ZBA_ssN0_0001_0000_rrrr_ddN0_x000]  FAIL_STATE
+  words: BA21 BF47 4E3F   fcw_in=40A4
+  regs_in: 18C0 516E 5533 D335 FA68 3497 F90B 0F21 22C3 8901 C4BB 65CC 8D28 FE16 0739 D03A
+  R2  mame=5534 rtl=5533
+  R4  mame=FA69 rtl=FA68
+  R15 mame=D039 rtl=D03A
+  mem[FA68] was=8748 mame=AE48 rtl=8748 (rtl did not write)
+
+op=BA22 ctx=0  cpsib   @r4,@r2,r15,ge         [ZBA_ssN0_0010_0000_rrrr_ddN0_cccc]  FAIL_STATE
+  words: BA22 AF49 9B51   fcw_in=4064
+  regs_in: 7892 F4AD C86D D628 A711 5236 487E EA73 CD9F 46B8 E5C8 1EEA E045 539D 9771 89C5
+  FCW mame=40C4 rtl=4064 (diff 00A0)
+  R2  mame=C86E rtl=C86D
+  R4  mame=A712 rtl=A711
+  R15 mame=89C4 rtl=89C5
+
+op=BA24 ctx=0  cpirb   rl1,@r2,r8,c/ult       [ZBA_ssN0_0100_0000_rrrr_dddd_cccc]  FAIL_STATE
+  words: BA24 B897 EAE2   fcw_in=4010
+  regs_in: F203 0012 2AFB 9462 EBF6 70C1 CC9B 42EF F3E2 4459 6A57 FB86 2FA7 3A9D 49E9 5B20
+  FCW mame=40E0 rtl=4010 (diff 00F0)
+  R2  mame=2AFC rtl=2AFB
+  R8  mame=F3E1 rtl=F3E2
+
+op=BA26 ctx=0  cpsirb  @r1,@r2,r7,ne/nz       [ZBA_ssN0_0110_0000_rrrr_ddN0_cccc]  FAIL_STATE
+  words: BA26 E71E F288   fcw_in=40C0
+  regs_in: C12D 86EC 9389 2D21 1D90 1B7A 5836 32C2 3B2C BE4B 26BB 6801 5DE6 16F2 0AA0 660C
+  FCW mame=4040 rtl=40C0 (diff 0080)
+  R1  mame=86ED rtl=86EC
+  R2  mame=938A rtl=9389
+  R7  mame=32C1 rtl=32C2
+
+op=BA28 ctx=0  cpdb    rl4,@r2,r13,gt         [ZBA_ssN0_1000_0000_rrrr_dddd_cccc]  FAIL_STATE
+  words: BA28 7DCA 2E5C   fcw_in=4018
+  regs_in: 3177 EC31 5FAD 304D 5DF1 1C84 47E4 1CC9 16BA 1B97 F2E3 562A CC5B 7B4F D78B 8FEA
+  FCW mame=4048 rtl=4018 (diff 0050)
+  R2  mame=5FAC rtl=5FAD
+  R13 mame=7B4E rtl=7B4F
+
+op=BA29 ctx=0  lddrb   @r2,@r4,r8             [ZBA_ssN0_1001_0000_rrrr_ddN0_x000]  FAIL_STATE
+  words: BA29 1847 4163   fcw_in=407C
+  regs_in: 08AE 62A3 11E9 556F F22D 6BF7 303C 741D 7D58 6D20 8B6F 8C10 69A3 34F3 1B10 DC1D
+  FCW mame=406C rtl=407C (diff 0010)
+  R2  mame=11E8 rtl=11E9
+  R4  mame=F22C rtl=F22D
+  R8  mame=7D57 rtl=7D58
+  mem[F22C] was=DE37 mame=DE57 rtl=DE37 (rtl did not write)
+
+op=BA2A ctx=0  cpsdb   @r12,@r2,r5,po/nov     [ZBA_ssN0_1010_0000_rrrr_ddN0_cccc]  FAIL_STATE
+  words: BA2A 45CC 7D6B   fcw_in=4084
+  regs_in: 9E07 B3C8 F778 DA8D 13C0 3E35 9CB5 D746 EA34 3CC3 973D 2D0E DEE0 026A 086D 561F
+  FCW mame=4004 rtl=4084 (diff 0080)
+  R2  mame=F777 rtl=F778
+  R5  mame=3E34 rtl=3E35
+  R12 mame=DEDF rtl=DEE0
+
+op=BA2C ctx=0  cpdrb   rl4,@r2,r9,lt          [ZBA_ssN0_1100_0000_rrrr_dddd_cccc]  FAIL_STATE
+  words: BA2C 69C1 B13E   fcw_in=4018
+  regs_in: 8169 29AA B43E 3124 4583 D020 A7E5 1191 7061 53F9 E762 1750 D2EE 0A87 3806 0ECE
+  FCW mame=40E8 rtl=4018 (diff 00F0)
+  R2  mame=B43D rtl=B43E
+  R9  mame=53F8 rtl=53F9
+
+op=BA2E ctx=0  cpsdrb  @r9,@r2,r10,ugt        [ZBA_ssN0_1110_0000_rrrr_ddN0_cccc]  FAIL_STATE
+  words: BA2E EA9B 2680   fcw_in=4008
+  regs_in: 2C31 43B5 878A 40C5 0B66 8935 37F5 89AE F9BF 1A2A 53A0 6DBE 2B03 C55C 2689 F091
+  FCW mame=4048 rtl=4008 (diff 0040)
+  R2  mame=8789 rtl=878A
+  R9  mame=1A29 rtl=1A2A
+  R10 mame=539F rtl=53A0
+
+op=BA36 ctx=0  cpsirb  @r11,@r3,r12,eq/z      [ZBA_ssN0_0110_0000_rrrr_ddN0_cccc]  FAIL_STATE
+  words: BA36 5CB6 7043   fcw_in=406C
+  regs_in: A97A 29C6 6DDC B108 2484 5757 1D7A 3BC4 BB6A 46FB 40F9 D34C 87CD E061 C7FD A037
+  FCW mame=404C rtl=406C (diff 0020)
+  R3  mame=B1B9 rtl=B108
+  R11 mame=D3FD rtl=D34C
+  R12 mame=871C rtl=87CD
+
+op=BB10 ctx=0  cpi     r9,@r1,r10,ugt         [ZBB_ssN0_0000_0000_rrrr_dddd_cccc]  FAIL_STATE
+  words: BB10 CA9B A058   fcw_in=40B4
+  regs_in: F856 A8FA 3109 8C55 056E 2E61 A7B6 2E64 4A51 F360 43CD F5A4 E43A DC66 7BE7 3F6D
+  FCW mame=4064 rtl=40B4 (diff 00D0)
+  R1  mame=A8FC rtl=A8FA
+  R10 mame=43CC rtl=43CD
+
+op=BB11 ctx=0  ldir    @r8,@r1,r5             [ZBB_ssN0_0001_0000_rrrr_ddN0_x000]  FAIL_STATE
+  words: BB11 E582 CA94   fcw_in=40B0
+  regs_in: FE08 A2CD 249D 4838 8EED CFED BD1C 0E62 8E3C 6285 F8D6 98B0 2AC4 79B1 7AD9 7701
+  FCW mame=40A0 rtl=40B0 (diff 0010)
+  R1  mame=A2CF rtl=A2CD
+  R5  mame=CFEC rtl=CFED
+  R8  mame=8E3E rtl=8E3C
+  mem[8E3C] was=1F2E mame=F790 rtl=1F2E (rtl did not write)
+
+op=BB12 ctx=0  cpsi    @r14,@r1,r0,c/ult      [ZBB_ssN0_0010_0000_rrrr_ddN0_cccc]  FAIL_STATE
+  words: BB12 50E7 E753   fcw_in=40E8
+  regs_in: 6D1F 43D2 F607 D99A 9A67 68CF 3CFD BAA5 DD4C 048C C7A4 0BF0 A5F7 684D DA5E 685F
+  R0  mame=6D1E rtl=6D1F
+  R1  mame=43D4 rtl=43D2
+  R14 mame=DA60 rtl=DA5E
+
+op=BB14 ctx=0  cpir    r7,@r1,r5,             [ZBB_ssN0_0100_0000_rrrr_dddd_cccc]  FAIL_STATE
+  words: BB14 0578 16BB   fcw_in=406C
+  regs_in: 8C99 E9A5 C728 EFE2 B01D 0EBD 9569 FF31 1B8D EC78 7851 D778 A5FC 8F51 07FC CEAC
+  R1  mame=E9A7 rtl=E9A5
+  R5  mame=0EBC rtl=0EBD
+
+op=BB16 ctx=0  cpsir   @r2,@r1,r9,ge          [ZBB_ssN0_0110_0000_rrrr_ddN0_cccc]  FAIL_STATE
+  words: BB16 7929 5ACD   fcw_in=4030
+  regs_in: 5ECA D0B8 06FC F4E3 CE80 EE81 FB06 6BF7 A230 ABB9 B4FE 7B60 719B F5A2 9E93 0655
+  FCW mame=4040 rtl=4030 (diff 0070)
+  R1  mame=D0BC rtl=D0B8
+  R2  mame=0700 rtl=06FC
+  R9  mame=ABB7 rtl=ABB9
+
+op=BB18 ctx=0  cpd     r0,@r1,r7,ne/nz        [ZBB_ssN0_1000_0000_rrrr_dddd_cccc]  FAIL_STATE
+  words: BB18 770E D9F3   fcw_in=40F0
+  regs_in: 8E66 6D63 FB12 016B EB3A 8D1B B39F 7A51 2594 99D6 E374 7099 B16E 2B89 21AD 03F9
+  FCW mame=4040 rtl=40F0 (diff 00B0)
+  R1  mame=6D61 rtl=6D63
+  R7  mame=7A50 rtl=7A51
+
+op=BB19 ctx=0  lddr    @r1,@r10,r7            [ZBB_ssN0_1001_0000_rrrr_ddN0_x000]  FAIL_STATE
+  words: BB19 97A4 01E5   fcw_in=4078
+  regs_in: 9C84 D37F C21B 5F6F 6A2B 684B FCFE DC91 0977 E610 E44E F7F4 1183 84E4 D0CA 56B9
+  FCW mame=4068 rtl=4078 (diff 0010)
+  R1  mame=D37D rtl=D37F
+  R7  mame=DC90 rtl=DC91
+  R10 mame=E44C rtl=E44E
+  mem[E44E] was=99FC mame=6596 rtl=99FC (rtl did not write)
+
+op=BB1A ctx=0  cpsd    @r11,@r1,r11,pl        [ZBB_ssN0_1010_0000_rrrr_ddN0_cccc]  FAIL_STATE
+  words: BB1A FBBD 7B04   fcw_in=4020
+  regs_in: C01E 1AB3 DA76 0948 BE12 C736 37F6 CAE2 36F0 A963 E188 28ED 39D8 C26C 17A2 6869
+  FCW mame=4040 rtl=4020 (diff 0060)
+  R1  mame=1AB1 rtl=1AB3
+  R11 mame=28EA rtl=28ED
+
+op=BB1C ctx=0  cpdr    r10,@r1,r7,ugt         [ZBB_ssN0_1100_0000_rrrr_dddd_cccc]  FAIL_STATE
+  words: BB1C 77AB 9D6D   fcw_in=4098
+  regs_in: 71B9 3716 B266 747D 63E4 62F5 49E8 D614 E0F0 858B F9B4 4109 6149 DD90 89C6 9C3C
+  FCW mame=4068 rtl=4098 (diff 00F0)
+  R1  mame=3714 rtl=3716
+  R7  mame=D613 rtl=D614
+
+op=BB1E ctx=0  cpsdr   @r3,@r1,r3,nc/uge      [ZBB_ssN0_1110_0000_rrrr_ddN0_cccc]  FAIL_STATE
+  words: BB1E A33F C53B   fcw_in=4088
+  regs_in: 3D33 01EC 94C8 2C0E 4E57 57BF CDB6 DE59 17F9 7E3C 6159 F603 412F 7FD1 40C8 59AA
+  FCW mame=4068 rtl=4088 (diff 00E0)
+  R1  mame=01EA rtl=01EC
+  R3  mame=2C0B rtl=2C0E
+
+op=BB20 ctx=0  cpi     r13,@r2,r15,ugt        [ZBB_ssN0_0000_0000_rrrr_dddd_cccc]  FAIL_STATE
+  words: BB20 DFDB 9C1C   fcw_in=4098
+  regs_in: 61BE 85BD A1F6 65EC ACEA 5DEA F7DD 0747 2AD2 0B79 C2B2 23F4 A21C 5CAF C2C1 BD7B
+  FCW mame=40A8 rtl=4098 (diff 0030)
+  R2  mame=A1F8 rtl=A1F6
+  R15 mame=BD7A rtl=BD7B
+
+op=BB21 ctx=0  ldir    @r12,@r2,r13           [ZBB_ssN0_0001_0000_rrrr_ddN0_x000]  FAIL_STATE
+  words: BB21 CDC4 F3EC   fcw_in=407C
+  regs_in: F19A 1312 9098 DFA6 BC41 091C 0F95 499F C71C 0181 E1F5 7553 1DD2 41CA 0C5D 16BA
+  FCW mame=406C rtl=407C (diff 0010)
+  R2  mame=909A rtl=9098
+  R12 mame=1DD4 rtl=1DD2
+  R13 mame=41C9 rtl=41CA
+  mem[1DD2] was=FEB7 mame=20D1 rtl=FEB7 (rtl did not write)
+
+op=BB22 ctx=0  cpsi    @r11,@r2,r4,pe/ov      [ZBB_ssN0_0010_0000_rrrr_ddN0_cccc]  FAIL_STATE
+  words: BB22 24B4 01ED   fcw_in=40AC
+  regs_in: 4957 FA0A 63D8 2DE3 FB91 FAE2 B86A 9B30 51C0 41AC D532 526D A341 C25B C468 5227
+  FCW mame=408C rtl=40AC (diff 0020)
+  R2  mame=63DA rtl=63D8
+  R4  mame=FB90 rtl=FB91
+  R11 mame=526F rtl=526D
+
+op=BB24 ctx=0  cpir    r2,@r2,r0,ugt          [ZBB_ssN0_0100_0000_rrrr_dddd_cccc]  FAIL_STATE
+  words: BB24 602B 2D7E   fcw_in=40F0
+  regs_in: 716B 13A9 1B5D B396 AFF1 547F 8285 ECC7 1D4B 35FB 350C 1FB7 79E6 C93B 01F7 2ABA
+  FCW mame=4040 rtl=40F0 (diff 00B0)
+  R0  mame=715A rtl=716B
+  R2  mame=1B7F rtl=1B5D
+
+op=BB26 ctx=0  cpsir   @r7,@r2,r13,ule        [ZBB_ssN0_0110_0000_rrrr_ddN0_cccc]  FAIL_STATE
+  words: BB26 AD73 D6D5   fcw_in=40FC
+  regs_in: 8C03 C60E B664 81EA FD7B ACB4 F18B 7A99 B456 A529 27B9 4F43 739C 0EFA 0CE1 79E1
+  FCW mame=40EC rtl=40FC (diff 0010)
+  R2  mame=B66A rtl=B664
+  R7  mame=7A9F rtl=7A99
+  R13 mame=0EF7 rtl=0EFA
+
+op=BB28 ctx=0  cpd     r12,@r2,r9,mi          [ZBB_ssN0_1000_0000_rrrr_dddd_cccc]  FAIL_STATE
+  words: BB28 39C5 C99D   fcw_in=40C4
+  regs_in: 6D74 9BB9 743F E9C3 271D 8259 B0A4 453E 44F8 A16A DA38 B56C 33E1 BEBA EFDD B7E8
+  FCW mame=4084 rtl=40C4 (diff 0040)
+  R2  mame=743D rtl=743F
+  R9  mame=A169 rtl=A16A
+
+op=BB29 ctx=0  lddr    @r2,@r6,r13            [ZBB_ssN0_1001_0000_rrrr_ddN0_x000]  FAIL_STATE
+  words: BB29 4D65 A543   fcw_in=4098
+  regs_in: 2724 6FC7 E13A 2E7D D54B 6E72 FE90 901B 888F 7CE0 359F 59BF 2097 4EB8 E843 8C0C
+  FCW mame=4088 rtl=4098 (diff 0010)
+  R2  mame=E138 rtl=E13A
+  R6  mame=FE8E rtl=FE90
+  R13 mame=4EB7 rtl=4EB8
+  mem[FE90] was=5279 mame=676D rtl=5279 (rtl did not write)
+
+op=BB2A ctx=0  cpsd    @r7,@r2,r9,le          [ZBB_ssN0_1010_0000_rrrr_ddN0_cccc]  FAIL_STATE
+  words: BB2A 6972 CCBA   fcw_in=403C
+  regs_in: 02AB 7FED AC09 32D2 DD0A 259F C99B 3318 65FE 6BC9 47A5 B258 D13B C187 E671 B227
+  FCW mame=400C rtl=403C (diff 0030)
+  R2  mame=AC07 rtl=AC09
+  R7  mame=3316 rtl=3318
+  R9  mame=6BC8 rtl=6BC9
+
+op=BB2C ctx=0  cpdr    r3,@r2,r15,            [ZBB_ssN0_1100_0000_rrrr_dddd_cccc]  FAIL_STATE
+  words: BB2C BF38 BD27   fcw_in=409C
+  regs_in: 4F44 6AF9 5800 B264 40A8 BFB9 3CAB DE28 1631 C0C3 4385 2999 492B 71A4 FFCE 34D8
+  FCW mame=404C rtl=409C (diff 00D0)
+  R2  mame=57FE rtl=5800
+  R15 mame=34D7 rtl=34D8
+
+op=BB2E ctx=0  cpsdr   @r0,@r2,r5,ge          [ZBB_ssN0_1110_0000_rrrr_ddN0_cccc]  FAIL_STATE
+  words: BB2E 7509 3317   fcw_in=4074
+  regs_in: F449 61A9 156D 6654 DF35 9064 7857 446B 718B EF36 A852 3274 B489 3531 9E7D ACCD
+  FCW mame=4044 rtl=4074 (diff 0030)
+  R0  mame=F445 rtl=F449
+  R2  mame=1569 rtl=156D
+  R5  mame=9062 rtl=9064
+
+op=BC11 ctx=0  rrdb    rh1,rh1                [ZBC_aaaa_bbbb]  FAIL_STATE
+  words: BC11 7FDA 1EDE   fcw_in=4000
+  regs_in: 5BCC 4FC1 6CC1 02FE 1AA7 C2F0 53DB 9722 DBB6 2CAE 7FA4 B01A 90BD 4524 11E9 1645
+  R1  mame=FFC1 rtl=4FC1
+
+op=BC22 ctx=0  rrdb    rh2,rh2                [ZBC_aaaa_bbbb]  FAIL_STATE
+  words: BC22 9A25 3900   fcw_in=4010
+  regs_in: F51D 63B4 F3BA 6C10 1F4B 9880 2E79 353A 70FA 8F59 BB5D BD2F 50DF 3253 D006 05DA
+  R2  mame=33BA rtl=F3BA
+
+op=BE00 ctx=0  rldb    rh0,rh0                [ZBE_aaaa_bbbb]  FAIL_STATE
+  words: BE00 D80D D65A   fcw_in=4000
+  regs_in: 466D C584 C8C2 D1B8 F44D A6AF A13A 9758 E48A D6E1 B58A F612 6321 205D 2BDE CCFB
+  R0  mame=646D rtl=446D
+
+op=BE11 ctx=0  rldb    rh1,rh1                [ZBE_aaaa_bbbb]  FAIL_STATE
+  words: BE11 1E1A 3A28   fcw_in=40C4
+  regs_in: 8478 5A9E 07DC 6FF1 F6F0 4C8D 8B6F 607F 422C F19C 4E1B 2051 17C6 2B93 8D5F FF8E
+  R1  mame=A59E rtl=559E
+

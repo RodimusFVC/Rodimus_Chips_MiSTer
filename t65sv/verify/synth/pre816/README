@@ -1,0 +1,3 @@
+rtl/t65sv.sv, t65sv_T65.sv and t65sv_variants.sv as they were before the 65C816 was added (the RTL that the
+lockstep / SST / Dormann / Lorenz / VICE runs were first made on). equiv_c816.sh proves the current t65sv with
+C816 = 0 equivalent to this t65sv.sv for every C02 / C02_FIXED / NO_DECIMAL combination.

@@ -1,0 +1,10 @@
+`verilator_config
+// Waivers for verilator --lint-only -Wall (see REPORT.md):
+// ri keeps the whole opcode as in sgs2650; bits 4:3 only feed the decode, which is registered separately
+lint_off -rule UNUSED -file "*s2650sv*.sv" -match "*'ri'[4:3]*"
+// psu_c is the whole next PSU: bit 7 is replaced by the sense input, bits 4:3 are constant 0 on the 2650A
+lint_off -rule UNUSED -file "*s2650sv*.sv" -match "*'psu_c'[7*"
+// s2650sv_all.sv is the concatenation of the two module files by design
+lint_off -rule DECLFILENAME -file "*s2650sv_all.sv"
+// the fleet leaves flag unconnected
+lint_off -rule PINCONNECTEMPTY -file "*s2650sv_pool.sv" -match "*'flag'*"

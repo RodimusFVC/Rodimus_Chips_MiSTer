@@ -1,0 +1,474 @@
+# Variant normalized-md5 (T65 ALU MCode Pack; CR and trailing blanks stripped): 206cc0d6 358cfd2d 2e8c8690 e8ad58c0
+# Representative: Arcade-Gauntlet_MiSTer (rtl/lib/T65)
+# Members: Arcade-Atari-system1_MiSTer Arcade-AtariSystem2_MiSTer Arcade-Badlands_MiSTer Arcade-Batman_MiSTer Arcade-Blasteroids_MiSTer Arcade-Escape_MiSTer Arcade-Gauntlet_MiSTer Arcade-OffTheWall_MiSTer Arcade-SkullXBones_MiSTer Arcade-Toobin_MiSTer Arcade-Vindicators_MiSTer Arcade-Xybots_MiSTer 
+# diff -u --strip-trailing-cr  REF(Ver 315 galaxian copy) -> Arcade-Gauntlet_MiSTer
+
+--- ref/T65.vhd
++++ Arcade-Gauntlet_MiSTer/rtl/lib/T65/T65.vhd
+@@ -1,10 +1,6 @@
+ -- ****
+ -- T65(b) core. In an effort to merge and maintain bug fixes ....
+ --
+--- Ver 315 SzGy April 2020
+---   Reduced the IRQ detection delay when RDY is not asserted (NMI?)
+---   Undocumented opcodes behavior change during not RDY and page boundary crossing (VICE tests - cpu/sha, cpu/shs, cpu/shxy)
+---
+ -- Ver 313 WoS January 2015
+ --   Fixed issue that NMI has to be first if issued the same time as a BRK instruction is latched in
+ --   Now all Lorenz CPU tests on FPGAARCADE C64 core (sources used: SVN version 1021) are OK! :D :D :D
+@@ -13,7 +9,7 @@
+ -- Ver 312 WoS January 2015
+ --   Undoc opcode timing fixes for $B3 (LAX iy) and $BB (LAS ay)
+ --   Added comments in MCode section to find handling of individual opcodes more easily
+---   All "basic" Lorenz instruction test (individual functional checks, CPUTIMING check) work now with 
++--   All "basic" Lorenz instruction test (individual functional checks, CPUTIMING check) work now with
+ --       actual FPGAARCADE C64 core (sources used: SVN version 1021).
+ --
+ -- Ver 305, 306, 307, 308, 309, 310, 311 WoS January 2015
+@@ -120,7 +116,7 @@
+ --              DI      => cpu_din_s,
+ --              DO      => cpu_dout_s
+ --          );
+---      cpu_din_s <= cpu_dout_s when cpu_rwn_s='0' else 
++--      cpu_din_s <= cpu_dout_s when cpu_rwn_s='0' else
+ --                   [....other sources from peripherals and memories...]
+ --
+ -- ----- IMPORTANT NOTES -----
+@@ -133,15 +129,22 @@
+ 
+ entity T65 is
+   port(
+-    Mode    : in  std_logic_vector(1 downto 0);      -- "00" => 6502, "01" => 65C02, "10" => 65C816
++    Mode    : in  std_logic_vector(1 downto 0); -- "00" => 6502, "01" => 65C02, "10" => 65C816
++    BCD_en  : in  std_logic := '1';             -- '0' => 2A03/2A07, '1' => others
++
+     Res_n   : in  std_logic;
+-    Enable  : in  std_logic;
+     Clk     : in  std_logic;
+-    Rdy     : in  std_logic;
+-    Abort_n : in  std_logic;
+-    IRQ_n   : in  std_logic;
+-    NMI_n   : in  std_logic;
+-    SO_n    : in  std_logic;
++    Enable  : in  std_logic := '1';
++
++    A       : out std_logic_vector(23 downto 0);
++    DI      : in  std_logic_vector(7 downto 0);
++    DO      : out std_logic_vector(7 downto 0);
++
++    Rdy     : in  std_logic := '1';
++    Abort_n : in  std_logic := '1';
++    IRQ_n   : in  std_logic := '1';
++    NMI_n   : in  std_logic := '1';
++    SO_n    : in  std_logic := '1';
+     R_W_n   : out std_logic;
+     Sync    : out std_logic;
+     EF      : out std_logic;
+@@ -151,11 +154,7 @@
+     VP_n    : out std_logic;
+     VDA     : out std_logic;
+     VPA     : out std_logic;
+-    A       : out std_logic_vector(23 downto 0);
+-    DI      : in  std_logic_vector(7 downto 0);
+-    DO      : out std_logic_vector(7 downto 0);
+-    -- 6502 registers (MSB) PC, SP, P, Y, X, A (LSB)
+-    Regs    : out std_logic_vector(63 downto 0);
++
+     DEBUG   : out T_t65_dbg;
+     NMI_ack : out std_logic
+   );
+@@ -171,22 +170,21 @@
+   signal BAL                : std_logic_vector(8 downto 0);
+   signal PBR                : std_logic_vector(7 downto 0);
+   signal DBR                : std_logic_vector(7 downto 0);
+-  signal PC                 : unsigned(15 downto 0);
+-  signal S                  : unsigned(15 downto 0);
++  signal PC                 : unsigned(15 downto 0):=(others=>'0');
++  signal S                  : unsigned(15 downto 0):=(others=>'0');
+   signal EF_i               : std_logic;
+   signal MF_i               : std_logic;
+   signal XF_i               : std_logic;
+ 
+-  signal IR                 : std_logic_vector(7 downto 0);
+-  signal MCycle             : std_logic_vector(2 downto 0);
+-
+-  signal DO_r               : std_logic_vector(7 downto 0);
++  signal IR                 : std_logic_vector(7 downto 0):=(others=>'0');
++  signal MCycle             : std_logic_vector(2 downto 0):="001";
+ 
+-  signal Mode_r             : std_logic_vector(1 downto 0);
++  signal Mode_r             : std_logic_vector(1 downto 0):=(others=>'0');
++  signal BCD_en_r           : std_logic;
+   signal ALU_Op_r           : T_ALU_Op;
+   signal Write_Data_r       : T_Write_Data;
+-  signal Set_Addr_To_r      : T_Set_Addr_To;
+-  signal PCAdder            : unsigned(8 downto 0);
++  signal Set_Addr_To_r      : T_Set_Addr_To := Set_Addr_To_PBR;
++  signal PCAdder            : unsigned(8 downto 0):=(others=>'0');
+ 
+   signal RstCycle           : std_logic;
+   signal IRQCycle           : std_logic;
+@@ -215,7 +213,6 @@
+   signal Write_Data         : T_Write_Data;
+   signal Jump               : std_logic_vector(1 downto 0);
+   signal BAAdd              : std_logic_vector(1 downto 0);
+-  signal BAQuirk            : std_logic_vector(1 downto 0);
+   signal BreakAtNA          : std_logic;
+   signal ADAdd              : std_logic;
+   signal AddY               : std_logic;
+@@ -238,7 +235,6 @@
+   signal Res_n_i        : std_logic;
+   signal Res_n_d        : std_logic;
+ 
+-  signal rdy_mod        : std_logic; -- RDY signal turned off during the instruction
+   signal really_rdy     : std_logic;
+   signal WRn_i          : std_logic;
+ 
+@@ -247,7 +243,7 @@
+ begin
+   NMI_ack <= NMIAct;
+ 
+-  -- gate Rdy with read/write to make an "OK, it's really OK to stop the processor 
++  -- gate Rdy with read/write to make an "OK, it's really OK to stop the processor
+   really_rdy <= Rdy or not(WRn_i);
+   Sync <= '1' when MCycle = "000" else '0';
+   EF <= EF_i;
+@@ -267,8 +263,6 @@
+   DEBUG.S <= std_logic_vector(S(7 downto 0));
+   DEBUG.P <= P;
+ 
+-  Regs <= std_logic_vector(PC) & std_logic_vector(S)& P & Y(7 downto 0) & X(7 downto 0) & ABC(7 downto 0);
+-
+   mcode : entity work.T65_MCode
+     port map(
+ --inputs
+@@ -276,7 +270,6 @@
+       IR          => IR,
+       MCycle      => MCycle,
+       P           => P,
+-      Rdy_mod     => rdy_mod,
+ --outputs
+       LCycle      => LCycle,
+       ALU_Op      => ALU_Op,
+@@ -285,7 +278,6 @@
+       Write_Data  => Write_Data,
+       Jump        => Jump,
+       BAAdd       => BAAdd,
+-      BAQuirk     => BAQuirk,
+       BreakAtNA   => BreakAtNA,
+       ADAdd       => ADAdd,
+       AddY        => AddY,
+@@ -309,6 +301,7 @@
+   alu : entity work.T65_ALU
+     port map(
+       Mode => Mode_r,
++      BCD_en => BCD_en_r,
+       Op => ALU_Op_r,
+       BusA => BusA_r,
+       BusB => BusB,
+@@ -340,6 +333,7 @@
+       DBR <= (others => '0');
+ 
+       Mode_r <= (others => '0');
++      BCD_en_r <= '1';
+       ALU_Op_r <= ALU_OP_BIT;
+       Write_Data_r <= Write_Data_DL;
+       Set_Addr_To_r <= Set_Addr_To_PBR;
+@@ -349,15 +343,8 @@
+       MF_i <= '1';
+       XF_i <= '1';
+ 
+-    elsif Clk'event and Clk = '1' then  
++    elsif Clk'event and Clk = '1' then
+       if (Enable = '1') then
+-        -- some instructions behavior changed by the Rdy line. Detect this at the correct cycles.
+-        if MCycle  = "000" then
+-          rdy_mod <= '0';
+-        elsif ((MCycle = "011" and IR /= x"93") or (MCycle = "100" and IR = x"93")) and Rdy = '0' then
+-          rdy_mod <= '1';
+-        end if;
+-
+         if (really_rdy = '1') then
+           WRn_i <= not Write or RstCycle;
+ 
+@@ -369,6 +356,7 @@
+ 
+           if MCycle  = "000" then
+             Mode_r <= Mode;
++            BCD_en_r <= BCD_en;
+ 
+             if IRQCycle = '0' and NMICycle = '0' then
+               PC <= PC + 1;
+@@ -396,7 +384,7 @@
+           if Inc_S = '1' then
+             S <= S + 1;
+           end if;
+-          if Dec_S = '1' and RstCycle = '0' then
++          if Dec_S = '1' and (RstCycle = '0' or Mode="00") then  -- 6502 only?
+             S <= S - 1;
+           end if;
+ 
+@@ -491,11 +479,9 @@
+ 
+           P<=tmpP;--new way
+ 
+-        end if;
+-
+-        -- detect irq even if not rdy
+-        if IR(4 downto 0)/="10000" or Jump/="01" or really_rdy = '0' then -- delay interrupts during branches (checked with Lorenz test and real 6510), not best way yet, though - but works...
+-          IRQ_n_o <= IRQ_n;
++          if IR(4 downto 0)/="10000" or Jump/="01" then -- delay interrupts during branches (checked with Lorenz test and real 6510), not best way yet, though - but works...
++            IRQ_n_o <= IRQ_n;
++          end if;
+         end if;
+         -- detect nmi even if not rdy
+         if IR(4 downto 0)/="10000" or Jump/="01" then -- delay interrupts during branches (checked with Lorenz test and real 6510) not best way yet, though - but works...
+@@ -530,8 +516,8 @@
+       DL <= (others => '0');
+     elsif Clk'event and Clk = '1' then
+       if (Enable = '1') then
++        NMI_entered <= '0';
+         if (really_rdy = '1') then
+-          NMI_entered <= '0';
+           BusA_r <= BusA;
+           BusB <= DI;
+ 
+@@ -551,13 +537,7 @@
+           when "11" =>
+             -- BA Adj
+             if BAL(8) = '1' then
+-              -- Handle quirks with some undocumented opcodes crossing page boundary
+-              case BAQuirk is
+-              when "00" => BAH <= std_logic_vector(unsigned(BAH) + 1); -- no quirk
+-              when "01" => BAH <= std_logic_vector(unsigned(BAH) + 1) and DO_r;
+-              when "10" => BAH <= DO_r;
+-              when others => null;
+-              end case;
++              BAH <= std_logic_vector(unsigned(BAH) + 1);
+             end if;
+           when others =>
+           end case;
+@@ -635,10 +615,8 @@
+   -- This is the P that gets pushed on stack with correct B flag. I'm not sure if NMI also clears B, but I guess it does.
+   PwithB<=(P and x"ef") when (IRQCycle='1' or NMICycle='1') else P;
+ 
+-  DO <= DO_r;
+-
+   with Write_Data_r select
+-    DO_r <=
++    DO <=
+       DL                                  when Write_Data_DL,
+       ABC(7 downto 0)                     when Write_Data_ABC,
+       X(7 downto 0)                       when Write_Data_X,
+@@ -686,7 +664,7 @@
+             MCycle <= std_logic_vector(unsigned(MCycle) + 1);
+           end if;
+         end if;
+-        --detect NMI even if not rdy    
++        --detect NMI even if not rdy
+         if NMI_n_o = '1' and (NMI_n = '0' and (IR(4 downto 0)/="10000" or Jump/="01")) then -- branches have influence on NMI start (not best way yet, though - but works...)
+           NMIAct <= '1';
+         end if;
+--- ref/T65_ALU.vhd
++++ Arcade-Gauntlet_MiSTer/rtl/lib/T65/T65_ALU.vhd
+@@ -57,6 +57,7 @@
+ entity T65_ALU is
+   port(
+     Mode    : in std_logic_vector(1 downto 0);      -- "00" => 6502, "01" => 65C02, "10" => 65816
++    BCD_en  : in std_logic;
+     Op      : in T_ALU_OP;
+     BusA    : in std_logic_vector(7 downto 0);
+     BusB    : in std_logic_vector(7 downto 0);
+@@ -83,7 +84,7 @@
+ 
+ begin
+ 
+-  process (P_In, BusA, BusB)
++  process (P_In, BusA, BusB, BCD_en)
+     variable AL : unsigned(6 downto 0);
+     variable AH : unsigned(6 downto 0);
+     variable C : std_logic;
+@@ -102,7 +103,7 @@
+       ADC_Z <= '0';
+     end if;
+ 
+-    if AL(5 downto 1) > 9 and P_In(Flag_D) = '1' then
++    if AL(5 downto 1) > 9 and P_In(Flag_D) = '1' and BCD_en = '1' then
+       AL(6 downto 1) := AL(6 downto 1) + 6;
+     end if;
+ 
+@@ -116,7 +117,7 @@
+       if is_x(std_logic_vector(AH)) then AH := "0000000"; end if;
+ -- pragma translate_on
+ 
+-    if AH(5 downto 1) > 9 and P_In(Flag_D) = '1' then
++    if AH(5 downto 1) > 9 and P_In(Flag_D) = '1' and BCD_en = '1' then
+       AH(6 downto 1) := AH(6 downto 1) + 6;
+     end if;
+ 
+@@ -125,7 +126,7 @@
+     ADC_Q <= std_logic_vector(AH(4 downto 1) & AL(4 downto 1));
+   end process;
+ 
+-  process (Op, P_In, BusA, BusB)
++  process (Op, P_In, BusA, BusB, BCD_en)
+     variable AL : unsigned(6 downto 0);
+     variable AH : unsigned(5 downto 0);
+     variable C : std_logic;
+@@ -165,7 +166,7 @@
+ 
+     SBX_Q <= std_logic_vector(AH(4 downto 1) & AL(4 downto 1));
+ 
+-    if P_In(Flag_D) = '1' then
++    if P_In(Flag_D) = '1' and BCD_en = '1' then
+       if AL(5) = '1' then
+         AL(5 downto 1) := AL(5 downto 1) - 6;
+       end if;
+@@ -181,7 +182,7 @@
+   process (Op, P_In, BusA, BusB,
+       ADC_Z, ADC_C, ADC_V, ADC_N, ADC_Q,
+       SBC_Z, SBC_C, SBC_V, SBC_N, SBC_Q,
+-		SBX_Q)
++      SBX_Q, BCD_en)
+     variable Q_t : std_logic_vector(7 downto 0);
+     variable Q2_t : std_logic_vector(7 downto 0);
+   begin
+@@ -189,7 +190,7 @@
+     -- ASL, ROL, LSR, ROR, BIT, LD, DEC, INC
+     P_Out <= P_In;
+     Q_t := BusA;
+-    Q2_t := BusA;
++    Q2_t := Q_t;
+     case Op is
+       when ALU_OP_OR=>
+         Q_t := BusA or BusB;
+@@ -226,7 +227,7 @@
+         Q_t := P_In(Flag_C) & (BusA(7 downto 1) and BusB(7 downto 1));
+         P_Out(Flag_V) <= Q_t(5) xor Q_t(6);
+         Q2_t := Q_t;
+-        if P_In(Flag_D)='1' then
++        if P_In(Flag_D)='1' and BCD_en = '1' then
+           if (BusA(3 downto 0) and BusB(3 downto 0)) > "0100" then
+             Q2_t(3 downto 0) := std_logic_vector(unsigned(Q_t(3 downto 0)) + x"6");
+           end if;
+--- ref/T65_MCode.vhd
++++ Arcade-Gauntlet_MiSTer/rtl/lib/T65/T65_MCode.vhd
+@@ -61,7 +61,6 @@
+     IR                      : in  std_logic_vector(7 downto 0);
+     MCycle                  : in  T_Lcycle;
+     P                       : in  std_logic_vector(7 downto 0);
+-    Rdy_mod                 : in  std_logic;
+     LCycle                  : out T_Lcycle;
+     ALU_Op                  : out T_ALU_Op;
+     Set_BusA_To             : out T_Set_BusA_To; -- DI,A,X,Y,S,P,DA,DAO,DAX,AAX
+@@ -69,7 +68,6 @@
+     Write_Data              : out T_Write_Data;  -- DL,A,X,Y,S,P,PCL,PCH,AX,AXB,XB,YB
+     Jump                    : out std_logic_vector(1 downto 0); -- PC,++,DIDL,Rel
+     BAAdd                   : out std_logic_vector(1 downto 0); -- None,DB Inc,BA Add,BA Adj
+-    BAQuirk                 : out std_logic_vector(1 downto 0); -- None,And,Copy
+     BreakAtNA               : out std_logic;
+     ADAdd                   : out std_logic;
+     AddY                    : out std_logic;
+@@ -108,7 +106,7 @@
+               not P(Flag_Z) when "110",
+                   P(Flag_Z) when others;
+ 
+-  process (IR, MCycle, P, Branch, Mode, Rdy_mod)
++  process (IR, MCycle, P, Branch, Mode)
+   begin
+     lCycle      <= Cycle_1;
+     Set_BusA_To <= Set_BusA_To_ABC;
+@@ -116,7 +114,6 @@
+     Write_Data  <= Write_Data_DL;
+     Jump        <= (others => '0');
+     BAAdd       <= "00";
+-    BAQuirk     <= "00";
+     BreakAtNA   <= '0';
+     ADAdd       <= '0';
+     PCAdd       <= '0';
+@@ -143,22 +140,14 @@
+           when "00" => -- IR: $80,$84,$88,$8C,$90,$94,$98,$9C
+             Set_BusA_To <= Set_BusA_To_Y;
+             if IR(4 downto 2)="111" then   --  SYA ($9C)
+-              if Rdy_mod = '0' then
+-                Write_Data <= Write_Data_YB;
+-              else
+-                Write_Data <= Write_Data_Y;
+-              end if;
++              Write_Data <= Write_Data_YB;
+             else
+               Write_Data <= Write_Data_Y;
+             end if;
+           when "10" => -- IR: $82,$86,$8A,$8E,$92,$96,$9A,$9E
+             Set_BusA_To <= Set_BusA_To_X;
+             if IR(4 downto 2)="111" then   --  SXA ($9E)
+-              if Rdy_mod = '0' then
+-                Write_Data <= Write_Data_XB;
+-              else
+-                Write_Data <= Write_Data_X;
+-              end if;
++              Write_Data <= Write_Data_XB;
+             else
+               Write_Data <= Write_Data_X;
+             end if;
+@@ -170,11 +159,7 @@
+               Set_BusA_To <= Set_BusA_To_ABC;
+             end if;
+             if IR(4 downto 2)="111" or IR(4 downto 2)="110" or IR(4 downto 2)="100" then   --  SHA ($9F, $93), SHS ($9B)
+-              if Rdy_mod = '0' then
+-                Write_Data <= Write_Data_AXB;
+-              else
+-                Write_Data <= Write_Data_AX;
+-              end if;
++              Write_Data <= Write_Data_AXB;
+             else
+               Write_Data <= Write_Data_AX;
+             end if;
+@@ -858,9 +843,6 @@
+             BAAdd <= "11";  -- BA Adj
+             if IR(7 downto 5) = "100" then
+               Write <= '1';
+-              if IR(3 downto 0) = x"3" then
+-                BAQuirk <= "10"; -- COPY
+-              end if;
+             elsif IR(1)='0' or IR=x"B3" then -- Dont do this on $x3, except undoc LAXiy $B3 (says real CPU and Lorenz tests)
+               BreakAtNA <= '1';
+             end if;
+@@ -974,9 +956,6 @@
+             BAAdd <= "11";  -- BA adj
+             if IR(7 downto 5) = "100" then--99/9b
+               Write <= '1';
+-              if IR(3 downto 0) = x"B" then
+-                BAQuirk <= "01"; -- AND
+-              end if;
+             elsif IR(1)='0' or IR=x"BB" then -- Dont do this on $xB, except undoc $BB (says real CPU and Lorenz tests)
+               BreakAtNA <= '1';
+             end if;
+@@ -1066,13 +1045,8 @@
+               Set_Addr_To <= Set_Addr_To_BA;
+             when Cycle_3 =>
+               BAAdd <= "11";      -- BA adj
+-              if IR(7 downto 5) = "100" then -- ($9C,$9D,$9E,$9F)
++              if IR(7 downto 5) = "100" then -- ($9E,$9F)
+                 Write <= '1';
+-                case IR(1 downto 0) is
+-                when "00"|"10" => BAQuirk <= "01"; -- AND
+-                when "11" => BAQuirk <= "10"; -- COPY
+-                when others => null;
+-                end case;
+               else
+                 BreakAtNA <= '1';
+               end if;
+--- ref/T65_Pack.vhd
++++ Arcade-Gauntlet_MiSTer/rtl/lib/T65/T65_Pack.vhd
+@@ -92,9 +92,9 @@
+   
+   type T_Set_Addr_To is
+   (
+-    Set_Addr_To_PBR,
+     Set_Addr_To_SP,
+     Set_Addr_To_ZPG,
++    Set_Addr_To_PBR,
+     Set_Addr_To_BA
+   );
+   

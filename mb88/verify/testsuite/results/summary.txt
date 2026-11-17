@@ -1,0 +1,34 @@
+MB88 differential suite -- rtl/cpu/mb88_sv/mb88_core.sv vs MAME cpu/mb88xx
+seed=12345 ctx=8 opcodes 00..FF
+
+tests            : 2044
+excluded         : 4  (pio serial value MAME fatalerrors on)
+never retired    : 0
+ARCHITECTURE fail: 0
+CYCLE fail       : 0
+
+--- cycle census: every opcode, ce pulses vs MAME burn_cycles ---
+(MAME charges 2 for 0x3d jpa, 0x3e en, 0x3f dis, 0x60-0x67 call, 0x68-0x6f jpl; 1 otherwise)
+  3D rtl=2    mame=2    
+  3E rtl=2    mame=2    
+  3F rtl=2    mame=2    
+  60 rtl=2    mame=2    
+  61 rtl=2    mame=2    
+  62 rtl=2    mame=2    
+  63 rtl=2    mame=2    
+  64 rtl=2    mame=2    
+  65 rtl=2    mame=2    
+  66 rtl=2    mame=2    
+  67 rtl=2    mame=2    
+  68 rtl=2    mame=2    
+  69 rtl=2    mame=2    
+  6A rtl=2    mame=2    
+  6B rtl=2    mame=2    
+  6C rtl=2    mame=2    
+  6D rtl=2    mame=2    
+  6E rtl=2    mame=2    
+  6F rtl=2    mame=2    
+  (19 opcodes charge more than 1 cycle; all other opcodes are 1/1)
+
+--- per-opcode (only opcodes with a failure) ---
+op    tested  archF   cycF    rtl_cyc -> mame_cyc

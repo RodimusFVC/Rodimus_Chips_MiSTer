@@ -1,0 +1,196 @@
+m68ksv 68020 test  label: (none given)
+Kickstart exec V47.115  AttnFlags 0003
+VBR 00000000  CACR at entry 00000001  handler 0019e988
+
+T1  undefined / overflow flags (raw; compared against m68ksv and Musashi afterwards)
+
+DIVU.W D1,D0   (inputs D0 / D1 / CCR in -> D0 after, vector, flags)
+   00010000 / 00000001 / 00 -> 00010000  vec  0  X0 N0 Z0 V1 C0
+   00010000 / 00000001 / 1f -> 00010000  vec  0  X1 N1 Z1 V1 C1
+   ffffffff / 00000001 / 00 -> ffffffff  vec  0  X0 N1 Z0 V1 C0
+   ffffffff / 00000001 / 1f -> ffffffff  vec  0  X1 N1 Z1 V1 C1
+   80000000 / 00000001 / 00 -> 80000000  vec  0  X0 N1 Z0 V1 C0
+   7fff0000 / 00000002 / 00 -> 7fff0000  vec  0  X0 N0 Z0 V1 C0
+   ffff0000 / 0000ffff / 00 -> ffff0000  vec  0  X0 N1 Z0 V1 C0
+   12345678 / 00000100 / 00 -> 12345678  vec  0  X0 N0 Z0 V1 C0
+
+DIVS.W D1,D0   (inputs D0 / D1 / CCR in -> D0 after, vector, flags)
+   00010000 / 00000001 / 00 -> 00010000  vec  0  X0 N0 Z0 V1 C0
+   00010000 / 00000001 / 1f -> 00010000  vec  0  X1 N0 Z0 V1 C0
+   ffff0000 / 00000001 / 00 -> ffff0000  vec  0  X0 N0 Z0 V1 C0
+   80000000 / 0000ffff / 00 -> 80000000  vec  0  X0 N0 Z0 V1 C0
+   80000000 / 00000001 / 1f -> 80000000  vec  0  X1 N0 Z0 V1 C0
+   00008000 / 00000001 / 00 -> 00008000  vec  0  X0 N0 Z1 V1 C0
+   ffff7fff / 00000001 / 00 -> ffff7fff  vec  0  X0 N0 Z0 V1 C0
+   12345678 / 00000100 / 00 -> 12345678  vec  0  X0 N0 Z0 V1 C0
+
+CHK.W D1,D0 (vec 6 = trapped)   (inputs D0 / D1 / CCR in -> D0 after, vector, flags)
+   00000005 / 0000000a / 00 -> 00000005  vec  0  X0 N0 Z0 V0 C0
+   00000005 / 0000000a / 1f -> 00000005  vec  0  X1 N0 Z0 V0 C0
+   00000000 / 0000000a / 1f -> 00000000  vec  0  X1 N0 Z1 V0 C0
+   0000000a / 0000000a / 00 -> 0000000a  vec  0  X0 N0 Z0 V0 C0
+   0000ffff / 0000000a / 00 -> 0000ffff  vec  6  X0 N1 Z0 V0 C1
+   0000000b / 0000000a / 00 -> 0000000b  vec  6  X0 N0 Z0 V0 C1
+   00008000 / 0000000a / 1f -> 00008000  vec  6  X1 N1 Z0 V1 C1
+   00000005 / 0000ffff / 00 -> 00000005  vec  6  X0 N0 Z0 V0 C0
+   0000fffe / 0000ffff / 00 -> 0000fffe  vec  6  X0 N1 Z0 V0 C0
+   00000000 / 00000000 / 1f -> 00000000  vec  0  X1 N0 Z1 V0 C0
+
+CHK.L D1,D0 (vec 6 = trapped)   (inputs D0 / D1 / CCR in -> D0 after, vector, flags)
+   00000005 / 0000000a / 00 -> 00000005  vec  0  X0 N0 Z0 V0 C0
+   ffffffff / 0000000a / 00 -> ffffffff  vec  6  X0 N1 Z0 V0 C1
+   0000000b / 0000000a / 1f -> 0000000b  vec  6  X1 N0 Z0 V0 C1
+   80000000 / 0000000a / 00 -> 80000000  vec  6  X0 N1 Z0 V1 C1
+   00000000 / 00000000 / 1f -> 00000000  vec  0  X1 N0 Z1 V0 C0
+   7fffffff / 7fffffff / 00 -> 7fffffff  vec  0  X0 N0 Z0 V0 C0
+
+T2a DIVU.L D1,D2:D0 overflow (D2:D0 = 2:0, D1 = 1), CCR = 00 before
+   no exception; SR after 2706 (X0 N0 Z1 V1 C0)
+   D0=00000000 D1=00000001 D2=00000002 D3=001b2706 D4=00000001 D5=000641ed D6=00000003 D7=0000ffff
+   A0=001ba0b8 A1=0019e1dc A2=0019e1e0 A3=0019e1e2 A4=001ba158 A5=0019e03c A6=0000220c
+   flags right after: X0 N0 Z1 V1 C0   D2:D0 = 00000002:00000000 (unchanged = 00000002:00000000)
+   RESULT: V = 1 C = 0 (control: C was 0 before)
+
+T2b DIVU.L D1,D2:D0 overflow, CCR = 1F before
+   no exception; SR after 2716 (X1 N0 Z1 V1 C0)
+   D0=00000000 D1=00000001 D2=00000002 D3=001b2716 D4=00000001 D5=000641ed D6=00000003 D7=0000ffff
+   A0=001ba158 A1=0019e214 A2=0019e218 A3=0019e21a A4=001ba1f8 A5=0019e03c A6=0000220c
+   flags right after: X1 N0 Z1 V1 C0   D2:D0 = 00000002:00000000 (unchanged = 00000002:00000000)
+   RESULT: V = 1, C = 0  -> C cleared (Programmer's Reference Manual / m68ksv)
+
+T2c DIVS.L D1,D2:D0 overflow, CCR = 1F before
+   no exception; SR after 2716 (X1 N0 Z1 V1 C0)
+   D0=00000000 D1=00000001 D2=00000002 D3=001b2716 D4=00000001 D5=000641ed D6=00000003 D7=0000ffff
+   A0=001ba1f8 A1=0019e24c A2=0019e250 A3=0019e252 A4=001ba298 A5=0019e03c A6=0000220c
+   flags right after: X1 N0 Z1 V1 C0   D2:D0 = 00000002:00000000 (unchanged = 00000002:00000000)
+   RESULT: V = 1, C = 0  -> C cleared (Programmer's Reference Manual / m68ksv)
+
+T3a TRAP #0 with T1 set: is a trace exception taken before the TRAP handler runs?
+   no exception; SR after 2704 (X0 N0 Z1 V0 C0)
+   log (3 entries):
+     vector  9  stacked PC 0019e988 = handler entry
+     vector 32  stacked PC 0019e288 = the next instruction
+     vector  9  stacked PC 0019e28c = after the MOVE to SR
+   RESULT: trace first, PC = handler (manual / m68ksv)
+
+T3b DIVU.W by zero with T1 set: the same question
+   no exception; SR after 2704 (X0 N0 Z1 V0 C0)
+   log (3 entries):
+     vector  9  stacked PC 0019e988 = handler entry
+     vector  5  stacked PC 0019e2cc = the next instruction
+     vector  9  stacked PC 0019e2d0 = after the MOVE to SR
+   RESULT: trace first, PC = handler (manual / m68ksv)
+
+T4a PACK -(A0),-(A7),#0
+   no exception; SR after 2700 (X0 N0 Z0 V0 C0)
+   A0 001bb25e (start pbuf+16, delta -2)  A7 after 001bb26e (start pbuf+32, delta -2)
+   pbuf+8..+39:
+     +08: ee ee ee ee ee ee 12 34 ee ee ee ee ee ee ee ee
+     +24: ee ee ee ee ee 56 24 9a ee ee ee ee ee ee ee ee
+   (before: all EE except +14 = 12, +15 = 34, +29 = 56, +30 = 78, +31 = 9A)
+
+T4b PACK -(A7),-(A0),#0
+   no exception; SR after 2700 (X0 N0 Z0 V0 C0)
+   A0 001bb25f (start pbuf+16, delta -1)  A7 after 001bb26e (start pbuf+32, delta -2)
+   pbuf+8..+39:
+     +08: ee ee ee ee ee ee 12 8a ee ee ee ee ee ee ee ee
+     +24: ee ee ee ee ee 56 78 9a ee ee ee ee ee ee ee ee
+   (before: all EE except +14 = 12, +15 = 34, +29 = 56, +30 = 78, +31 = 9A)
+
+T4c UNPK -(A0),-(A7),#$3030
+   no exception; SR after 2700 (X0 N0 Z0 V0 C0)
+   A0 001bb25f (start pbuf+16, delta -1)  A7 after 001bb26e (start pbuf+32, delta -2)
+   pbuf+8..+39:
+     +08: ee ee ee ee ee ee 12 34 ee ee ee ee ee ee ee ee
+     +24: ee ee ee ee ee 56 33 34 ee ee ee ee ee ee ee ee
+   (before: all EE except +14 = 12, +15 = 34, +29 = 56, +30 = 78, +31 = 9A)
+
+T4d UNPK -(A7),-(A0),#$3030
+   no exception; SR after 2700 (X0 N0 Z0 V0 C0)
+   A0 001bb25e (start pbuf+16, delta -2)  A7 after 001bb26e (start pbuf+32, delta -2)
+   pbuf+8..+39:
+     +08: ee ee ee ee ee ee 37 38 ee ee ee ee ee ee ee ee
+     +24: ee ee ee ee ee 56 78 9a ee ee ee ee ee ee ee ee
+   (before: all EE except +14 = 12, +15 = 34, +29 = 56, +30 = 78, +31 = 9A)
+   RESULT (T4a-d): raw; the A7 steps and bytes are compared against m68ksv and Musashi afterwards
+
+T5a FSAVE -(A7) in user mode, no FPU: privilege violation (8) or F-line (11)?
+   exception: vector 8
+   frame (24 words):
+      0704 0019 e444 0020 0000 0000 0000 0000 0000 0003 001b 48c8
+      0000 0001 0006 41ed 0000 0003 0000 0001 001a 223b 001b cd21
+   SR 0704 PC 0019e444 format 0 vector offset 020
+   RESULT: privilege violation (manual / m68ksv)
+
+T5b (control) FSAVE -(A7) in supervisor mode, no FPU: F-line (11) expected
+   exception: vector 11
+   frame (24 words):
+      2700 0019 e480 002c 0000 0000 0000 0000 0000 0000 0000 0000
+      0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000
+   SR 2700 PC 0019e480 format 0 vector offset 02c
+   RESULT: F-line (as expected)
+
+T6a RTE of a format-7 frame: format error (14)?
+   exception: vector 14
+   frame (24 words):
+      2700 0019 e4dc 0038 2700 0019 e4de 7000 0000 0000 0000 0000
+      0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000
+   SR 2700 PC 0019e4dc format 0 vector offset 038
+   (RTE at 0019e4dc)
+   RESULT: format error (manual / m68ksv)
+
+T6c (control) RTE of a format-0 frame
+   no exception; SR after 2700 (X0 N0 Z0 V0 C0)
+   frame accepted: 8 bytes popped (A5 001bb2c0 -> A4 001bb2c8)
+   RESULT: accepted, 8 bytes (as expected)
+
+T6b RTE of a format-9 frame (run last)
+   no exception; SR after 2700 (X0 N0 Z0 V0 C0)
+   frame accepted: 20 bytes popped (A5 001bb2c0 -> A4 001bb2d4)
+   RESULT: accepted, 20 bytes popped (m68ksv)
+
+T7  JMP to an odd address: address error frame
+   exception: vector 3
+   frame (24 words):
+      2700 0019 e574 b00c 0000 0066 4e71 4e71 0019 e575 4e71 0000
+      0000 0000 0000 0000 0000 0000 0000 0000 00f2 0007 0019 e575
+   SR 2700 PC 0019e574 format b vector offset 00c
+   SSW 0066  fault address 0019e575  (target was 0019e574 + 1)
+   RESULT: format b (m68ksv: format B; Musashi: a mostly empty frame); words compared afterwards
+
+T8a (control) cache: two cached subroutines patched to return 2, no clearing
+   no exception; SR after 2700 (X0 N0 Z0 V0 C0)
+   results 1 / 1  ->  stale: the instruction cache is modelled
+
+T8b CACR CE with CAAR = the first subroutine: one entry or the whole cache cleared?
+   no exception; SR after 2700 (X0 N0 Z0 V0 C0)
+   RESULT: 2 / 1  ->  one entry (manual / m68ksv)
+
+T9a BFEXTU D1{0:0},D0 (width 0 = 32), D1 = 12345678
+   no exception; SR after 2700 (X0 N0 Z0 V0 C0)
+   RESULT: D0 = 12345678 (expected 12345678, N0 Z0)  ok
+
+T9b BFEXTS (A0){D2:12},D0, A0 = bbuf+2, D2 = -4, bbuf = 11 28 33 44 ...
+   no exception; SR after 2708 (X0 N1 Z0 V0 C0)
+   RESULT: D0 = fffff833 (expected FFFFF833, N1)  ok
+
+T9c BFINS D1,(A0){7:32}, A0 = cbuf+1, D1 = A5C3E187, cbuf all 00
+   no exception; SR after 2708 (X0 N1 Z0 V0 C0)
+   cbuf:  00 01 4b 87 c3 0e 00 00
+   RESULT: expected 00 01 4b 87 c3 0e 00 00, N1  ok
+
+T9d BFFFO D1{4:8},D0, D1 = 0
+   no exception; SR after 2704 (X0 N0 Z1 V0 C0)
+   RESULT: D0 = 12 (expected 12, Z1)  ok
+
+T9e BFFFO D1{4:8},D0, D1 = 00800000
+   no exception; SR after 2700 (X0 N0 Z0 V0 C0)
+   RESULT: D0 = 8 (expected 8, N0 Z0)  ok
+
+T10 LINK A7,#-8 with A7 = lbuf+32
+   no exception; SR after 2700 (X0 N0 Z0 V0 C0)
+   long pushed at lbuf+28: 001bb360  A7 after: lbuf+20
+   RESULT: pushed lbuf+32 (A7 before), A7 after lbuf+20 (m68ksv / Musashi: lbuf+28, A7 lbuf+20)
+
+done.
+

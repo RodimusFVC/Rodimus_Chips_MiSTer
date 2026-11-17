@@ -1,0 +1,8 @@
+Files recovered from upstream github.com/devsaurus/t48 history, needed to elaborate
+B's system/t8050_wb.vhd (it still references packages upstream deleted):
+  t48_core_comp_pack-p.vhd    git show aa812fe^:rtl/vhdl/t48_core_comp_pack-p.vhd
+  t48_system_comp_pack-p.vhd  git show aa812fe^:rtl/vhdl/system/t48_system_comp_pack-p.vhd
+  syn_rom-e.vhd               git show 6fecf34^:rtl/vhdl/system/syn_rom-e.vhd
+  syn_ram-e.vhd               git show 6fecf34^:rtl/vhdl/system/syn_ram-e.vhd
+syn_rom/syn_ram architectures: harness (see ../harness_syn.vhd).
+  t48_core_comp_pack syn_rom/syn_ram declarations: git show d8b9bc9^:rtl/vhdl/t48_core_comp_pack-p.vhd (2006-06-21)

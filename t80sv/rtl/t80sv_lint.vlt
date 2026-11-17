@@ -1,0 +1,10 @@
+`verilator_config
+// Copyright (C) 2026 Rodimus; Verilator waivers for t80sv (see t80sv.sv for the T80 license)
+// Waivers for verilator --lint-only -Wall (pass this file first on the command line).
+// T80 mixes its asynchronous reset with synchronous uses of RESET_n (BUSAK_n = ~(BusAck & RESET_n), OldNMI_n /
+// BusReq_s / BusAck held while in reset, T80pa's synchronous front-end reset): kept as in the reference.
+lint_off -rule SYNCASYNCNET
+// several modules per file (core, front ends, drop-in tops, fleet wrappers)
+lint_off -rule DECLFILENAME
+// outputs a drop-in top does not have are left open on purpose
+lint_off -rule PINCONNECTEMPTY

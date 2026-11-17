@@ -1,0 +1,257 @@
+op 00: ok   0/10000 fail
+op 01: ok   0/10000 fail
+op 02: ok   0/10000 fail
+op 03: ok   0/10000 fail
+op 04: ok   0/10000 fail
+op 05: ok   0/10000 fail
+op 06: ok   0/10000 fail
+op 07: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 3) PC=2F7C(sst 2F7D)
+op 08: ok   0/10000 fail
+op 09: ok   0/10000 fail
+op 0A: ok   0/10000 fail
+op 0B: ok   0/10000 fail
+op 0C: ok   0/10000 fail
+op 0D: ok   0/10000 fail
+op 0E: ok   0/10000 fail
+op 0F: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 3) PC=8DA6(sst 8DA8)
+op 10: ok   0/10000 fail
+op 11: ok   0/10000 fail
+op 12: ok   0/10000 fail
+op 13: ok   0/10000 fail
+op 14: ok   0/10000 fail
+op 15: ok   0/10000 fail
+op 16: ok   0/10000 fail
+op 17: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 4) PC=F0F7(sst F0F8)
+op 18: ok   0/10000 fail
+op 19: ok   0/10000 fail
+op 1A: ok   0/10000 fail
+op 1B: ok   0/10000 fail
+op 1C: ok   0/10000 fail
+op 1D: ok   0/10000 fail
+op 1E: ok   0/10000 fail
+op 1F: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 4) PC=E2E7(sst E2E9)
+op 20: ok   0/10000 fail
+op 21: ok   0/10000 fail
+op 22: ok   0/10000 fail
+op 23: ok   0/10000 fail
+op 24: ok   0/10000 fail
+op 25: ok   0/10000 fail
+op 26: ok   0/10000 fail
+op 27: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 3) PC=7099(sst 709A)
+op 28: ok   0/10000 fail
+op 29: ok   0/10000 fail
+op 2A: ok   0/10000 fail
+op 2B: ok   0/10000 fail
+op 2C: ok   0/10000 fail
+op 2D: ok   0/10000 fail
+op 2E: ok   0/10000 fail
+op 2F: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 3) PC=E8D2(sst E8D4)
+op 30: ok   0/10000 fail
+op 31: ok   0/10000 fail
+op 32: ok   0/10000 fail
+op 33: ok   0/10000 fail
+op 34: ok   0/10000 fail
+op 35: ok   0/10000 fail
+op 36: ok   0/10000 fail
+op 37: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 4) PC=B7F9(sst B7FA)
+op 38: ok   0/10000 fail
+op 39: ok   0/10000 fail
+op 3A: ok   0/10000 fail
+op 3B: ok   0/10000 fail
+op 3C: ok   0/10000 fail
+op 3D: ok   0/10000 fail
+op 3E: ok   0/10000 fail
+op 3F: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 4) PC=BB98(sst BB9A)
+op 40: ok   0/10000 fail
+op 41: ok   0/10000 fail
+op 42: ok   0/10000 fail
+op 43: ok   0/10000 fail
+op 44: ok   0/10000 fail
+op 45: ok   0/10000 fail
+op 46: ok   0/10000 fail
+op 47: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 3) PC=BC41(sst BC42)
+op 48: ok   0/10000 fail
+op 49: ok   0/10000 fail
+op 4A: ok   0/10000 fail
+op 4B: ok   0/10000 fail
+op 4C: ok   0/10000 fail
+op 4D: ok   0/10000 fail
+op 4E: ok   0/10000 fail
+op 4F: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 3) PC=9A4E(sst 9A50)
+op 50: ok   0/10000 fail
+op 51: ok   0/10000 fail
+op 52: ok   0/10000 fail
+op 53: ok   0/10000 fail
+op 54: ok   0/10000 fail
+op 55: ok   0/10000 fail
+op 56: ok   0/10000 fail
+op 57: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 4) PC=9755(sst 9756)
+op 58: ok   0/10000 fail
+op 59: ok   0/10000 fail
+op 5A: ok   0/10000 fail
+op 5B: ok   0/10000 fail
+op 5C: ok   0/10000 fail
+op 5D: ok   0/10000 fail
+op 5E: ok   0/10000 fail
+op 5F: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 4) PC=31F3(sst 31F5)
+op 60: ok   0/10000 fail
+op 61: ok   0/10000 fail
+op 62: ok   0/10000 fail
+op 63: ok   0/10000 fail
+op 64: ok   0/10000 fail
+op 65: ok   0/10000 fail
+op 66: ok   0/10000 fail
+op 67: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 3) PC=7A4F(sst 7A50)
+op 68: ok   0/10000 fail
+op 69: FAIL 4991/10000 fail | [cyc2 addr]x4991 | e.g. "1" cyc2 addr 1379 (sst 0056)
+op 6A: ok   0/10000 fail
+op 6B: ok   0/10000 fail
+op 6C: ok   0/10000 fail
+op 6D: ok   0/10000 fail
+op 6E: ok   0/10000 fail
+op 6F: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 3) PC=D3E0(sst D3E2)
+op 70: ok   0/10000 fail
+op 71: ok   0/10000 fail
+op 72: ok   0/10000 fail
+op 73: ok   0/10000 fail
+op 74: ok   0/10000 fail
+op 75: ok   0/10000 fail
+op 76: ok   0/10000 fail
+op 77: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 4) PC=085C(sst 085D)
+op 78: ok   0/10000 fail
+op 79: ok   0/10000 fail
+op 7A: ok   0/10000 fail
+op 7B: ok   0/10000 fail
+op 7C: ok   0/10000 fail
+op 7D: ok   0/10000 fail
+op 7E: ok   0/10000 fail
+op 7F: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 4) PC=B962(sst B964)
+op 80: ok   0/10000 fail
+op 81: ok   0/10000 fail
+op 82: ok   0/10000 fail
+op 83: ok   0/10000 fail
+op 84: ok   0/10000 fail
+op 85: ok   0/10000 fail
+op 86: ok   0/10000 fail
+op 87: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 3) PC=DF9B(sst DF9C)
+op 88: ok   0/10000 fail
+op 89: ok   0/10000 fail
+op 8A: ok   0/10000 fail
+op 8B: ok   0/10000 fail
+op 8C: ok   0/10000 fail
+op 8D: ok   0/10000 fail
+op 8E: ok   0/10000 fail
+op 8F: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 3) PC=1DD9(sst 1DDB)
+op 90: ok   0/10000 fail
+op 91: ok   0/10000 fail
+op 92: ok   0/10000 fail
+op 93: ok   0/10000 fail
+op 94: ok   0/10000 fail
+op 95: ok   0/10000 fail
+op 96: ok   0/10000 fail
+op 97: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 4) PC=AA31(sst AA32)
+op 98: ok   0/10000 fail
+op 99: ok   0/10000 fail
+op 9A: ok   0/10000 fail
+op 9B: ok   0/10000 fail
+op 9C: ok   0/10000 fail
+op 9D: ok   0/10000 fail
+op 9E: ok   0/10000 fail
+op 9F: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 4) PC=3BB0(sst 3BB2)
+op A0: ok   0/10000 fail
+op A1: ok   0/10000 fail
+op A2: ok   0/10000 fail
+op A3: ok   0/10000 fail
+op A4: ok   0/10000 fail
+op A5: ok   0/10000 fail
+op A6: ok   0/10000 fail
+op A7: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 3) PC=AC18(sst AC19)
+op A8: ok   0/10000 fail
+op A9: ok   0/10000 fail
+op AA: ok   0/10000 fail
+op AB: ok   0/10000 fail
+op AC: ok   0/10000 fail
+op AD: ok   0/10000 fail
+op AE: ok   0/10000 fail
+op AF: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 3) PC=BA26(sst BA28)
+op B0: ok   0/10000 fail
+op B1: ok   0/10000 fail
+op B2: ok   0/10000 fail
+op B3: ok   0/10000 fail
+op B4: ok   0/10000 fail
+op B5: ok   0/10000 fail
+op B6: ok   0/10000 fail
+op B7: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 4) PC=789D(sst 789E)
+op B8: ok   0/10000 fail
+op B9: ok   0/10000 fail
+op BA: ok   0/10000 fail
+op BB: ok   0/10000 fail
+op BC: ok   0/10000 fail
+op BD: ok   0/10000 fail
+op BE: ok   0/10000 fail
+op BF: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 4) PC=0CA4(sst 0CA6)
+op C0: ok   0/10000 fail
+op C1: ok   0/10000 fail
+op C2: ok   0/10000 fail
+op C3: ok   0/10000 fail
+op C4: ok   0/10000 fail
+op C5: ok   0/10000 fail
+op C6: ok   0/10000 fail
+op C7: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 3) PC=687C(sst 687D)
+op C8: ok   0/10000 fail
+op C9: ok   0/10000 fail
+op CA: ok   0/10000 fail
+op CB: FAIL 10000/10000 fail | [cycles 1]x10000 | e.g. "0" cycles 1 (sst 2)
+op CC: ok   0/10000 fail
+op CD: ok   0/10000 fail
+op CE: ok   0/10000 fail
+op CF: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 3) PC=8D04(sst 8D06)
+op D0: ok   0/10000 fail
+op D1: ok   0/10000 fail
+op D2: ok   0/10000 fail
+op D3: ok   0/10000 fail
+op D4: ok   0/10000 fail
+op D5: ok   0/10000 fail
+op D6: ok   0/10000 fail
+op D7: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 4) PC=DC0D(sst DC0E)
+op D8: ok   0/10000 fail
+op D9: ok   0/10000 fail
+op DA: ok   0/10000 fail
+op DB: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 4) PC=6AEC(sst 6AED)
+op DC: ok   0/10000 fail
+op DD: ok   0/10000 fail
+op DE: ok   0/10000 fail
+op DF: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 4) PC=DFD7(sst DFD9)
+op E0: ok   0/10000 fail
+op E1: ok   0/10000 fail
+op E2: ok   0/10000 fail
+op E3: ok   0/10000 fail
+op E4: ok   0/10000 fail
+op E5: ok   0/10000 fail
+op E6: ok   0/10000 fail
+op E7: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 3) PC=CD05(sst CD06)
+op E8: ok   0/10000 fail
+op E9: FAIL 4988/10000 fail | [cyc2 addr]x4988 | e.g. "0" cyc2 addr B86C (sst 0000)
+op EA: ok   0/10000 fail
+op EB: ok   0/10000 fail
+op EC: ok   0/10000 fail
+op ED: ok   0/10000 fail
+op EE: ok   0/10000 fail
+op EF: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 3) PC=D9B2(sst D9B4)
+op F0: ok   0/10000 fail
+op F1: ok   0/10000 fail
+op F2: ok   0/10000 fail
+op F3: ok   0/10000 fail
+op F4: ok   0/10000 fail
+op F5: ok   0/10000 fail
+op F6: ok   0/10000 fail
+op F7: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 4) PC=76F6(sst 76F7)
+op F8: ok   0/10000 fail
+op F9: ok   0/10000 fail
+op FA: ok   0/10000 fail
+op FB: ok   0/10000 fail
+op FC: ok   0/10000 fail
+op FD: ok   0/10000 fail
+op FE: ok   0/10000 fail
+op FF: FAIL 10000/10000 fail | [cycles 1 +final PC]x10000 | e.g. "0" cycles 1 (sst 4) PC=4A2D(sst 4A2F)
+TOTAL tests=2560000 fail=349979

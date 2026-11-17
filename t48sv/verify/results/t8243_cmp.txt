@@ -1,0 +1,10 @@
+/home/user/t48sv/verify/cosim/tb_8243_cmp.vhd:113:5:@4000005ns:(report note): RESULT8243 async=0 steps=800001 mismatches=0 masked_dont_care_bits=1958492
+/home/user/t48sv/verify/cosim/tb_8243_cmp.vhd:113:5:@4000005ns:(report note): RESULT8243 async=0 steps=800001 mismatches=0 masked_dont_care_bits=1959600
+/home/user/t48sv/verify/cosim/tb_8243_cmp.vhd:113:5:@4000005ns:(report note): RESULT8243 async=0 steps=800001 mismatches=0 masked_dont_care_bits=1974276
+/home/user/t48sv/verify/cosim/tb_8243_cmp.vhd:113:5:@4000005ns:(report note): RESULT8243 async=0 steps=800001 mismatches=0 masked_dont_care_bits=1963248
+/home/user/t48sv/verify/cosim/tb_8243_cmp.vhd:113:5:@4000005ns:(report note): RESULT8243 async=0 steps=800001 mismatches=0 masked_dont_care_bits=1938216
+/home/user/t48sv/verify/cosim/tb_8243_cmp.vhd:113:5:@4000005ns:(report note): RESULT8243 async=1 steps=800001 mismatches=0 masked_dont_care_bits=1730076
+/home/user/t48sv/verify/cosim/tb_8243_cmp.vhd:113:5:@4000005ns:(report note): RESULT8243 async=1 steps=800001 mismatches=0 masked_dont_care_bits=1745492
+/home/user/t48sv/verify/cosim/tb_8243_cmp.vhd:113:5:@4000005ns:(report note): RESULT8243 async=1 steps=800001 mismatches=0 masked_dont_care_bits=1751064
+/home/user/t48sv/verify/cosim/tb_8243_cmp.vhd:113:5:@4000005ns:(report note): RESULT8243 async=1 steps=800001 mismatches=0 masked_dont_care_bits=1733608
+/home/user/t48sv/verify/cosim/tb_8243_cmp.vhd:113:5:@4000005ns:(report note): RESULT8243 async=1 steps=800001 mismatches=0 masked_dont_care_bits=1712704

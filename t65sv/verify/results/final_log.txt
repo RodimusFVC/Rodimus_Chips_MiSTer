@@ -1,0 +1,38 @@
+built build/lockstep
+built build/progrun_ls
+built build/sst_ls
+built build/progrun_wdc
+built build/progrun_rkwl
+built build/progrun_syn
+built build/progrun_2a03
+built build/progrun_wdcfx
+built build/sst_wdc
+built build/sst_rkwl
+built build/sst_syn
+built build/sst_2a03
+built build/sst_wdcfx
+built build/c02dir
+built build/sst816
+built build/c816dir
+built build/sst816_t65
+== lint
+t65sv_all.sv: 2991 lines
+clean --top-module t65sv_65C816
+clean --top-module t65sv816
+clean t65sv_all.sv
+== lockstep + sweep
+== Dormann
+== directed
+== SingleStepTests
+== 65C816
+== mutation
+== synthesis
+== coverage
+built build/cov_ls
+built build/cov_prog
+built build/cov_wdc
+built build/cov_sstwdc
+built build/cov_2a03
+built build/cov_c02dir
+Terminated
+final done

@@ -1,0 +1,3 @@
+PASS end_pc=003469 cycles=96247435 instructions=30648052 E=1
+PASS end_pc=00024B cycles=55788840 instructions=18134205 E=1
+PASS end_pc=003469 cycles=96247435 instructions=30648052 E=1 stall_cycles=27277393

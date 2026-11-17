@@ -1,0 +1,16 @@
+Verilator line/block coverage, merged over all coverage runs (cov.sh)
+t65sv.sv                   856 /   863 points   99.2 %
+t65sv816.sv                619 /   622 points   99.5 %
+all RTL                   1475 /  1485 points   99.3 %
+
+Never executed:
+t65sv.sv:356: [case] default: ;
+t65sv.sv:678: [case] default: ;
+t65sv.sv:743: [case] 3'd4: n_ALU_Op = ALU_EQ1;
+t65sv.sv:1138: [case] default: ;
+t65sv.sv:1554: [case] default: ;
+t65sv.sv:1599: [case] BA_P:    BusA = P;
+t65sv.sv:1626: [case] WD_S:    DO_r = S[7:0];
+t65sv816.sv:160: [case] default: am = AM_SPC;
+t65sv816.sv:501: [else] else     begin if (r > 20'h0009F) r = r + 20'h60; c = (r > 20'h000FF); end
+t65sv816.sv:886: [case] default: ;

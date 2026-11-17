@@ -1,0 +1,3 @@
+MAMECMP variant=0 instrs=600000 compared=600000 disagreeing_instrs=517 opcodes=254
+DIFF op=57 field=A         count=517      e.g. A mame 61 t48sv 1
+DIFF op=57 field=PSW       count=517      e.g. PSW mame 80 t48sv 0

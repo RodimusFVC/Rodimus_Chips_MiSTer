@@ -1,0 +1,572 @@
+seed 13 cycles 60000000 clkens 32615757 episodes 423 writes 76852 reads 44532 rewrites 10994 mid_resets 201 lp_toggles 46634
+coverage: adj_clkens 1707276 adj_R4=127 100209 adj&row<R6 1083737 adj_exits 52020 il3 4179066 R0=0 1317433 R9=31 757312
+coverage: skewDE 20421570/3929150/4194950/4070087 skewCUR 20510818/3847065/5083449/3174425 cursor_mode 9711285/7423867/8445449/7035156
+RESULT dut_vs_fixed_mismatches 0
+RESULT stock_vs_fixed_mismatches 4597162 (in adjust class: R4=127 wrap 410129, R6>R4+1 4187033; OUTSIDE class 0)
+  stock diff signals CURSOR+DE+VBLANK         2
+  stock diff signals DE                       34588
+  stock diff signals DE+VBLANK                2794383
+  stock diff signals VBLANK                   1768189
+  stock diff regs adjust row=  0 R6=  1 (now R4=127 R5= 3) [row wrapped: R4 was 127] 12
+  stock diff regs adjust row=  0 R6=  1 (now R4=127 R5=10) [row wrapped: R4 was 127] 1340
+  stock diff regs adjust row=  0 R6=  1 (now R4=127 R5=11) [row wrapped: R4 was 127] 3080
+  stock diff regs adjust row=  0 R6=  1 (now R4=127 R5=27) [row wrapped: R4 was 127] 1080
+  stock diff regs adjust row=  0 R6=  2 (now R4=127 R5= 2) [row wrapped: R4 was 127] 104
+  stock diff regs adjust row=  0 R6=  2 (now R4=127 R5= 3) [row wrapped: R4 was 127] 6133
+  stock diff regs adjust row=  0 R6=  2 (now R4=127 R5= 4) [row wrapped: R4 was 127] 1551
+  stock diff regs adjust row=  0 R6=  2 (now R4=127 R5=17) [row wrapped: R4 was 127] 916
+  stock diff regs adjust row=  0 R6=  2 (now R4=127 R5=21) [row wrapped: R4 was 127] 10752
+  stock diff regs adjust row=  0 R6=  2 (now R4=127 R5=23) [row wrapped: R4 was 127] 6072
+  stock diff regs adjust row=  0 R6=  2 (now R4=127 R5=25) [row wrapped: R4 was 127] 664
+  stock diff regs adjust row=  0 R6=  2 (now R4=127 R5=26) [row wrapped: R4 was 127] 738
+  stock diff regs adjust row=  0 R6=  3 (now R4=127 R5= 2) [row wrapped: R4 was 127] 1472
+  stock diff regs adjust row=  0 R6=  3 (now R4=127 R5=15) [row wrapped: R4 was 127] 900
+  stock diff regs adjust row=  0 R6=  3 (now R4=127 R5=19) [row wrapped: R4 was 127] 566
+  stock diff regs adjust row=  0 R6=  3 (now R4=127 R5=27) [row wrapped: R4 was 127] 7448
+  stock diff regs adjust row=  0 R6=  4 (now R4=  2 R5= 4) [row wrapped: R4 was 127] 20929
+  stock diff regs adjust row=  0 R6=  5 (now R4=127 R5=20) [row wrapped: R4 was 127] 6600
+  stock diff regs adjust row=  0 R6=  5 (now R4=127 R5=22) [row wrapped: R4 was 127] 1230
+  stock diff regs adjust row=  0 R6=  6 (now R4=127 R5= 9) [row wrapped: R4 was 127] 432
+  stock diff regs adjust row=  0 R6=  6 (now R4=127 R5=11) [row wrapped: R4 was 127] 1782
+  stock diff regs adjust row=  0 R6=  6 (now R4=127 R5=13) [row wrapped: R4 was 127] 1056
+  stock diff regs adjust row=  0 R6=  6 (now R4=127 R5=19) [row wrapped: R4 was 127] 342
+  stock diff regs adjust row=  0 R6=  6 (now R4=127 R5=30) [row wrapped: R4 was 127] 720
+  stock diff regs adjust row=  0 R6=  7 (now R4=127 R5=17) [row wrapped: R4 was 127] 72
+  stock diff regs adjust row=  0 R6=  7 (now R4=127 R5=21) [row wrapped: R4 was 127] 172
+  stock diff regs adjust row=  0 R6=  7 (now R4=127 R5=23) [row wrapped: R4 was 127] 920
+  stock diff regs adjust row=  0 R6=  8 (now R4=127 R5=22) [row wrapped: R4 was 127] 3359
+  stock diff regs adjust row=  0 R6=  8 (now R4=127 R5=23) [row wrapped: R4 was 127] 822
+  stock diff regs adjust row=  0 R6=  9 (now R4=127 R5=10) [row wrapped: R4 was 127] 646
+  stock diff regs adjust row=  0 R6=  9 (now R4=127 R5=17) [row wrapped: R4 was 127] 84
+  stock diff regs adjust row=  0 R6=  9 (now R4=127 R5=18) [row wrapped: R4 was 127] 7878
+  stock diff regs adjust row=  0 R6=  9 (now R4=127 R5=22) [row wrapped: R4 was 127] 3252
+  stock diff regs adjust row=  0 R6=  9 (now R4=127 R5=30) [row wrapped: R4 was 127] 4758
+  stock diff regs adjust row=  0 R6= 10 (now R4=127 R5= 9) [row wrapped: R4 was 127] 2504
+  stock diff regs adjust row=  0 R6= 10 (now R4=127 R5=26) [row wrapped: R4 was 127] 1248
+  stock diff regs adjust row=  0 R6= 11 (now R4=127 R5=19) [row wrapped: R4 was 127] 2090
+  stock diff regs adjust row=  0 R6= 11 (now R4=127 R5=21) [row wrapped: R4 was 127] 2310
+  stock diff regs adjust row=  0 R6= 12 (now R4=127 R5= 1) [row wrapped: R4 was 127] 154
+  stock diff regs adjust row=  0 R6= 12 (now R4=127 R5=13) [row wrapped: R4 was 127] 784
+  stock diff regs adjust row=  0 R6= 12 (now R4=127 R5=18) [row wrapped: R4 was 127] 3324
+  stock diff regs adjust row=  0 R6= 12 (now R4=127 R5=25) [row wrapped: R4 was 127] 2014
+  stock diff regs adjust row=  0 R6= 12 (now R4=127 R5=27) [row wrapped: R4 was 127] 3046
+  stock diff regs adjust row=  0 R6= 13 (now R4=127 R5= 8) [row wrapped: R4 was 127] 1998
+  stock diff regs adjust row=  0 R6= 13 (now R4=127 R5=25) [row wrapped: R4 was 127] 132
+  stock diff regs adjust row=  0 R6= 14 (now R4=127 R5= 4) [row wrapped: R4 was 127] 268
+  stock diff regs adjust row=  0 R6= 14 (now R4=127 R5= 5) [row wrapped: R4 was 127] 300
+  stock diff regs adjust row=  0 R6= 14 (now R4=127 R5=24) [row wrapped: R4 was 127] 8640
+  stock diff regs adjust row=  0 R6= 17 (now R4=127 R5= 9) [row wrapped: R4 was 127] 900
+  stock diff regs adjust row=  0 R6= 17 (now R4=127 R5=11) [row wrapped: R4 was 127] 898
+  stock diff regs adjust row=  0 R6= 20 (now R4=127 R5= 7) [row wrapped: R4 was 127] 41216
+  stock diff regs adjust row=  0 R6= 20 (now R4=127 R5=14) [row wrapped: R4 was 127] 492
+  stock diff regs adjust row=  0 R6= 20 (now R4=127 R5=28) [row wrapped: R4 was 127] 3584
+  stock diff regs adjust row=  0 R6= 20 (now R4=127 R5=31) [row wrapped: R4 was 127] 729
+  stock diff regs adjust row=  0 R6= 21 (now R4=127 R5= 1) [row wrapped: R4 was 127] 1112
+  stock diff regs adjust row=  0 R6= 21 (now R4=127 R5= 4) [row wrapped: R4 was 127] 114
+  stock diff regs adjust row=  0 R6= 21 (now R4=127 R5= 7) [row wrapped: R4 was 127] 3356
+  stock diff regs adjust row=  0 R6= 21 (now R4=127 R5=19) [row wrapped: R4 was 127] 220
+  stock diff regs adjust row=  0 R6= 21 (now R4=127 R5=21) [row wrapped: R4 was 127] 3256
+  stock diff regs adjust row=  0 R6= 21 (now R4=127 R5=25) [row wrapped: R4 was 127] 4944
+  stock diff regs adjust row=  0 R6= 21 (now R4=127 R5=29) [row wrapped: R4 was 127] 308
+  stock diff regs adjust row=  0 R6= 21 (now R4=127 R5=31) [row wrapped: R4 was 127] 372
+  stock diff regs adjust row=  0 R6= 22 (now R4=127 R5= 5) [row wrapped: R4 was 127] 376
+  stock diff regs adjust row=  0 R6= 23 (now R4=127 R5= 1) [row wrapped: R4 was 127] 160
+  stock diff regs adjust row=  0 R6= 23 (now R4=127 R5=11) [row wrapped: R4 was 127] 2068
+  stock diff regs adjust row=  0 R6= 23 (now R4=127 R5=23) [row wrapped: R4 was 127] 920
+  stock diff regs adjust row=  0 R6= 23 (now R4=127 R5=26) [row wrapped: R4 was 127] 1560
+  stock diff regs adjust row=  0 R6= 23 (now R4=127 R5=28) [row wrapped: R4 was 127] 336
+  stock diff regs adjust row=  0 R6= 24 (now R4=127 R5=26) [row wrapped: R4 was 127] 2316
+  stock diff regs adjust row=  0 R6= 24 (now R4=127 R5=31) [row wrapped: R4 was 127] 1455
+  stock diff regs adjust row=  0 R6= 25 (now R4=127 R5= 1) [row wrapped: R4 was 127] 34
+  stock diff regs adjust row=  0 R6= 26 (now R4=127 R5=13) [row wrapped: R4 was 127] 738
+  stock diff regs adjust row=  0 R6= 27 (now R4=127 R5= 1) [row wrapped: R4 was 127] 50
+  stock diff regs adjust row=  0 R6= 27 (now R4=127 R5= 3) [row wrapped: R4 was 127] 60
+  stock diff regs adjust row=  0 R6= 27 (now R4=127 R5= 9) [row wrapped: R4 was 127] 924
+  stock diff regs adjust row=  0 R6= 28 (now R4=127 R5=17) [row wrapped: R4 was 127] 5236
+  stock diff regs adjust row=  0 R6= 28 (now R4=127 R5=26) [row wrapped: R4 was 127] 4680
+  stock diff regs adjust row=  0 R6= 29 (now R4=127 R5=10) [row wrapped: R4 was 127] 634
+  stock diff regs adjust row=  0 R6= 30 (now R4=127 R5=19) [row wrapped: R4 was 127] 240
+  stock diff regs adjust row=  0 R6= 30 (now R4=127 R5=30) [row wrapped: R4 was 127] 9844
+  stock diff regs adjust row=  0 R6= 31 (now R4=127 R5=26) [row wrapped: R4 was 127] 2496
+  stock diff regs adjust row=  0 R6= 33 (now R4=127 R5= 7) [row wrapped: R4 was 127] 1470
+  stock diff regs adjust row=  0 R6= 33 (now R4=127 R5=11) [row wrapped: R4 was 127] 1304
+  stock diff regs adjust row=  0 R6= 33 (now R4=127 R5=19) [row wrapped: R4 was 127] 8170
+  stock diff regs adjust row=  0 R6= 33 (now R4=127 R5=28) [row wrapped: R4 was 127] 112
+  stock diff regs adjust row=  0 R6= 33 (now R4=127 R5=31) [row wrapped: R4 was 127] 13020
+  stock diff regs adjust row=  0 R6= 34 (now R4=127 R5= 6) [row wrapped: R4 was 127] 371
+  stock diff regs adjust row=  0 R6= 34 (now R4=127 R5=25) [row wrapped: R4 was 127] 12928
+  stock diff regs adjust row=  0 R6= 34 (now R4=127 R5=28) [row wrapped: R4 was 127] 109
+  stock diff regs adjust row=  0 R6= 34 (now R4=127 R5=31) [row wrapped: R4 was 127] 9114
+  stock diff regs adjust row=  0 R6= 35 (now R4=127 R5= 2) [row wrapped: R4 was 127] 704
+  stock diff regs adjust row=  0 R6= 35 (now R4=127 R5=14) [row wrapped: R4 was 127] 5610
+  stock diff regs adjust row=  0 R6= 35 (now R4=127 R5=23) [row wrapped: R4 was 127] 888
+  stock diff regs adjust row=  0 R6= 35 (now R4=127 R5=24) [row wrapped: R4 was 127] 2154
+  stock diff regs adjust row=  0 R6= 36 (now R4=127 R5= 3) [row wrapped: R4 was 127] 168
+  stock diff regs adjust row=  0 R6= 36 (now R4=127 R5=24) [row wrapped: R4 was 127] 1728
+  stock diff regs adjust row=  0 R6= 36 (now R4=127 R5=25) [row wrapped: R4 was 127] 7150
+  stock diff regs adjust row=  0 R6= 36 (now R4=127 R5=27) [row wrapped: R4 was 127] 5862
+  stock diff regs adjust row=  0 R6= 37 (now R4=127 R5= 5) [row wrapped: R4 was 127] 664
+  stock diff regs adjust row=  0 R6= 37 (now R4=127 R5=15) [row wrapped: R4 was 127] 1640
+  stock diff regs adjust row=  0 R6= 37 (now R4=127 R5=23) [row wrapped: R4 was 127] 506
+  stock diff regs adjust row=  0 R6= 38 (now R4=127 R5=21) [row wrapped: R4 was 127] 832
+  stock diff regs adjust row=  0 R6= 39 (now R4=121 R5=21) [row wrapped: R4 was 127] 941
+  stock diff regs adjust row=  0 R6= 39 (now R4=127 R5=11) [row wrapped: R4 was 127] 4338
+  stock diff regs adjust row=  0 R6= 39 (now R4=127 R5=21) [row wrapped: R4 was 127] 18419
+  stock diff regs adjust row=  0 R6= 39 (now R4=127 R5=28) [row wrapped: R4 was 127] 5612
+  stock diff regs adjust row=  0 R6= 40 (now R4=127 R5= 3) [row wrapped: R4 was 127] 2124
+  stock diff regs adjust row=  0 R6= 40 (now R4=127 R5=16) [row wrapped: R4 was 127] 896
+  stock diff regs adjust row=  0 R6= 40 (now R4=127 R5=22) [row wrapped: R4 was 127] 726
+  stock diff regs adjust row=  0 R6= 40 (now R4=127 R5=29) [row wrapped: R4 was 127] 1124
+  stock diff regs adjust row=  0 R6= 44 (now R4=126 R5=17) [row wrapped: R4 was 127] 27
+  stock diff regs adjust row=  0 R6= 44 (now R4=127 R5=17) [row wrapped: R4 was 127] 327
+  stock diff regs adjust row=  0 R6= 44 (now R4=127 R5=19) [row wrapped: R4 was 127] 748
+  stock diff regs adjust row=  0 R6= 46 (now R4=127 R5=30) [row wrapped: R4 was 127] 2512
+  stock diff regs adjust row=  0 R6= 51 (now R4=127 R5=15) [row wrapped: R4 was 127] 1080
+  stock diff regs adjust row=  0 R6= 51 (now R4=127 R5=28) [row wrapped: R4 was 127] 3080
+  stock diff regs adjust row=  0 R6= 58 (now R4=127 R5= 5) [row wrapped: R4 was 127] 320
+  stock diff regs adjust row=  0 R6= 60 (now R4=127 R5=10) [row wrapped: R4 was 127] 150
+  stock diff regs adjust row=  0 R6= 60 (now R4=127 R5=17) [row wrapped: R4 was 127] 918
+  stock diff regs adjust row=  0 R6= 60 (now R4=127 R5=27) [row wrapped: R4 was 127] 2184
+  stock diff regs adjust row=  0 R6= 65 (now R4=127 R5= 1) [row wrapped: R4 was 127] 146
+  stock diff regs adjust row=  0 R6= 72 (now R4=127 R5=24) [row wrapped: R4 was 127] 6144
+  stock diff regs adjust row=  0 R6= 73 (now R4=127 R5=20) [row wrapped: R4 was 127] 1692
+  stock diff regs adjust row=  0 R6= 79 (now R4=127 R5= 4) [row wrapped: R4 was 127] 124
+  stock diff regs adjust row=  0 R6= 79 (now R4=127 R5=18) [row wrapped: R4 was 127] 322
+  stock diff regs adjust row=  0 R6= 81 (now R4=127 R5= 6) [row wrapped: R4 was 127] 480
+  stock diff regs adjust row=  0 R6= 82 (now R4=127 R5= 6) [row wrapped: R4 was 127] 1056
+  stock diff regs adjust row=  0 R6= 85 (now R4=127 R5=29) [row wrapped: R4 was 127] 2230
+  stock diff regs adjust row=  0 R6=101 (now R4=127 R5= 3) [row wrapped: R4 was 127] 396
+  stock diff regs adjust row=  0 R6=102 (now R4=127 R5=21) [row wrapped: R4 was 127] 1818
+  stock diff regs adjust row=  0 R6=104 (now R4=127 R5=30) [row wrapped: R4 was 127] 15073
+  stock diff regs adjust row=  0 R6=104 (now R4=127 R5=31) [row wrapped: R4 was 127] 1743
+  stock diff regs adjust row=  0 R6=107 (now R4=127 R5=29) [row wrapped: R4 was 127] 172
+  stock diff regs adjust row=  0 R6=109 (now R4=127 R5=24) [row wrapped: R4 was 127] 3840
+  stock diff regs adjust row=  0 R6=111 (now R4=  2 R5= 4) [row wrapped: R4 was 127] 64
+  stock diff regs adjust row=  0 R6=111 (now R4=127 R5=20) [row wrapped: R4 was 127] 895
+  stock diff regs adjust row=  0 R6=115 (now R4=127 R5=28) [row wrapped: R4 was 127] 7842
+  stock diff regs adjust row=  0 R6=118 (now R4=127 R5=20) [row wrapped: R4 was 127] 3360
+  stock diff regs adjust row=  0 R6=121 (now R4=127 R5=27) [row wrapped: R4 was 127] 2262
+  stock diff regs adjust row=  0 R6=126 (now R4=127 R5= 1) [row wrapped: R4 was 127] 24
+  stock diff regs adjust row=  0 R6=126 (now R4=127 R5= 3) [row wrapped: R4 was 127] 4068
+  stock diff regs adjust row=  0 R6=127 (now R4=127 R5= 2) [row wrapped: R4 was 127] 122
+  stock diff regs adjust row=  0 R6=127 (now R4=127 R5= 6) [row wrapped: R4 was 127] 864
+  stock diff regs adjust row=  0 R6=127 (now R4=127 R5=22) [row wrapped: R4 was 127] 4856
+  stock diff regs adjust row=  0 R6=127 (now R4=127 R5=31) [row wrapped: R4 was 127] 8184
+  stock diff regs adjust row=  1 R6=  2 (now R4=  0 R5= 1) [row = R4+1 < R6] 5488
+  stock diff regs adjust row=  1 R6=  2 (now R4=  0 R5= 2) [row = R4+1 < R6] 37383
+  stock diff regs adjust row=  1 R6=  2 (now R4=  0 R5= 3) [row = R4+1 < R6] 34850
+  stock diff regs adjust row=  1 R6=  2 (now R4=  0 R5= 4) [row = R4+1 < R6] 13706
+  stock diff regs adjust row=  1 R6=  2 (now R4=  0 R5=26) [row = R4+1 < R6] 167
+  stock diff regs adjust row=  1 R6=  2 (now R4=126 R5= 4) [row = R4+1 < R6] 128
+  stock diff regs adjust row=  1 R6=  2 (now R4=127 R5= 2) [row = R4+1 < R6] 65
+  stock diff regs adjust row=  1 R6=  3 (now R4=  0 R5= 2) [row = R4+1 < R6] 9851
+  stock diff regs adjust row=  1 R6=  3 (now R4=  0 R5= 3) [row = R4+1 < R6] 50113
+  stock diff regs adjust row=  1 R6=  3 (now R4=  0 R5= 4) [row = R4+1 < R6] 39780
+  stock diff regs adjust row=  1 R6=  3 (now R4=  0 R5=31) [row = R4+1 < R6] 220
+  stock diff regs adjust row=  1 R6=  3 (now R4= 67 R5= 2) [row = R4+1 < R6] 24
+  stock diff regs adjust row=  1 R6=  3 (now R4= 67 R5=28) [row = R4+1 < R6] 18
+  stock diff regs adjust row=  1 R6=  3 (now R4=127 R5=31) [row = R4+1 < R6] 32
+  stock diff regs adjust row=  1 R6=  4 (now R4=  0 R5= 1) [row = R4+1 < R6] 3105
+  stock diff regs adjust row=  1 R6=  4 (now R4=  0 R5= 2) [row = R4+1 < R6] 44047
+  stock diff regs adjust row=  1 R6=  4 (now R4=  0 R5= 5) [row = R4+1 < R6] 60332
+  stock diff regs adjust row=  1 R6=  4 (now R4=  0 R5=31) [row = R4+1 < R6] 91995
+  stock diff regs adjust row=  1 R6=  4 (now R4=  6 R5= 0) [row = R4+1 < R6] 6341
+  stock diff regs adjust row=  1 R6=  5 (now R4=  0 R5= 2) [row = R4+1 < R6] 24362
+  stock diff regs adjust row=  1 R6=  5 (now R4=  0 R5=31) [row = R4+1 < R6] 183
+  stock diff regs adjust row=  1 R6=  5 (now R4= 42 R5=31) [row = R4+1 < R6] 4259
+  stock diff regs adjust row=  1 R6=  5 (now R4=127 R5=31) [row = R4+1 < R6] 7493
+  stock diff regs adjust row=  1 R6=  6 (now R4=  0 R5= 4) [row = R4+1 < R6] 640025
+  stock diff regs adjust row=  1 R6=  6 (now R4=  6 R5= 0) [row = R4+1 < R6] 30
+  stock diff regs adjust row=  1 R6=  6 (now R4=  6 R5= 4) [row = R4+1 < R6] 30
+  stock diff regs adjust row=  1 R6=  7 (now R4=  0 R5= 6) [row = R4+1 < R6] 21225
+  stock diff regs adjust row=  1 R6=  8 (now R4=  0 R5= 6) [row = R4+1 < R6] 191
+  stock diff regs adjust row=  1 R6=  8 (now R4=  0 R5=15) [row = R4+1 < R6] 56
+  stock diff regs adjust row=  1 R6=  8 (now R4= 23 R5= 6) [row = R4+1 < R6] 8961
+  stock diff regs adjust row=  1 R6=  8 (now R4=127 R5=15) [row = R4+1 < R6] 136
+  stock diff regs adjust row=  1 R6=  8 (now R4=127 R5=22) [row = R4+1 < R6] 3819
+  stock diff regs adjust row=  1 R6=  9 (now R4=  0 R5= 1) [row = R4+1 < R6] 11716
+  stock diff regs adjust row=  1 R6=  9 (now R4=  0 R5= 3) [row = R4+1 < R6] 35
+  stock diff regs adjust row=  1 R6=  9 (now R4=  0 R5= 4) [row = R4+1 < R6] 42140
+  stock diff regs adjust row=  1 R6=  9 (now R4=  0 R5= 5) [row = R4+1 < R6] 14255
+  stock diff regs adjust row=  1 R6=  9 (now R4=  3 R5= 3) [row = R4+1 < R6] 5
+  stock diff regs adjust row=  1 R6= 10 (now R4=  0 R5= 6) [row = R4+1 < R6] 7153
+  stock diff regs adjust row=  1 R6= 10 (now R4=  0 R5= 8) [row = R4+1 < R6] 21
+  stock diff regs adjust row=  1 R6= 10 (now R4=  0 R5=26) [row = R4+1 < R6] 24
+  stock diff regs adjust row=  1 R6= 10 (now R4= 20 R5= 8) [row = R4+1 < R6] 1027
+  stock diff regs adjust row=  1 R6= 10 (now R4=127 R5=26) [row = R4+1 < R6] 433
+  stock diff regs adjust row=  1 R6= 12 (now R4=  0 R5= 1) [row = R4+1 < R6] 66
+  stock diff regs adjust row=  1 R6= 12 (now R4=  0 R5= 9) [row = R4+1 < R6] 77
+  stock diff regs adjust row=  1 R6= 12 (now R4= 30 R5= 9) [row = R4+1 < R6] 21
+  stock diff regs adjust row=  1 R6= 13 (now R4= 12 R5= 7) [row = R4+1 < R6] 5905
+  stock diff regs adjust row=  1 R6= 14 (now R4=  0 R5=28) [row = R4+1 < R6] 119
+  stock diff regs adjust row=  1 R6= 14 (now R4=127 R5=28) [row = R4+1 < R6] 441
+  stock diff regs adjust row=  1 R6= 15 (now R4=127 R5= 1) [row = R4+1 < R6] 10817
+  stock diff regs adjust row=  1 R6= 15 (now R4=127 R5=14) [row = R4+1 < R6] 6271
+  stock diff regs adjust row=  1 R6= 18 (now R4=  0 R5=15) [row = R4+1 < R6] 6399
+  stock diff regs adjust row=  1 R6= 18 (now R4=  0 R5=26) [row = R4+1 < R6] 17473
+  stock diff regs adjust row=  1 R6= 21 (now R4=  0 R5=31) [row = R4+1 < R6] 39
+  stock diff regs adjust row=  1 R6= 21 (now R4=127 R5=31) [row = R4+1 < R6] 147
+  stock diff regs adjust row=  1 R6= 23 (now R4=  0 R5=26) [row = R4+1 < R6] 2879
+  stock diff regs adjust row=  1 R6= 28 (now R4=  0 R5= 2) [row = R4+1 < R6] 281
+  stock diff regs adjust row=  1 R6= 28 (now R4=  0 R5= 7) [row = R4+1 < R6] 76
+  stock diff regs adjust row=  1 R6= 28 (now R4=  0 R5=16) [row = R4+1 < R6] 96
+  stock diff regs adjust row=  1 R6= 28 (now R4= 15 R5= 2) [row = R4+1 < R6] 51
+  stock diff regs adjust row=  1 R6= 31 (now R4= 82 R5=21) [row = R4+1 < R6] 18412
+  stock diff regs adjust row=  1 R6= 34 (now R4=  0 R5=28) [row = R4+1 < R6] 29
+  stock diff regs adjust row=  1 R6= 34 (now R4=127 R5=28) [row = R4+1 < R6] 1261
+  stock diff regs adjust row=  1 R6= 36 (now R4=124 R5=24) [row = R4+1 < R6] 64
+  stock diff regs adjust row=  1 R6= 37 (now R4=  0 R5= 5) [row = R4+1 < R6] 50
+  stock diff regs adjust row=  1 R6= 38 (now R4=  0 R5= 9) [row = R4+1 < R6] 115
+  stock diff regs adjust row=  1 R6= 38 (now R4= 22 R5= 9) [row = R4+1 < R6] 219
+  stock diff regs adjust row=  1 R6= 51 (now R4=  0 R5=19) [row = R4+1 < R6] 11
+  stock diff regs adjust row=  1 R6= 51 (now R4=  0 R5=28) [row = R4+1 < R6] 5
+  stock diff regs adjust row=  1 R6= 51 (now R4=  9 R5=19) [row = R4+1 < R6] 9
+  stock diff regs adjust row=  1 R6= 51 (now R4=127 R5=28) [row = R4+1 < R6] 267
+  stock diff regs adjust row=  1 R6= 65 (now R4=  0 R5=16) [row = R4+1 < R6] 159
+  stock diff regs adjust row=  1 R6= 69 (now R4= 67 R5=28) [row = R4+1 < R6] 25026
+  stock diff regs adjust row=  1 R6= 88 (now R4=  0 R5=15) [row = R4+1 < R6] 55184
+  stock diff regs adjust row=  1 R6= 92 (now R4= 67 R5=28) [row = R4+1 < R6] 4894
+  stock diff regs adjust row=  1 R6= 93 (now R4=  0 R5=15) [row = R4+1 < R6] 3136
+  stock diff regs adjust row=  1 R6= 96 (now R4=  0 R5=20) [row = R4+1 < R6] 29973
+  stock diff regs adjust row=  1 R6=102 (now R4=  0 R5=31) [row = R4+1 < R6] 32
+  stock diff regs adjust row=  1 R6=116 (now R4=  0 R5= 1) [row = R4+1 < R6] 592
+  stock diff regs adjust row=  1 R6=118 (now R4=  0 R5=22) [row = R4+1 < R6] 99
+  stock diff regs adjust row=  1 R6=118 (now R4= 51 R5=22) [row = R4+1 < R6] 71
+  stock diff regs adjust row=  1 R6=119 (now R4=  0 R5=13) [row = R4+1 < R6] 69
+  stock diff regs adjust row=  1 R6=119 (now R4= 41 R5= 9) [row = R4+1 < R6] 171
+  stock diff regs adjust row=  1 R6=119 (now R4= 41 R5=13) [row = R4+1 < R6] 4490
+  stock diff regs adjust row=  1 R6=124 (now R4=  0 R5= 1) [row = R4+1 < R6] 1480
+  stock diff regs adjust row=  1 R6=124 (now R4= 35 R5=26) [row = R4+1 < R6] 6
+  stock diff regs adjust row=  1 R6=126 (now R4=  0 R5= 2) [row = R4+1 < R6] 19240
+  stock diff regs adjust row=  1 R6=126 (now R4=  0 R5= 4) [row = R4+1 < R6] 61367
+  stock diff regs adjust row=  2 R6=  3 (now R4=  1 R5= 1) [row = R4+1 < R6] 11602
+  stock diff regs adjust row=  2 R6=  3 (now R4=  1 R5=16) [row = R4+1 < R6] 36917
+  stock diff regs adjust row=  2 R6=  3 (now R4=127 R5=16) [row = R4+1 < R6] 55
+  stock diff regs adjust row=  2 R6=  4 (now R4=  0 R5= 1) [row = R4+1 < R6] 15
+  stock diff regs adjust row=  2 R6=  4 (now R4=  1 R5= 1) [row = R4+1 < R6] 13481
+  stock diff regs adjust row=  2 R6=  4 (now R4=  1 R5= 2) [row = R4+1 < R6] 3384
+  stock diff regs adjust row=  2 R6=  4 (now R4=  1 R5= 5) [row = R4+1 < R6] 4500
+  stock diff regs adjust row=  2 R6=  4 (now R4=  1 R5=31) [row = R4+1 < R6] 46734
+  stock diff regs adjust row=  2 R6=  5 (now R4=  1 R5= 1) [row = R4+1 < R6] 3889
+  stock diff regs adjust row=  2 R6=  5 (now R4= 16 R5= 1) [row = R4+1 < R6] 22
+  stock diff regs adjust row=  2 R6=  6 (now R4=  1 R5= 2) [row = R4+1 < R6] 13844
+  stock diff regs adjust row=  2 R6=  6 (now R4=  1 R5= 4) [row = R4+1 < R6] 46230
+  stock diff regs adjust row=  2 R6=  6 (now R4=  1 R5= 5) [row = R4+1 < R6] 10610
+  stock diff regs adjust row=  2 R6=  8 (now R4=  1 R5= 1) [row = R4+1 < R6] 5
+  stock diff regs adjust row=  2 R6=  8 (now R4=  1 R5= 2) [row = R4+1 < R6] 17105
+  stock diff regs adjust row=  2 R6=  9 (now R4=  0 R5= 1) [row = R4+1 < R6] 8
+  stock diff regs adjust row=  2 R6=  9 (now R4=  1 R5= 1) [row = R4+1 < R6] 12420
+  stock diff regs adjust row=  2 R6=  9 (now R4=  1 R5= 4) [row = R4+1 < R6] 513
+  stock diff regs adjust row=  2 R6=  9 (now R4=  1 R5= 5) [row = R4+1 < R6] 1343
+  stock diff regs adjust row=  2 R6=  9 (now R4= 16 R5= 1) [row = R4+1 < R6] 53
+  stock diff regs adjust row=  2 R6= 32 (now R4= 29 R5=10) [row = R4+1 < R6] 650
+  stock diff regs adjust row=  2 R6=126 (now R4=  1 R5= 4) [row = R4+1 < R6] 98756
+  stock diff regs adjust row=  3 R6=  4 (now R4=  2 R5= 1) [row = R4+1 < R6] 367
+  stock diff regs adjust row=  3 R6=  4 (now R4=  2 R5= 4) [row = R4+1 < R6] 423
+  stock diff regs adjust row=  3 R6=  4 (now R4=  2 R5=15) [row = R4+1 < R6] 7709
+  stock diff regs adjust row=  3 R6=  5 (now R4=  2 R5= 4) [row = R4+1 < R6] 53187
+  stock diff regs adjust row=  3 R6=  5 (now R4=  2 R5= 6) [row = R4+1 < R6] 3663
+  stock diff regs adjust row=  3 R6=  5 (now R4=  2 R5=15) [row = R4+1 < R6] 9766
+  stock diff regs adjust row=  3 R6=  5 (now R4=  2 R5=16) [row = R4+1 < R6] 69338
+  stock diff regs adjust row=  3 R6=  5 (now R4=  5 R5= 6) [row = R4+1 < R6] 109
+  stock diff regs adjust row=  3 R6=  6 (now R4=  2 R5= 1) [row = R4+1 < R6] 814
+  stock diff regs adjust row=  3 R6=  8 (now R4=  2 R5= 5) [row = R4+1 < R6] 23004
+  stock diff regs adjust row=  3 R6=  8 (now R4=  7 R5= 0) [row = R4+1 < R6] 3986
+  stock diff regs adjust row=  3 R6= 10 (now R4=  2 R5= 6) [row = R4+1 < R6] 39936
+  stock diff regs adjust row=  3 R6= 12 (now R4=  2 R5= 7) [row = R4+1 < R6] 14112
+  stock diff regs adjust row=  3 R6= 26 (now R4=120 R5=15) [row = R4+1 < R6] 7551
+  stock diff regs adjust row=  3 R6= 28 (now R4=127 R5=17) [row = R4+1 < R6] 1952
+  stock diff regs adjust row=  3 R6= 50 (now R4=127 R5= 9) [row = R4+1 < R6] 2113
+  stock diff regs adjust row=  3 R6= 73 (now R4=  2 R5=30) [row = R4+1 < R6] 70819
+  stock diff regs adjust row=  3 R6= 73 (now R4= 79 R5=30) [row = R4+1 < R6] 2435
+  stock diff regs adjust row=  3 R6= 84 (now R4=120 R5=15) [row = R4+1 < R6] 60097
+  stock diff regs adjust row=  3 R6=126 (now R4=  2 R5= 2) [row = R4+1 < R6] 2272
+  stock diff regs adjust row=  4 R6=  6 (now R4=  3 R5= 2) [row = R4+1 < R6] 88567
+  stock diff regs adjust row=  4 R6=  6 (now R4=  3 R5= 4) [row = R4+1 < R6] 1114
+  stock diff regs adjust row=  4 R6=  6 (now R4=  5 R5= 2) [row = R4+1 < R6] 3
+  stock diff regs adjust row=  4 R6=  7 (now R4=  3 R5= 4) [row = R4+1 < R6] 6624
+  stock diff regs adjust row=  4 R6=  8 (now R4=  3 R5= 5) [row = R4+1 < R6] 4180
+  stock diff regs adjust row=  4 R6=  9 (now R4=  3 R5= 0) [row = R4+1 < R6] 1019
+  stock diff regs adjust row=  4 R6=  9 (now R4=  3 R5= 3) [row = R4+1 < R6] 5326
+  stock diff regs adjust row=  4 R6=  9 (now R4=  3 R5= 5) [row = R4+1 < R6] 6501
+  stock diff regs adjust row=  4 R6= 35 (now R4=  3 R5= 5) [row = R4+1 < R6] 9905
+  stock diff regs adjust row=  4 R6= 35 (now R4=  3 R5=29) [row = R4+1 < R6] 39185
+  stock diff regs adjust row=  4 R6= 63 (now R4=  3 R5=17) [row = R4+1 < R6] 9654
+  stock diff regs adjust row=  4 R6=127 (now R4=  3 R5= 2) [row = R4+1 < R6] 2082
+  stock diff regs adjust row=  4 R6=127 (now R4=  3 R5= 4) [row = R4+1 < R6] 1332
+  stock diff regs adjust row=  5 R6=  6 (now R4=  4 R5= 5) [row = R4+1 < R6] 14392
+  stock diff regs adjust row=  5 R6=  7 (now R4=  4 R5= 2) [row = R4+1 < R6] 317
+  stock diff regs adjust row=  5 R6=  7 (now R4=  4 R5= 5) [row = R4+1 < R6] 17365
+  stock diff regs adjust row=  5 R6=  7 (now R4=  4 R5= 6) [row = R4+1 < R6] 9264
+  stock diff regs adjust row=  5 R6=  7 (now R4= 32 R5= 5) [row = R4+1 < R6] 24
+  stock diff regs adjust row=  5 R6=  7 (now R4= 32 R5= 6) [row = R4+1 < R6] 26
+  stock diff regs adjust row=  5 R6=  8 (now R4=  4 R5= 2) [row = R4+1 < R6] 864
+  stock diff regs adjust row=  5 R6=  8 (now R4=  4 R5= 3) [row = R4+1 < R6] 2790
+  stock diff regs adjust row=  5 R6=  8 (now R4=  4 R5= 6) [row = R4+1 < R6] 13891
+  stock diff regs adjust row=  5 R6=  8 (now R4= 20 R5= 6) [row = R4+1 < R6] 42
+  stock diff regs adjust row=  5 R6=  9 (now R4=  0 R5= 4) [row = R4+1 < R6] 40
+  stock diff regs adjust row=  5 R6=  9 (now R4=  4 R5= 4) [row = R4+1 < R6] 520
+  stock diff regs adjust row=  5 R6= 10 (now R4=  4 R5= 3) [row = R4+1 < R6] 260
+  stock diff regs adjust row=  5 R6= 28 (now R4= 32 R5= 6) [row = R4+1 < R6] 931
+  stock diff regs adjust row=  5 R6= 32 (now R4= 20 R5= 6) [row = R4+1 < R6] 183
+  stock diff regs adjust row=  6 R6=  7 (now R4=  5 R5= 1) [row = R4+1 < R6] 1567
+  stock diff regs adjust row=  6 R6=  9 (now R4=  5 R5= 4) [row = R4+1 < R6] 128
+  stock diff regs adjust row=  6 R6= 17 (now R4= 85 R5= 6) [row = R4+1 < R6] 688
+  stock diff regs adjust row=  6 R6= 38 (now R4=  5 R5=10) [row = R4+1 < R6] 33600
+  stock diff regs adjust row=  6 R6= 45 (now R4=  5 R5=12) [row = R4+1 < R6] 116916
+  stock diff regs adjust row=  6 R6= 47 (now R4=  5 R5= 8) [row = R4+1 < R6] 1324
+  stock diff regs adjust row=  6 R6= 67 (now R4=  5 R5=18) [row = R4+1 < R6] 4716
+  stock diff regs adjust row=  6 R6= 70 (now R4=  5 R5= 8) [row = R4+1 < R6] 10396
+  stock diff regs adjust row=  6 R6= 71 (now R4=  5 R5= 8) [row = R4+1 < R6] 1298
+  stock diff regs adjust row=  6 R6=101 (now R4=  5 R5= 8) [row = R4+1 < R6] 9038
+  stock diff regs adjust row=  6 R6=126 (now R4=  5 R5= 4) [row = R4+1 < R6] 4142
+  stock diff regs adjust row=  6 R6=127 (now R4=  5 R5= 1) [row = R4+1 < R6] 190
+  stock diff regs adjust row=  6 R6=127 (now R4=  5 R5=31) [row = R4+1 < R6] 46407
+  stock diff regs adjust row=  7 R6=  8 (now R4=  6 R5= 5) [row = R4+1 < R6] 16580
+  stock diff regs adjust row=  7 R6= 10 (now R4=  6 R5= 1) [row = R4+1 < R6] 1622
+  stock diff regs adjust row=  7 R6= 10 (now R4=  6 R5= 3) [row = R4+1 < R6] 1080
+  stock diff regs adjust row=  7 R6= 10 (now R4=  6 R5= 4) [row = R4+1 < R6] 146
+  stock diff regs adjust row=  7 R6= 63 (now R4=  6 R5=18) [row = R4+1 < R6] 4716
+  stock diff regs adjust row=  8 R6= 10 (now R4=  7 R5= 2) [row = R4+1 < R6] 4352
+  stock diff regs adjust row=  8 R6= 10 (now R4=  7 R5= 3) [row = R4+1 < R6] 6124
+  stock diff regs adjust row=  8 R6= 20 (now R4=  7 R5= 6) [row = R4+1 < R6] 4596
+  stock diff regs adjust row=  8 R6= 98 (now R4=  7 R5= 6) [row = R4+1 < R6] 6164
+  stock diff regs adjust row=  9 R6= 45 (now R4=  8 R5= 1) [row = R4+1 < R6] 1024
+  stock diff regs adjust row=  9 R6= 60 (now R4=  8 R5= 1) [row = R4+1 < R6] 959
+  stock diff regs adjust row=  9 R6=112 (now R4=  8 R5= 1) [row = R4+1 < R6] 2113
+  stock diff regs adjust row= 11 R6= 13 (now R4= 10 R5= 7) [row = R4+1 < R6] 10416
+  stock diff regs adjust row= 11 R6= 17 (now R4= 10 R5= 5) [row = R4+1 < R6] 12092
+  stock diff regs adjust row= 11 R6= 19 (now R4= 10 R5= 2) [row = R4+1 < R6] 2752
+  stock diff regs adjust row= 11 R6= 19 (now R4= 10 R5= 8) [row = R4+1 < R6] 11204
+  stock diff regs adjust row= 11 R6= 23 (now R4= 10 R5= 4) [row = R4+1 < R6] 2032
+  stock diff regs adjust row= 11 R6= 27 (now R4= 10 R5= 8) [row = R4+1 < R6] 891
+  stock diff regs adjust row= 11 R6= 27 (now R4= 10 R5= 9) [row = R4+1 < R6] 8401
+  stock diff regs adjust row= 12 R6= 16 (now R4= 11 R5= 2) [row = R4+1 < R6] 3387
+  stock diff regs adjust row= 12 R6= 17 (now R4= 11 R5= 3) [row = R4+1 < R6] 1814
+  stock diff regs adjust row= 12 R6= 20 (now R4= 11 R5= 1) [row = R4+1 < R6] 148
+  stock diff regs adjust row= 12 R6= 21 (now R4= 11 R5= 0) [row = R4+1 < R6] 2015
+  stock diff regs adjust row= 12 R6= 21 (now R4= 11 R5= 2) [row = R4+1 < R6] 296
+  stock diff regs adjust row= 12 R6= 21 (now R4= 11 R5= 7) [row = R4+1 < R6] 871
+  stock diff regs adjust row= 12 R6= 25 (now R4= 11 R5= 3) [row = R4+1 < R6] 5496
+  stock diff regs adjust row= 12 R6= 25 (now R4= 11 R5= 6) [row = R4+1 < R6] 4608
+  stock diff regs adjust row= 12 R6= 26 (now R4= 11 R5= 2) [row = R4+1 < R6] 2233
+  stock diff regs adjust row= 12 R6= 30 (now R4= 11 R5= 3) [row = R4+1 < R6] 2496
+  stock diff regs adjust row= 12 R6= 30 (now R4= 11 R5= 8) [row = R4+1 < R6] 512
+  stock diff regs adjust row= 12 R6= 33 (now R4= 11 R5= 8) [row = R4+1 < R6] 6038
+  stock diff regs adjust row= 12 R6= 33 (now R4= 11 R5=10) [row = R4+1 < R6] 3340
+  stock diff regs adjust row= 12 R6= 34 (now R4= 11 R5= 1) [row = R4+1 < R6] 626
+  stock diff regs adjust row= 12 R6= 34 (now R4= 11 R5= 4) [row = R4+1 < R6] 1608
+  stock diff regs adjust row= 12 R6= 40 (now R4= 11 R5= 3) [row = R4+1 < R6] 476
+  stock diff regs adjust row= 13 R6= 15 (now R4= 12 R5= 4) [row = R4+1 < R6] 3212
+  stock diff regs adjust row= 13 R6= 20 (now R4= 12 R5= 2) [row = R4+1 < R6] 224
+  stock diff regs adjust row= 13 R6= 20 (now R4= 12 R5= 4) [row = R4+1 < R6] 5866
+  stock diff regs adjust row= 13 R6= 20 (now R4= 12 R5= 7) [row = R4+1 < R6] 1067
+  stock diff regs adjust row= 13 R6= 20 (now R4= 20 R5= 7) [row = R4+1 < R6] 53
+  stock diff regs adjust row= 13 R6= 22 (now R4= 12 R5= 8) [row = R4+1 < R6] 6512
+  stock diff regs adjust row= 13 R6= 23 (now R4= 12 R5= 8) [row = R4+1 < R6] 8398
+  stock diff regs adjust row= 13 R6= 24 (now R4= 12 R5= 4) [row = R4+1 < R6] 4476
+  stock diff regs adjust row= 13 R6= 24 (now R4= 12 R5= 9) [row = R4+1 < R6] 924
+  stock diff regs adjust row= 13 R6= 25 (now R4= 12 R5= 1) [row = R4+1 < R6] 222
+  stock diff regs adjust row= 13 R6= 25 (now R4= 12 R5= 6) [row = R4+1 < R6] 4032
+  stock diff regs adjust row= 13 R6= 28 (now R4= 12 R5= 8) [row = R4+1 < R6] 4830
+  stock diff regs adjust row= 13 R6= 32 (now R4= 12 R5= 5) [row = R4+1 < R6] 1056
+  stock diff regs adjust row= 13 R6= 36 (now R4= 12 R5= 6) [row = R4+1 < R6] 3168
+  stock diff regs adjust row= 13 R6= 37 (now R4= 12 R5= 3) [row = R4+1 < R6] 1229
+  stock diff regs adjust row= 13 R6= 37 (now R4= 12 R5= 4) [row = R4+1 < R6] 5472
+  stock diff regs adjust row= 13 R6= 37 (now R4= 12 R5= 5) [row = R4+1 < R6] 4458
+  stock diff regs adjust row= 13 R6= 37 (now R4= 12 R5= 7) [row = R4+1 < R6] 3760
+  stock diff regs adjust row= 13 R6= 37 (now R4= 38 R5= 3) [row = R4+1 < R6] 115
+  stock diff regs adjust row= 13 R6= 38 (now R4= 12 R5= 5) [row = R4+1 < R6] 12086
+  stock diff regs adjust row= 13 R6=115 (now R4= 12 R5= 8) [row = R4+1 < R6] 9941
+  stock diff regs adjust row= 14 R6= 16 (now R4= 13 R5= 3) [row = R4+1 < R6] 3612
+  stock diff regs adjust row= 14 R6= 20 (now R4= 13 R5= 1) [row = R4+1 < R6] 258
+  stock diff regs adjust row= 14 R6= 20 (now R4= 13 R5= 3) [row = R4+1 < R6] 2466
+  stock diff regs adjust row= 14 R6= 23 (now R4= 13 R5= 2) [row = R4+1 < R6] 515
+  stock diff regs adjust row= 14 R6= 27 (now R4= 13 R5= 9) [row = R4+1 < R6] 2540
+  stock diff regs adjust row= 14 R6= 30 (now R4= 13 R5=24) [row = R4+1 < R6] 30144
+  stock diff regs adjust row= 14 R6= 34 (now R4= 13 R5= 1) [row = R4+1 < R6] 1290
+  stock diff regs adjust row= 14 R6= 34 (now R4= 13 R5= 3) [row = R4+1 < R6] 4902
+  stock diff regs adjust row= 14 R6= 36 (now R4= 13 R5= 3) [row = R4+1 < R6] 2838
+  stock diff regs adjust row= 14 R6= 36 (now R4= 13 R5= 6) [row = R4+1 < R6] 1548
+  stock diff regs adjust row= 14 R6= 40 (now R4= 13 R5= 8) [row = R4+1 < R6] 22528
+  stock diff regs adjust row= 14 R6= 69 (now R4= 13 R5=24) [row = R4+1 < R6] 22271
+  stock diff regs adjust row= 14 R6= 69 (now R4= 44 R5=24) [row = R4+1 < R6] 12865
+  stock diff regs adjust row= 14 R6= 96 (now R4= 13 R5=27) [row = R4+1 < R6] 21924
+  stock diff regs adjust row= 14 R6=108 (now R4= 13 R5=15) [row = R4+1 < R6] 21070
+  stock diff regs adjust row= 15 R6= 16 (now R4= 14 R5= 1) [row = R4+1 < R6] 302
+  stock diff regs adjust row= 15 R6= 17 (now R4= 14 R5=13) [row = R4+1 < R6] 65075
+  stock diff regs adjust row= 15 R6= 18 (now R4= 14 R5= 5) [row = R4+1 < R6] 3188
+  stock diff regs adjust row= 15 R6= 29 (now R4= 14 R5= 8) [row = R4+1 < R6] 223
+  stock diff regs adjust row= 15 R6= 31 (now R4= 14 R5= 4) [row = R4+1 < R6] 922
+  stock diff regs adjust row= 15 R6= 31 (now R4= 14 R5= 7) [row = R4+1 < R6] 3832
+  stock diff regs adjust row= 15 R6= 31 (now R4= 14 R5= 8) [row = R4+1 < R6] 711
+  stock diff regs adjust row= 15 R6= 31 (now R4= 14 R5=10) [row = R4+1 < R6] 1126
+  stock diff regs adjust row= 15 R6= 33 (now R4= 14 R5= 5) [row = R4+1 < R6] 10006
+  stock diff regs adjust row= 15 R6= 40 (now R4= 14 R5= 3) [row = R4+1 < R6] 2176
+  stock diff regs adjust row= 15 R6= 40 (now R4= 14 R5= 6) [row = R4+1 < R6] 2896
+  stock diff regs adjust row= 15 R6= 40 (now R4= 14 R5=10) [row = R4+1 < R6] 6418
+  stock diff regs adjust row= 16 R6= 17 (now R4= 15 R5= 7) [row = R4+1 < R6] 24640
+  stock diff regs adjust row= 16 R6= 25 (now R4= 15 R5=11) [row = R4+1 < R6] 3652
+  stock diff regs adjust row= 16 R6= 27 (now R4= 15 R5= 8) [row = R4+1 < R6] 7546
+  stock diff regs adjust row= 16 R6= 29 (now R4= 15 R5= 6) [row = R4+1 < R6] 614
+  stock diff regs adjust row= 16 R6= 32 (now R4= 15 R5= 2) [row = R4+1 < R6] 1480
+  stock diff regs adjust row= 16 R6= 34 (now R4= 15 R5= 7) [row = R4+1 < R6] 576
+  stock diff regs adjust row= 17 R6= 20 (now R4= 16 R5= 5) [row = R4+1 < R6] 34972
+  stock diff regs adjust row= 17 R6= 21 (now R4= 16 R5= 6) [row = R4+1 < R6] 588
+  stock diff regs adjust row= 17 R6= 21 (now R4= 16 R5= 9) [row = R4+1 < R6] 11466
+  stock diff regs adjust row= 17 R6= 22 (now R4= 16 R5=17) [row = R4+1 < R6] 15136
+  stock diff regs adjust row= 17 R6= 25 (now R4= 16 R5= 3) [row = R4+1 < R6] 294
+  stock diff regs adjust row= 17 R6= 25 (now R4= 16 R5= 6) [row = R4+1 < R6] 8232
+  stock diff regs adjust row= 17 R6= 28 (now R4= 16 R5= 7) [row = R4+1 < R6] 3430
+  stock diff regs adjust row= 17 R6= 28 (now R4= 16 R5= 9) [row = R4+1 < R6] 7056
+  stock diff regs adjust row= 17 R6= 30 (now R4= 16 R5= 4) [row = R4+1 < R6] 444
+  stock diff regs adjust row= 17 R6= 34 (now R4= 16 R5= 7) [row = R4+1 < R6] 366
+  stock diff regs adjust row= 17 R6= 34 (now R4= 16 R5= 8) [row = R4+1 < R6] 13848
+  stock diff regs adjust row= 17 R6= 38 (now R4= 16 R5=10) [row = R4+1 < R6] 44800
+  stock diff regs adjust row= 17 R6= 93 (now R4= 16 R5= 3) [row = R4+1 < R6] 4018
+  stock diff regs adjust row= 17 R6= 94 (now R4= 16 R5=11) [row = R4+1 < R6] 59870
+  stock diff regs adjust row= 17 R6= 96 (now R4= 16 R5=17) [row = R4+1 < R6] 30406
+  stock diff regs adjust row= 17 R6=124 (now R4= 16 R5=18) [row = R4+1 < R6] 15600
+  stock diff regs adjust row= 18 R6= 19 (now R4= 17 R5= 2) [row = R4+1 < R6] 7930
+  stock diff regs adjust row= 18 R6= 20 (now R4= 17 R5= 1) [row = R4+1 < R6] 140
+  stock diff regs adjust row= 18 R6= 22 (now R4= 17 R5= 2) [row = R4+1 < R6] 160
+  stock diff regs adjust row= 18 R6= 22 (now R4= 17 R5= 9) [row = R4+1 < R6] 954
+  stock diff regs adjust row= 18 R6= 26 (now R4= 17 R5= 1) [row = R4+1 < R6] 5324
+  stock diff regs adjust row= 18 R6= 26 (now R4= 17 R5= 2) [row = R4+1 < R6] 11650
+  stock diff regs adjust row= 18 R6= 28 (now R4= 17 R5= 1) [row = R4+1 < R6] 1560
+  stock diff regs adjust row= 18 R6= 31 (now R4= 17 R5= 1) [row = R4+1 < R6] 74
+  stock diff regs adjust row= 18 R6= 39 (now R4= 17 R5= 1) [row = R4+1 < R6] 1586
+  stock diff regs adjust row= 19 R6= 20 (now R4= 18 R5= 3) [row = R4+1 < R6] 2474
+  stock diff regs adjust row= 19 R6= 20 (now R4= 18 R5= 6) [row = R4+1 < R6] 902
+  stock diff regs adjust row= 19 R6= 20 (now R4= 18 R5= 7) [row = R4+1 < R6] 30674
+  stock diff regs adjust row= 19 R6= 22 (now R4= 18 R5= 2) [row = R4+1 < R6] 720
+  stock diff regs adjust row= 19 R6= 24 (now R4= 18 R5= 8) [row = R4+1 < R6] 7890
+  stock diff regs adjust row= 19 R6= 24 (now R4= 18 R5=10) [row = R4+1 < R6] 1340
+  stock diff regs adjust row= 19 R6= 26 (now R4= 18 R5= 8) [row = R4+1 < R6] 3200
+  stock diff regs adjust row= 19 R6= 29 (now R4= 18 R5=10) [row = R4+1 < R6] 1340
+  stock diff regs adjust row= 20 R6= 21 (now R4= 19 R5= 2) [row = R4+1 < R6] 740
+  stock diff regs adjust row= 20 R6= 21 (now R4= 19 R5= 9) [row = R4+1 < R6] 1658
+  stock diff regs adjust row= 20 R6= 23 (now R4= 19 R5= 4) [row = R4+1 < R6] 368
+  stock diff regs adjust row= 20 R6= 24 (now R4= 19 R5= 6) [row = R4+1 < R6] 1360
+  stock diff regs adjust row= 20 R6= 32 (now R4= 19 R5= 2) [row = R4+1 < R6] 592
+  stock diff regs adjust row= 20 R6= 32 (now R4= 19 R5= 7) [row = R4+1 < R6] 26432
+  stock diff regs adjust row= 20 R6= 33 (now R4= 19 R5= 2) [row = R4+1 < R6] 148
+  stock diff regs adjust row= 20 R6= 37 (now R4= 19 R5= 3) [row = R4+1 < R6] 336
+  stock diff regs adjust row= 20 R6= 38 (now R4= 19 R5= 1) [row = R4+1 < R6] 666
+  stock diff regs adjust row= 21 R6= 22 (now R4= 20 R5= 6) [row = R4+1 < R6] 636
+  stock diff regs adjust row= 21 R6= 23 (now R4= 20 R5=10) [row = R4+1 < R6] 4380
+  stock diff regs adjust row= 21 R6= 25 (now R4= 20 R5=10) [row = R4+1 < R6] 69942
+  stock diff regs adjust row= 21 R6= 26 (now R4= 20 R5= 2) [row = R4+1 < R6] 1224
+  stock diff regs adjust row= 21 R6= 32 (now R4= 20 R5= 6) [row = R4+1 < R6] 5998
+  stock diff regs adjust row= 21 R6= 33 (now R4= 20 R5= 2) [row = R4+1 < R6] 246
+  stock diff regs adjust row= 21 R6= 34 (now R4= 20 R5= 2) [row = R4+1 < R6] 124
+  stock diff regs adjust row= 21 R6= 40 (now R4= 20 R5= 6) [row = R4+1 < R6] 4310
+  stock diff regs adjust row= 21 R6= 40 (now R4= 20 R5= 8) [row = R4+1 < R6] 21504
+  stock diff regs adjust row= 21 R6= 80 (now R4= 20 R5=31) [row = R4+1 < R6] 11682
+  stock diff regs adjust row= 22 R6= 25 (now R4= 21 R5= 6) [row = R4+1 < R6] 2880
+  stock diff regs adjust row= 22 R6= 27 (now R4= 21 R5= 2) [row = R4+1 < R6] 5084
+  stock diff regs adjust row= 22 R6= 28 (now R4= 21 R5= 6) [row = R4+1 < R6] 4824
+  stock diff regs adjust row= 22 R6= 35 (now R4= 21 R5= 6) [row = R4+1 < R6] 6624
+  stock diff regs adjust row= 22 R6= 38 (now R4= 21 R5= 9) [row = R4+1 < R6] 14350
+  stock diff regs adjust row= 22 R6= 57 (now R4= 21 R5=24) [row = R4+1 < R6] 42240
+  stock diff regs adjust row= 23 R6= 29 (now R4= 22 R5= 4) [row = R4+1 < R6] 444
+  stock diff regs adjust row= 23 R6= 30 (now R4= 22 R5= 2) [row = R4+1 < R6] 128
+  stock diff regs adjust row= 23 R6= 38 (now R4= 22 R5= 9) [row = R4+1 < R6] 47286
+  stock diff regs adjust row= 23 R6=127 (now R4= 22 R5= 6) [row = R4+1 < R6] 1152
+  stock diff regs adjust row= 24 R6= 25 (now R4= 23 R5= 6) [row = R4+1 < R6] 2304
+  stock diff regs adjust row= 24 R6= 26 (now R4= 23 R5= 8) [row = R4+1 < R6] 1792
+  stock diff regs adjust row= 24 R6= 28 (now R4= 23 R5= 2) [row = R4+1 < R6] 1040
+  stock diff regs adjust row= 24 R6= 28 (now R4= 23 R5= 3) [row = R4+1 < R6] 1032
+  stock diff regs adjust row= 24 R6= 31 (now R4= 23 R5= 8) [row = R4+1 < R6] 896
+  stock diff regs adjust row= 24 R6= 31 (now R4= 23 R5=15) [row = R4+1 < R6] 1083
+  stock diff regs adjust row= 24 R6= 31 (now R4= 23 R5=17) [row = R4+1 < R6] 7616
+  stock diff regs adjust row= 24 R6= 31 (now R4=127 R5=15) [row = R4+1 < R6] 10
+  stock diff regs adjust row= 24 R6= 31 (now R4=127 R5=22) [row = R4+1 < R6] 22
+  stock diff regs adjust row= 24 R6= 36 (now R4= 23 R5=17) [row = R4+1 < R6] 11648
+  stock diff regs adjust row= 24 R6= 38 (now R4= 23 R5= 2) [row = R4+1 < R6] 224
+  stock diff regs adjust row= 24 R6= 38 (now R4= 23 R5= 5) [row = R4+1 < R6] 560
+  stock diff regs adjust row= 24 R6= 40 (now R4=127 R5=22) [row = R4+1 < R6] 555
+  stock diff regs adjust row= 25 R6= 26 (now R4= 24 R5= 1) [row = R4+1 < R6] 1388
+  stock diff regs adjust row= 25 R6= 27 (now R4= 24 R5= 8) [row = R4+1 < R6] 784
+  stock diff regs adjust row= 25 R6= 28 (now R4= 24 R5=10) [row = R4+1 < R6] 1560
+  stock diff regs adjust row= 25 R6= 31 (now R4= 24 R5= 6) [row = R4+1 < R6] 39517
+  stock diff regs adjust row= 25 R6= 32 (now R4= 24 R5= 2) [row = R4+1 < R6] 368
+  stock diff regs adjust row= 25 R6= 34 (now R4= 24 R5= 1) [row = R4+1 < R6] 78
+  stock diff regs adjust row= 25 R6= 93 (now R4= 24 R5= 1) [row = R4+1 < R6] 602
+  stock diff regs adjust row= 25 R6=125 (now R4= 24 R5= 5) [row = R4+1 < R6] 1322
+  stock diff regs adjust row= 26 R6= 29 (now R4= 25 R5= 1) [row = R4+1 < R6] 264
+  stock diff regs adjust row= 26 R6= 30 (now R4= 25 R5= 2) [row = R4+1 < R6] 556
+  stock diff regs adjust row= 26 R6= 30 (now R4= 25 R5= 3) [row = R4+1 < R6] 1928
+  stock diff regs adjust row= 26 R6= 30 (now R4= 25 R5= 6) [row = R4+1 < R6] 780
+  stock diff regs adjust row= 26 R6= 31 (now R4= 25 R5= 1) [row = R4+1 < R6] 266
+  stock diff regs adjust row= 26 R6= 31 (now R4= 25 R5= 7) [row = R4+1 < R6] 680
+  stock diff regs adjust row= 26 R6= 31 (now R4= 25 R5= 8) [row = R4+1 < R6] 5376
+  stock diff regs adjust row= 26 R6= 37 (now R4= 25 R5= 6) [row = R4+1 < R6] 1400
+  stock diff regs adjust row= 26 R6= 37 (now R4= 25 R5= 7) [row = R4+1 < R6] 13066
+  stock diff regs adjust row= 26 R6= 38 (now R4= 25 R5= 4) [row = R4+1 < R6] 3050
+  stock diff regs adjust row= 27 R6= 28 (now R4= 26 R5=10) [row = R4+1 < R6] 550
+  stock diff regs adjust row= 27 R6= 33 (now R4= 26 R5=10) [row = R4+1 < R6] 2860
+  stock diff regs adjust row= 27 R6= 34 (now R4= 26 R5= 1) [row = R4+1 < R6] 268
+  stock diff regs adjust row= 27 R6= 34 (now R4= 26 R5= 7) [row = R4+1 < R6] 24500
+  stock diff regs adjust row= 27 R6= 34 (now R4= 26 R5= 8) [row = R4+1 < R6] 1010
+  stock diff regs adjust row= 27 R6= 50 (now R4= 26 R5=10) [row = R4+1 < R6] 4320
+  stock diff regs adjust row= 29 R6= 30 (now R4= 28 R5= 8) [row = R4+1 < R6] 4178
+  stock diff regs adjust row= 29 R6= 31 (now R4= 28 R5= 4) [row = R4+1 < R6] 560
+  stock diff regs adjust row= 29 R6= 31 (now R4= 28 R5= 5) [row = R4+1 < R6] 420
+  stock diff regs adjust row= 29 R6= 31 (now R4= 28 R5=10) [row = R4+1 < R6] 1680
+  stock diff regs adjust row= 29 R6= 33 (now R4= 28 R5= 1) [row = R4+1 < R6] 106
+  stock diff regs adjust row= 29 R6= 33 (now R4= 28 R5= 3) [row = R4+1 < R6] 342
+  stock diff regs adjust row= 29 R6= 33 (now R4= 28 R5=10) [row = R4+1 < R6] 1020
+  stock diff regs adjust row= 29 R6= 34 (now R4= 28 R5= 6) [row = R4+1 < R6] 620
+  stock diff regs adjust row= 29 R6= 39 (now R4= 28 R5= 3) [row = R4+1 < R6] 272
+  stock diff regs adjust row= 29 R6= 65 (now R4= 28 R5= 1) [row = R4+1 < R6] 162
+  stock diff regs adjust row= 29 R6=127 (now R4= 28 R5= 6) [row = R4+1 < R6] 576
+  stock diff regs adjust row= 30 R6= 33 (now R4= 29 R5= 8) [row = R4+1 < R6] 1066
+  stock diff regs adjust row= 30 R6= 37 (now R4= 29 R5= 5) [row = R4+1 < R6] 394
+  stock diff regs adjust row= 31 R6= 33 (now R4= 30 R5= 7) [row = R4+1 < R6] 1054
+  stock diff regs adjust row= 31 R6= 34 (now R4= 30 R5= 7) [row = R4+1 < R6] 1230
+  stock diff regs adjust row= 31 R6= 34 (now R4= 30 R5= 9) [row = R4+1 < R6] 752
+  stock diff regs adjust row= 31 R6=104 (now R4= 30 R5= 9) [row = R4+1 < R6] 8874
+  stock diff regs adjust row= 32 R6= 35 (now R4= 31 R5= 5) [row = R4+1 < R6] 3870
+  stock diff regs adjust row= 33 R6= 37 (now R4= 32 R5= 5) [row = R4+1 < R6] 3450
+  stock diff regs adjust row= 33 R6= 40 (now R4= 32 R5=10) [row = R4+1 < R6] 2600
+  stock diff regs adjust row= 35 R6= 40 (now R4= 34 R5= 4) [row = R4+1 < R6] 27992
+  stock diff regs adjust row= 35 R6=124 (now R4= 34 R5=24) [row = R4+1 < R6] 12550
+  stock diff regs adjust row= 36 R6= 38 (now R4= 35 R5= 7) [row = R4+1 < R6] 1770
+  stock diff regs adjust row= 36 R6= 98 (now R4= 35 R5= 2) [row = R4+1 < R6] 1146
+  stock diff regs adjust row= 36 R6=124 (now R4= 35 R5=26) [row = R4+1 < R6] 43594
+  stock diff regs adjust row= 38 R6=100 (now R4= 37 R5=10) [row = R4+1 < R6] 2160
+  stock diff regs adjust row= 38 R6=100 (now R4= 37 R5=22) [row = R4+1 < R6] 7370
+  stock diff regs adjust row= 38 R6=119 (now R4= 37 R5= 5) [row = R4+1 < R6] 7760
+  stock diff regs adjust row= 41 R6= 75 (now R4= 40 R5= 3) [row = R4+1 < R6] 1060
+  stock diff regs adjust row= 41 R6= 83 (now R4= 40 R5= 2) [row = R4+1 < R6] 610
+  stock diff regs adjust row= 41 R6=123 (now R4= 40 R5=26) [row = R4+1 < R6] 28701
+  stock diff regs adjust row= 41 R6=124 (now R4= 40 R5=26) [row = R4+1 < R6] 2655
+  stock diff regs adjust row= 42 R6= 49 (now R4= 41 R5= 2) [row = R4+1 < R6] 2748
+  stock diff regs adjust row= 43 R6= 50 (now R4= 42 R5=10) [row = R4+1 < R6] 1091
+  stock diff regs adjust row= 43 R6= 96 (now R4= 42 R5=10) [row = R4+1 < R6] 1069
+  stock diff regs adjust row= 45 R6=112 (now R4= 44 R5=17) [row = R4+1 < R6] 41580
+  stock diff regs adjust row= 46 R6= 79 (now R4= 45 R5= 2) [row = R4+1 < R6] 174
+  stock diff regs adjust row= 47 R6= 59 (now R4= 46 R5=10) [row = R4+1 < R6] 1440
+  stock diff regs adjust row= 48 R6= 79 (now R4= 47 R5=24) [row = R4+1 < R6] 2592
+  stock diff regs adjust row= 51 R6=100 (now R4= 50 R5= 1) [row = R4+1 < R6] 672
+  stock diff regs adjust row= 51 R6=116 (now R4= 50 R5=26) [row = R4+1 < R6] 9984
+  stock diff regs adjust row= 53 R6= 79 (now R4= 52 R5=25) [row = R4+1 < R6] 1206
+  stock diff regs adjust row= 53 R6= 98 (now R4= 52 R5= 4) [row = R4+1 < R6] 8
+  stock diff regs adjust row= 55 R6=123 (now R4= 54 R5= 4) [row = R4+1 < R6] 1202
+  stock diff regs adjust row= 57 R6= 59 (now R4= 56 R5= 1) [row = R4+1 < R6] 1474
+  stock diff regs adjust row= 57 R6= 59 (now R4= 56 R5= 7) [row = R4+1 < R6] 5448
+  stock diff regs adjust row= 57 R6= 59 (now R4= 56 R5=20) [row = R4+1 < R6] 7894
+  stock diff regs adjust row= 57 R6= 61 (now R4= 56 R5= 3) [row = R4+1 < R6] 902
+  stock diff regs adjust row= 59 R6= 96 (now R4= 58 R5=14) [row = R4+1 < R6] 2552
+  stock diff regs adjust row= 61 R6=124 (now R4= 60 R5= 5) [row = R4+1 < R6] 1368
+  stock diff regs adjust row= 61 R6=125 (now R4= 60 R5= 4) [row = R4+1 < R6] 1554
+  stock diff regs adjust row= 74 R6= 85 (now R4= 73 R5= 1) [row = R4+1 < R6] 140
+  stock diff regs adjust row= 76 R6= 81 (now R4= 75 R5=13) [row = R4+1 < R6] 3986
+  stock diff regs adjust row= 76 R6= 83 (now R4= 75 R5=30) [row = R4+1 < R6] 23550
+  stock diff regs adjust row= 76 R6= 98 (now R4= 75 R5=30) [row = R4+1 < R6] 11780
+  stock diff regs adjust row= 85 R6=104 (now R4= 84 R5=22) [row = R4+1 < R6] 15258
+  stock diff regs adjust row= 89 R6=100 (now R4= 88 R5=20) [row = R4+1 < R6] 1296
+  stock diff regs adjust row= 92 R6= 96 (now R4= 91 R5= 5) [row = R4+1 < R6] 434
+  stock diff regs adjust row= 92 R6=124 (now R4= 91 R5= 5) [row = R4+1 < R6] 524
+  stock diff regs adjust row=120 R6=122 (now R4=119 R5=26) [row = R4+1 < R6] 7540

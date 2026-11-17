@@ -1,0 +1,16 @@
+PASS end_pc=3469 cycles=96247440 instructions=30648051 lockstep_comparisons=192494878 mismatches=0
+PASS end_pc=024B cycles=46089517 instructions=14464188 lockstep_comparisons=92179032 mismatches=0
+PASS end_pc=024B cycles=53953837 instructions=17609916 lockstep_comparisons=107907672 mismatches=0
+PASS end_pc=24F1 cycles=66907087 instructions=21986988
+PASS end_pc=024B cycles=56640813 instructions=18396348
+PASS end_pc=3469 cycles=96567373 instructions=30648051
+PASS end_pc=2569 cycles=66916130 instructions=21987070
+PASS end_pc=024B cycles=56640813 instructions=18396348
+PASS end_pc=3469 cycles=96567373 instructions=30648051
+PASS end_pc=2434 cycles=66874612 instructions=21979062
+PASS end_pc=024B cycles=56640813 instructions=18396348
+PASS end_pc=3469 cycles=96567373 instructions=30648051
+PASS end_pc=24F1 cycles=66907087 instructions=21986988
+PASS end_pc=024B cycles=56640813 instructions=18396348
+PASS end_pc=336D cycles=84030466 instructions=26765882
+PASS end_pc=024B cycles=50808109 instructions=16626876

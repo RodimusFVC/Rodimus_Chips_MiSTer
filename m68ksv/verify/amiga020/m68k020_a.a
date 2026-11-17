@@ -1,0 +1,827 @@
+; m68k020_a.a - m68ksv 68020 / 68EC020 behaviour tests for Amiberry (SAS/C 6.58 asm, Motorola syntax)
+; Copyright (C) 2026 Rodimus
+;
+; Runs in supervisor mode with interrupts masked (IPL 7). Every exception vector a test can raise points at one
+; handler (h_any) in the table at VBR; the original vectors, USP and CACR are restored before returning.
+; 68020-only instructions are written as dc.w (encodings checked with MAME's m68k disassembler), so the
+; assembler needs no 68020 option. Each test fills one R_SIZE record; m68k020.c prints and logs them.
+;
+; h_any modes (tmode):  0 = capture the frame and registers into the record, reset SP, jump to the resume address
+;                       1 = log (trace tests): append vector number + stacked PC, RTE
+;                       2 = table loops: for vectors 5 / 6 / 7 note the vector in tvec, RTE; anything else as 0
+
+        XDEF    _RunTests
+        XDEF    _GetResults
+        XDEF    _GetInfo
+
+R_WHICH equ     0               ; long: vector taken (0 = none)
+R_FRAME equ     4               ; 24 words: stacked frame (mode 1: up to 6 stacked PCs, longs)
+R_REGS  equ     52              ; 15 longs: d0-d7/a0-a6 at the exception, or at the end of the test
+R_SR    equ     112             ; word: SR at the end of the test (no exception)
+R_MEM   equ     116             ; 32 bytes: test memory window (mode 1: logged vector numbers)
+R_AUX   equ     148             ; long: mode 1 log count
+R_A1    equ     152             ; long: address of the instruction under test
+R_A2    equ     156             ; long: address of the instruction after it
+R_SIZE  equ     160
+NTESTS  equ     25
+
+NDIVU   equ     8
+NDIVS   equ     8
+NCHKW   equ     10
+NCHKL   equ     6
+
+        SECTION m68k020_code,CODE
+
+_GetResults:
+        lea     records,a0
+        move.l  a0,d0
+        rts
+
+_GetInfo:                               ; -> info: h_any, VBR, CACR at entry, flagout, pbuf, lbuf, fbuf, bbuf
+        lea     info,a0
+        move.l  a0,d0
+        rts
+
+_RunTests:
+        movem.l d2-d7/a2-a6,-(sp)
+        move.l  $4,a6                   ; ExecBase
+        lea     super(pc),a5
+        jsr     -30(a6)                 ; Supervisor(a5): runs super, which ends with RTE
+        movem.l (sp)+,d2-d7/a2-a6
+        rts
+
+;------------------------------------------------------------------ supervisor part
+super:
+        move.w  #$2700,sr               ; no interrupts while our vectors are installed
+        movem.l d0-d7/a0-a6,-(sp)
+        move.l  usp,a0
+        move.l  a0,oldusp
+        dc.w    $4E7A,$0801             ; movec vbr,d0
+        move.l  d0,vbr
+        dc.w    $4E7A,$0002             ; movec cacr,d0
+        move.l  d0,oldcacr
+        lea     h_any(pc),a0
+        move.l  a0,info+0
+        move.l  vbr,info+4
+        move.l  oldcacr,info+8
+        move.l  #flagout,info+12
+        move.l  #pbuf,info+16
+        move.l  #lbuf,info+20
+        move.l  #fbuf,info+24
+        move.l  #bbuf,info+28
+; save and install the vectors
+        move.l  vbr,a1
+        lea     vecoffs(pc),a2
+        lea     oldvec,a3
+        lea     h_any(pc),a0
+sv_lp:  move.w  (a2)+,d0
+        bmi.s   sv_done
+        move.l  0(a1,d0.w),(a3)+
+        move.l  a0,0(a1,d0.w)
+        bra.s   sv_lp
+sv_done:
+        clr.b   tmode
+
+;=============================================================== T1: flag tables (record 24 = loop status)
+        lea     records+R_SIZE*24,a0
+        lea     t1_res(pc),a3
+        bsr     begin
+        move.b  #2,tmode
+; DIVU.W D1,D0
+        lea     divu_tab,a2
+        lea     flagout,a3
+        moveq   #NDIVU-1,d7
+du_lp:  move.l  (a2)+,d0
+        move.l  (a2)+,d1
+        move.w  (a2)+,d2
+        addq.l  #2,a2
+        clr.b   tvec
+        move.w  d2,ccr
+        divu.w  d1,d0
+        move.w  sr,d3
+        move.l  d0,(a3)+
+        move.b  tvec,(a3)+
+        move.b  d3,(a3)+
+        addq.l  #2,a3
+        dbra    d7,du_lp
+; DIVS.W D1,D0
+        lea     divs_tab,a2
+        moveq   #NDIVS-1,d7
+ds_lp:  move.l  (a2)+,d0
+        move.l  (a2)+,d1
+        move.w  (a2)+,d2
+        addq.l  #2,a2
+        clr.b   tvec
+        move.w  d2,ccr
+        divs.w  d1,d0
+        move.w  sr,d3
+        move.l  d0,(a3)+
+        move.b  tvec,(a3)+
+        move.b  d3,(a3)+
+        addq.l  #2,a3
+        dbra    d7,ds_lp
+; CHK.W D1,D0 (out of range: CHK trap, h_any mode 2 returns to the next instruction with CHK's flags)
+        lea     chkw_tab,a2
+        moveq   #NCHKW-1,d7
+cw_lp:  move.l  (a2)+,d0
+        move.l  (a2)+,d1
+        move.w  (a2)+,d2
+        addq.l  #2,a2
+        clr.b   tvec
+        move.w  d2,ccr
+        dc.w    $4181                   ; chk.w d1,d0
+        move.w  sr,d3
+        move.l  d0,(a3)+
+        move.b  tvec,(a3)+
+        move.b  d3,(a3)+
+        addq.l  #2,a3
+        dbra    d7,cw_lp
+; CHK.L D1,D0
+        lea     chkl_tab,a2
+        moveq   #NCHKL-1,d7
+cl_lp:  move.l  (a2)+,d0
+        move.l  (a2)+,d1
+        move.w  (a2)+,d2
+        addq.l  #2,a2
+        clr.b   tvec
+        move.w  d2,ccr
+        dc.w    $4101                   ; chk.l d1,d0
+        move.w  sr,d3
+        move.l  d0,(a3)+
+        move.b  tvec,(a3)+
+        move.b  d3,(a3)+
+        addq.l  #2,a3
+        dbra    d7,cl_lp
+        clr.b   tmode
+t1_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     finish
+
+;=============================================================== T2: DIV.L overflow, C flag
+; T2a: DIVU.L D1,D2:D0, D2:D0 = $00000002:00000000, D1 = 1 (overflow), CCR = 0 before
+        lea     records+R_SIZE*0,a0
+        lea     t2a_ins(pc),a1
+        lea     t2a_nxt(pc),a2
+        lea     t2a_res(pc),a3
+        bsr     begin
+        moveq   #2,d2
+        moveq   #0,d0
+        moveq   #1,d1
+        move.w  #0,ccr
+t2a_ins: dc.w   $4C41,$0402             ; divu.l d1,d2:d0
+t2a_nxt: move.w sr,d3
+t2a_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     finish
+; T2b: the same, CCR = $1F before
+        lea     records+R_SIZE*1,a0
+        lea     t2b_ins(pc),a1
+        lea     t2b_nxt(pc),a2
+        lea     t2b_res(pc),a3
+        bsr     begin
+        moveq   #2,d2
+        moveq   #0,d0
+        moveq   #1,d1
+        move.w  #$1F,ccr
+t2b_ins: dc.w   $4C41,$0402             ; divu.l d1,d2:d0
+t2b_nxt: move.w sr,d3
+t2b_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     finish
+; T2c: DIVS.L D1,D2:D0, the same operands, CCR = $1F before
+        lea     records+R_SIZE*2,a0
+        lea     t2c_ins(pc),a1
+        lea     t2c_nxt(pc),a2
+        lea     t2c_res(pc),a3
+        bsr     begin
+        moveq   #2,d2
+        moveq   #0,d0
+        moveq   #1,d1
+        move.w  #$1F,ccr
+t2c_ins: dc.w   $4C41,$0C02             ; divs.l d1,d2:d0
+t2c_nxt: move.w sr,d3
+t2c_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     finish
+
+;=============================================================== T3: trace after a trap-type exception (log mode)
+; T3a: TRAP #0 with T1 set
+        lea     records+R_SIZE*3,a0
+        lea     t3a_ins(pc),a1
+        lea     t3a_nxt(pc),a2
+        lea     t3a_res(pc),a3
+        bsr     begin
+        move.b  #1,tmode
+        move.w  #$A700,sr               ; T1 = 1, S = 1, IPL 7 (MOVE to SR itself is not traced)
+t3a_ins: trap   #0
+t3a_nxt: move.w #$2700,sr               ; traced: a trace exception follows with PC = t3a_end
+t3a_end: clr.b  tmode
+t3a_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     finish
+; T3b: DIVU.W by zero with T1 set
+        lea     records+R_SIZE*4,a0
+        lea     t3b_ins(pc),a1
+        lea     t3b_nxt(pc),a2
+        lea     t3b_res(pc),a3
+        bsr     begin
+        moveq   #0,d1
+        moveq   #100,d0
+        move.b  #1,tmode
+        move.w  #$A700,sr
+t3b_ins: divu.w d1,d0
+t3b_nxt: move.w #$2700,sr
+t3b_end: clr.b  tmode
+t3b_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     finish
+
+;=============================================================== T4: PACK / UNPK with -(A7) (private stack in pbuf)
+; pbuf: 48 bytes of $EE; sources at pbuf+14 / +15 ($12 $34) and pbuf+29 / +30 / +31 ($56 $78 $9A).
+; R_MEM = pbuf+8 .. pbuf+39. A5 = A7 after the instruction. A0 / A7 start at pbuf+16 / pbuf+32.
+; T4a: PACK -(A0),-(A7),#0
+        lea     records+R_SIZE*5,a0
+        lea     t4a_ins(pc),a1
+        lea     t4a_nxt(pc),a2
+        lea     t4a_res(pc),a3
+        bsr     begin
+        bsr     pfill
+        move.l  sp,savesp2
+        lea     pbuf+16,a0
+        lea     pbuf+32,sp
+t4a_ins: dc.w   $8F48,$0000             ; pack -(a0),-(a7),#0
+t4a_nxt: move.l sp,a5
+        move.l  savesp2,sp
+t4a_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     pcopy
+        bsr     finish
+; T4b: PACK -(A7),-(A0),#0
+        lea     records+R_SIZE*6,a0
+        lea     t4b_ins(pc),a1
+        lea     t4b_nxt(pc),a2
+        lea     t4b_res(pc),a3
+        bsr     begin
+        bsr     pfill
+        move.l  sp,savesp2
+        lea     pbuf+16,a0
+        lea     pbuf+32,sp
+t4b_ins: dc.w   $814F,$0000             ; pack -(a7),-(a0),#0
+t4b_nxt: move.l sp,a5
+        move.l  savesp2,sp
+t4b_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     pcopy
+        bsr     finish
+; T4c: UNPK -(A0),-(A7),#$3030
+        lea     records+R_SIZE*7,a0
+        lea     t4c_ins(pc),a1
+        lea     t4c_nxt(pc),a2
+        lea     t4c_res(pc),a3
+        bsr     begin
+        bsr     pfill
+        move.l  sp,savesp2
+        lea     pbuf+16,a0
+        lea     pbuf+32,sp
+t4c_ins: dc.w   $8F88,$3030             ; unpk -(a0),-(a7),#$3030
+t4c_nxt: move.l sp,a5
+        move.l  savesp2,sp
+t4c_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     pcopy
+        bsr     finish
+; T4d: UNPK -(A7),-(A0),#$3030
+        lea     records+R_SIZE*8,a0
+        lea     t4d_ins(pc),a1
+        lea     t4d_nxt(pc),a2
+        lea     t4d_res(pc),a3
+        bsr     begin
+        bsr     pfill
+        move.l  sp,savesp2
+        lea     pbuf+16,a0
+        lea     pbuf+32,sp
+t4d_ins: dc.w   $818F,$3030             ; unpk -(a7),-(a0),#$3030
+t4d_nxt: move.l sp,a5
+        move.l  savesp2,sp
+t4d_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     pcopy
+        bsr     finish
+
+;=============================================================== T5: FSAVE with no FPU
+; T5a: FSAVE -(A7) in user mode (USP = ubuf end). If it does not trap, D7 = $55 and ILLEGAL follows (vector 4).
+        lea     records+R_SIZE*9,a0
+        lea     t5a_ins(pc),a1
+        lea     t5a_nxt(pc),a2
+        lea     t5a_res(pc),a3
+        bsr     begin
+        moveq   #0,d7
+        lea     ubuf+64,a4
+        move.l  a4,usp
+        andi.w  #$DFFF,sr               ; user mode (IPL stays 7)
+t5a_ins: dc.w   $F327                   ; fsave -(a7)
+t5a_nxt: moveq  #$55,d7
+        dc.w    $4AFC                   ; ILLEGAL: back to supervisor through h_any
+t5a_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     finish
+; T5b (control): FSAVE -(A7) in supervisor mode (private stack). Expected: F-line (11).
+        lea     records+R_SIZE*10,a0
+        lea     t5b_ins(pc),a1
+        lea     t5b_nxt(pc),a2
+        lea     t5b_res(pc),a3
+        bsr     begin
+        moveq   #0,d7
+        move.l  sp,savesp2
+        lea     pbuf+48,sp
+t5b_ins: dc.w   $F327                   ; fsave -(a7)
+t5b_nxt: moveq  #$55,d7
+        move.l  sp,a5
+        move.l  savesp2,sp
+t5b_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     finish
+
+;=============================================================== T6: RTE of hand-built frames (private stack in fbuf)
+; A5 = frame start; if RTE accepts the frame, D7 = $55 and A4 = A7 after the RTE.
+; T6a: format 7 (a 68040 frame; 30 words built)
+        lea     records+R_SIZE*11,a0
+        lea     t6a_ins(pc),a1
+        lea     t6a_cont(pc),a2
+        lea     t6a_res(pc),a3
+        bsr     begin
+        bsr     ffill
+        moveq   #0,d7
+        move.l  sp,savesp2
+        lea     fbuf+64,sp
+        move.w  #$2700,(sp)
+        lea     t6a_cont(pc),a4
+        move.l  a4,2(sp)
+        move.w  #$7000,6(sp)            ; format 7, vector offset 0
+        move.l  sp,a5
+        suba.l  a4,a4
+t6a_ins: rte
+t6a_cont: moveq #$55,d7
+        move.l  sp,a4
+        move.l  savesp2,sp
+t6a_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     finish
+; T6c (control): format 0 (4 words)
+        lea     records+R_SIZE*13,a0
+        lea     t6c_ins(pc),a1
+        lea     t6c_cont(pc),a2
+        lea     t6c_res(pc),a3
+        bsr     begin
+        bsr     ffill
+        moveq   #0,d7
+        move.l  sp,savesp2
+        lea     fbuf+64,sp
+        move.w  #$2700,(sp)
+        lea     t6c_cont(pc),a4
+        move.l  a4,2(sp)
+        move.w  #$0000,6(sp)            ; format 0, vector offset 0
+        move.l  sp,a5
+        suba.l  a4,a4
+t6c_ins: rte
+t6c_cont: moveq #$55,d7
+        move.l  sp,a4
+        move.l  savesp2,sp
+t6c_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     finish
+
+;=============================================================== T7: JMP to an odd address (address error frame)
+        lea     records+R_SIZE*14,a0
+        lea     t7_ins(pc),a1
+        lea     t7_tgt(pc),a2
+        lea     t7_res(pc),a3
+        bsr     begin
+        lea     t7_tgt(pc),a1
+        addq.l  #1,a1
+t7_ins: jmp     (a1)
+t7_tgt: nop
+        nop
+        nop
+t7_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     finish
+
+;=============================================================== T8: instruction cache, CACR CE
+; csubA / csubB: "moveq #n,d0 / rts", one long word each, in neighbouring cache entries. D1 / D2 = results.
+; T8a (control): fill, patch both to moveq #2, call both with no clearing: a modelled cache returns 1 / 1.
+        lea     records+R_SIZE*15,a0
+        lea     csubA(pc),a1
+        lea     csubB(pc),a2
+        lea     t8a_res(pc),a3
+        bsr     begin
+        bsr     cfill
+        move.b  #2,csubA+1
+        move.b  #2,csubB+1
+        bsr     csubA
+        move.l  d0,d1
+        bsr     csubB
+        move.l  d0,d2
+t8a_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     finish
+; T8b: fill, patch both, CAAR = csubA, CACR = E | CE, call both. One entry cleared: 2 / 1; whole cache: 2 / 2.
+        lea     records+R_SIZE*16,a0
+        lea     csubA(pc),a1
+        lea     csubB(pc),a2
+        lea     t8b_res(pc),a3
+        bsr     begin
+        bsr     cfill
+        move.b  #2,csubA+1
+        move.b  #2,csubB+1
+        lea     csubA(pc),a4
+        move.l  a4,d0
+        dc.w    $4E7B,$0802             ; movec d0,caar
+        moveq   #5,d0
+        dc.w    $4E7B,$0002             ; movec d0,cacr (E | CE)
+        bsr     csubA
+        move.l  d0,d1
+        bsr     csubB
+        move.l  d0,d2
+t8b_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     finish
+; restore the code bytes and CACR (with C: flush what we cached)
+        move.b  #1,csubA+1
+        move.b  #1,csubB+1
+        move.l  oldcacr,d0
+        or.l    #8,d0
+        dc.w    $4E7B,$0002             ; movec d0,cacr
+
+;=============================================================== T9: bit fields
+; T9a: BFEXTU D1{0:0},D0 (width 0 = 32)
+        lea     records+R_SIZE*17,a0
+        lea     t9a_ins(pc),a1
+        lea     t9a_nxt(pc),a2
+        lea     t9a_res(pc),a3
+        bsr     begin
+        move.l  #$12345678,d1
+        moveq   #0,d0
+        move.w  #0,ccr
+t9a_ins: dc.w   $E9C1,$0000             ; bfextu d1{0:0},d0
+t9a_nxt: nop
+t9a_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     finish
+; T9b: BFEXTS (A0){D2:12},D0, A0 = bbuf+2, D2 = -4 (field starts in the byte before A0)
+        lea     records+R_SIZE*18,a0
+        lea     t9b_ins(pc),a1
+        lea     t9b_nxt(pc),a2
+        lea     t9b_res(pc),a3
+        bsr     begin
+        bsr     bfill
+        lea     bbuf+2,a0
+        moveq   #-4,d2
+        moveq   #0,d0
+        move.w  #0,ccr
+t9b_ins: dc.w   $EBD0,$088C             ; bfexts (a0){d2:12},d0
+t9b_nxt: nop
+t9b_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     bcopy
+        bsr     finish
+; T9c: BFINS D1,(A0){7:32}, A0 = cbuf+1 (cbuf all zero): the field spans 5 bytes
+        lea     records+R_SIZE*19,a0
+        lea     t9c_ins(pc),a1
+        lea     t9c_nxt(pc),a2
+        lea     t9c_res(pc),a3
+        bsr     begin
+        bsr     bfill
+        lea     cbuf+1,a0
+        move.l  #$A5C3E187,d1
+        move.w  #0,ccr
+t9c_ins: dc.w   $EFD0,$11C0             ; bfins d1,(a0){7:32}
+t9c_nxt: nop
+t9c_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     bcopy
+        bsr     finish
+; T9d: BFFFO D1{4:8},D0 with an all-zero field
+        lea     records+R_SIZE*20,a0
+        lea     t9d_ins(pc),a1
+        lea     t9d_nxt(pc),a2
+        lea     t9d_res(pc),a3
+        bsr     begin
+        moveq   #0,d1
+        moveq   #-1,d0
+        move.w  #0,ccr
+t9d_ins: dc.w   $EDC1,$0108             ; bfffo d1{4:8},d0
+t9d_nxt: nop
+t9d_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     finish
+; T9e: BFFFO D1{4:8},D0 with D1 = $00800000 (first one at offset 8)
+        lea     records+R_SIZE*21,a0
+        lea     t9e_ins(pc),a1
+        lea     t9e_nxt(pc),a2
+        lea     t9e_res(pc),a3
+        bsr     begin
+        move.l  #$00800000,d1
+        moveq   #-1,d0
+        move.w  #0,ccr
+t9e_ins: dc.w   $EDC1,$0108             ; bfffo d1{4:8},d0
+t9e_nxt: nop
+t9e_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     finish
+
+;=============================================================== T10: LINK A7,#-8 (private stack in lbuf)
+; A5 = A7 after; R_MEM = lbuf (32 bytes, $EE before); A7 starts at lbuf+32.
+        lea     records+R_SIZE*22,a0
+        lea     t10_ins(pc),a1
+        lea     t10_nxt(pc),a2
+        lea     t10_res(pc),a3
+        bsr     begin
+        lea     lbuf,a4
+        moveq   #7,d0
+lf_lp:  move.l  #$EEEEEEEE,(a4)+
+        dbra    d0,lf_lp
+        move.l  sp,savesp2
+        lea     lbuf+32,sp
+t10_ins: dc.w   $4E57,$FFF8             ; link a7,#-8
+t10_nxt: move.l sp,a5
+        move.l  savesp2,sp
+t10_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        lea     lbuf,a1
+        bsr     copy32
+        bsr     finish
+
+;=============================================================== T6b: RTE of a format-9 frame (last: least certain)
+; 10 words: SR, PC = t6b_cont, $9000, instruction address = t6b_cont, 4 internal words of zero
+        lea     records+R_SIZE*12,a0
+        lea     t6b_ins(pc),a1
+        lea     t6b_cont(pc),a2
+        lea     t6b_res(pc),a3
+        bsr     begin
+        bsr     ffill
+        moveq   #0,d7
+        move.l  sp,savesp2
+        lea     fbuf+64,sp
+        move.w  #$2700,(sp)
+        lea     t6b_cont(pc),a4
+        move.l  a4,2(sp)
+        move.w  #$9000,6(sp)            ; format 9, vector offset 0
+        move.l  a4,8(sp)
+        move.l  sp,a5
+        suba.l  a4,a4
+t6b_ins: rte
+t6b_cont: moveq #$55,d7
+        move.l  sp,a4
+        move.l  savesp2,sp
+t6b_res: movem.l d0-d7/a0-a6,scratch
+        move.w  sr,srsave
+        bsr     finish
+
+;=============================================================== done: restore vectors, USP
+        clr.b   tmode
+        move.l  vbr,a1
+        lea     vecoffs(pc),a2
+        lea     oldvec,a3
+rv_lp:  move.w  (a2)+,d0
+        bmi.s   rv_done
+        move.l  (a3)+,0(a1,d0.w)
+        bra.s   rv_lp
+rv_done:
+        move.l  oldusp,a0
+        move.l  a0,usp
+        movem.l (sp)+,d0-d7/a0-a6
+        rte
+
+;------------------------------------------------------------------ helpers
+; begin: a0 = record, a1 / a2 = instruction / next addresses, a3 = resume address. Clears the record; the
+; abort path restores SP to the value it has after begin returns.
+begin:  move.l  a0,cur
+        move.l  a3,resume
+        lea     4(sp),a4
+        move.l  a4,savedsp
+        clr.b   tmode
+        move.l  a0,a4
+        move.w  #R_SIZE/4-1,d0
+bg_lp:  clr.l   (a4)+
+        dbra    d0,bg_lp
+        move.l  a1,R_A1(a0)
+        move.l  a2,R_A2(a0)
+        rts
+
+; finish: no exception -> copy scratch registers and SR into the record
+finish: move.l  cur,a0
+        tst.l   R_WHICH(a0)
+        bne.s   fn_done
+        lea     scratch,a1
+        lea     R_REGS(a0),a2
+        moveq   #14,d0
+fn_lp:  move.l  (a1)+,(a2)+
+        dbra    d0,fn_lp
+        move.w  srsave,R_SR(a0)
+fn_done:
+        rts
+
+; copy32: 32 bytes from a1 into the current record's R_MEM (keeps a log written by mode 1 out of the way:
+; only called by tests that do not log)
+copy32: move.l  cur,a0
+        lea     R_MEM(a0),a2
+        moveq   #7,d0
+c32_lp: move.l  (a1)+,(a2)+
+        dbra    d0,c32_lp
+        rts
+
+pfill:  lea     pbuf,a4
+        moveq   #11,d0
+pf_lp:  move.l  #$EEEEEEEE,(a4)+
+        dbra    d0,pf_lp
+        move.b  #$12,pbuf+14
+        move.b  #$34,pbuf+15
+        move.b  #$56,pbuf+29
+        move.b  #$78,pbuf+30
+        move.b  #$9A,pbuf+31
+        rts
+pcopy:  lea     pbuf+8,a1
+        bra     copy32
+
+ffill:  lea     fbuf,a4
+        moveq   #31,d0
+ff_lp:  clr.l   (a4)+
+        dbra    d0,ff_lp
+        rts
+
+bfill:  lea     bbuf,a4                 ; bbuf: 11 28 33 44 55 66 77 88, cbuf: 16 x 00
+        move.l  #$11283344,(a4)+
+        move.l  #$55667788,(a4)+
+        lea     cbuf,a4
+        clr.l   (a4)+
+        clr.l   (a4)+
+        clr.l   (a4)+
+        clr.l   (a4)+
+        rts
+bcopy:  lea     bbuf,a1                 ; bbuf (8 bytes) then cbuf (16 bytes) then 8 more of cbuf's tail
+        bra     copy32
+
+; cfill: code bytes back to moveq #1, cache on and cleared (E | C), then call each twice to fill
+cfill:  move.b  #1,csubA+1
+        move.b  #1,csubB+1
+        moveq   #9,d0
+        dc.w    $4E7B,$0002             ; movec d0,cacr (E | C)
+        bsr     csubA
+        bsr     csubB
+        bsr     csubA
+        bsr     csubB
+        rts
+
+        CNOP    0,4
+csubA:  moveq   #1,d0
+        rts
+csubB:  moveq   #1,d0
+        rts
+
+;------------------------------------------------------------------ the handler
+h_any:  movem.l d0-d7/a0-a6,hregs
+        move.w  6(sp),d0
+        and.w   #$0FFF,d0
+        lsr.w   #2,d0                   ; vector number
+        move.b  tmode,d1
+        beq.s   h_abort
+        cmp.b   #1,d1
+        beq.s   h_log
+        cmp.w   #5,d0                   ; mode 2: trap-type 5 / 6 / 7 return to the next instruction
+        bcs.s   h_abort
+        cmp.w   #7,d0
+        bhi.s   h_abort
+        move.b  d0,tvec
+        movem.l hregs,d0-d7/a0-a6
+        rte
+h_log:  move.l  cur,a0
+        move.l  R_AUX(a0),d1
+        cmp.l   #6,d1
+        bcc.s   h_abort
+        move.b  d0,R_MEM(a0,d1.l)
+        lsl.l   #2,d1
+        move.l  2(sp),R_FRAME(a0,d1.l)
+        addq.l  #1,R_AUX(a0)
+        movem.l hregs,d0-d7/a0-a6
+        rte
+h_abort:
+        move.l  cur,a0
+        and.l   #$FFFF,d0
+        move.l  d0,R_WHICH(a0)
+        lea     R_FRAME(a0),a1
+        move.l  sp,a2
+        moveq   #23,d1
+ha_cp:  move.w  (a2)+,(a1)+
+        dbra    d1,ha_cp
+        lea     hregs,a2
+        lea     R_REGS(a0),a1
+        moveq   #14,d1
+ha_cr:  move.l  (a2)+,(a1)+
+        dbra    d1,ha_cr
+        clr.b   tmode
+        move.l  savedsp,sp
+        move.w  #$2700,sr
+        move.l  resume,a0
+        jmp     (a0)
+
+; vector offsets handled (bus, address, illegal, zero divide, CHK, TRAPV, privilege, trace, line A, line F,
+; coprocessor protocol, format error, TRAP #0); -1 ends the list
+vecoffs: dc.w   $08,$0C,$10,$14,$18,$1C,$20,$24,$28,$2C,$34,$38,$80,-1
+
+;------------------------------------------------------------------ flag test tables: d0, d1, ccr, pad
+        SECTION m68k020_data,DATA
+divu_tab:
+        dc.l    $00010000,$00000001
+        dc.w    $00,0
+        dc.l    $00010000,$00000001
+        dc.w    $1F,0
+        dc.l    $FFFFFFFF,$00000001
+        dc.w    $00,0
+        dc.l    $FFFFFFFF,$00000001
+        dc.w    $1F,0
+        dc.l    $80000000,$00000001
+        dc.w    $00,0
+        dc.l    $7FFF0000,$00000002
+        dc.w    $00,0
+        dc.l    $FFFF0000,$0000FFFF
+        dc.w    $00,0
+        dc.l    $12345678,$00000100
+        dc.w    $00,0
+divs_tab:
+        dc.l    $00010000,$00000001
+        dc.w    $00,0
+        dc.l    $00010000,$00000001
+        dc.w    $1F,0
+        dc.l    $FFFF0000,$00000001
+        dc.w    $00,0
+        dc.l    $80000000,$0000FFFF
+        dc.w    $00,0
+        dc.l    $80000000,$00000001
+        dc.w    $1F,0
+        dc.l    $00008000,$00000001
+        dc.w    $00,0
+        dc.l    $FFFF7FFF,$00000001
+        dc.w    $00,0
+        dc.l    $12345678,$00000100
+        dc.w    $00,0
+chkw_tab:
+        dc.l    $00000005,$0000000A
+        dc.w    $00,0
+        dc.l    $00000005,$0000000A
+        dc.w    $1F,0
+        dc.l    $00000000,$0000000A
+        dc.w    $1F,0
+        dc.l    $0000000A,$0000000A
+        dc.w    $00,0
+        dc.l    $0000FFFF,$0000000A
+        dc.w    $00,0
+        dc.l    $0000000B,$0000000A
+        dc.w    $00,0
+        dc.l    $00008000,$0000000A
+        dc.w    $1F,0
+        dc.l    $00000005,$0000FFFF
+        dc.w    $00,0
+        dc.l    $0000FFFE,$0000FFFF
+        dc.w    $00,0
+        dc.l    $00000000,$00000000
+        dc.w    $1F,0
+chkl_tab:
+        dc.l    $00000005,$0000000A
+        dc.w    $00,0
+        dc.l    $FFFFFFFF,$0000000A
+        dc.w    $00,0
+        dc.l    $0000000B,$0000000A
+        dc.w    $1F,0
+        dc.l    $80000000,$0000000A
+        dc.w    $00,0
+        dc.l    $00000000,$00000000
+        dc.w    $1F,0
+        dc.l    $7FFFFFFF,$7FFFFFFF
+        dc.w    $00,0
+
+;------------------------------------------------------------------ variables
+        SECTION m68k020_bss,BSS
+records: ds.b   R_SIZE*NTESTS
+flagout: ds.b   8*(NDIVU+NDIVS+NCHKW+NCHKL)
+info:    ds.l   8
+oldvec:  ds.l   16
+oldusp:  ds.l   1
+oldcacr: ds.l   1
+vbr:     ds.l   1
+cur:     ds.l   1
+resume:  ds.l   1
+savedsp: ds.l   1
+savesp2: ds.l   1
+scratch: ds.l   15
+hregs:   ds.l   15
+srsave:  ds.w   1
+tmode:   ds.b   1
+tvec:    ds.b   1
+pbuf:    ds.l   12
+fbuf:    ds.l   32
+ubuf:    ds.l   16
+lbuf:    ds.l   8
+bbuf:    ds.l   2
+cbuf:    ds.l   6
+         END

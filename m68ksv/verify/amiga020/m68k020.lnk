@@ -1,0 +1,4 @@
+FROM LIB:c.o "m68k020.o"+"m68k020_a.o"
+TO "m68k020"
+LIB LIB:sc.lib LIB:amiga.lib
+

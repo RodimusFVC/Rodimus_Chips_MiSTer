@@ -1,0 +1,27 @@
+
+3. Printing statistics.
+
+=== s2650_cpu ===
+
+   Number of wires:               1143
+   Number of wire bits:           4484
+   Number of public wires:        1143
+   Number of public wire bits:    4484
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:               1612
+     $assert                         1
+     MISTRAL_ALUT2                  79
+     MISTRAL_ALUT3                 115
+     MISTRAL_ALUT4                 261
+     MISTRAL_ALUT5                 443
+     MISTRAL_ALUT6                 166
+     MISTRAL_ALUT_ARITH            302
+     MISTRAL_CLKBUF                  1
+     MISTRAL_FF                    170
+     MISTRAL_IB                     21
+     MISTRAL_MLAB                   15
+     MISTRAL_NOT                     6
+     MISTRAL_OB                     32
+

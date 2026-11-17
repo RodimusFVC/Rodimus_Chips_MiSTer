@@ -1,0 +1,17 @@
+CAUGHT  attribute colour       sync_mismatches 0 line_mismatches 2373 read_mismatches 0 vram_mismatches 0  | 8568/intr: 8568_vs_8563_mismatches 0 intr_mismatches 0
+CAUGHT  cursor                 sync_mismatches 0 line_mismatches 27 read_mismatches 0 vram_mismatches 0  | 8568/intr: 8568_vs_8563_mismatches 0 intr_mismatches 0
+CAUGHT  underline line         sync_mismatches 0 line_mismatches 92 read_mismatches 0 vram_mismatches 0  | 8568/intr: 8568_vs_8563_mismatches 0 intr_mismatches 0
+CAUGHT  vertical scroll        sync_mismatches 0 line_mismatches 6661 read_mismatches 0 vram_mismatches 0  | 8568/intr: 8568_vs_8563_mismatches 0 intr_mismatches 0
+CAUGHT  R27 row increment      sync_mismatches 0 line_mismatches 1763 read_mismatches 0 vram_mismatches 0  | 8568/intr: 8568_vs_8563_mismatches 0 intr_mismatches 0
+CAUGHT  HSYNC width            sync_mismatches 97351 line_mismatches 0 read_mismatches 0 vram_mismatches 0  | 8568/intr: 8568_vs_8563_mismatches 0 intr_mismatches 0
+CAUGHT  VSYNC width            sync_mismatches 44980 line_mismatches 0 read_mismatches 0 vram_mismatches 0  | 8568/intr: 8568_vs_8563_mismatches 0 intr_mismatches 0
+CAUGHT  block count            sync_mismatches 0 line_mismatches 0 read_mismatches 0 vram_mismatches 120361  | 8568/intr: 8568_vs_8563_mismatches 0 intr_mismatches 0
+CAUGHT  4416 address map       sync_mismatches 0 line_mismatches 402 read_mismatches 0 vram_mismatches 2290  | 8568/intr: 8568_vs_8563_mismatches 0 intr_mismatches 0
+CAUGHT  read-back mask         sync_mismatches 0 line_mismatches 0 read_mismatches 4293 vram_mismatches 0  | 8568/intr: 8568_vs_8563_mismatches 0 intr_mismatches 0
+CAUGHT  horizontal scroll      sync_mismatches 0 line_mismatches 4677 read_mismatches 0 vram_mismatches 0  | 8568/intr: 8568_vs_8563_mismatches 0 intr_mismatches 0
+CAUGHT  status busy            sync_mismatches 0 line_mismatches 0 read_mismatches 20 vram_mismatches 0  | 8568/intr: 8568_vs_8563_mismatches 0 intr_mismatches 1186
+MISSED  cursor blink rate      sync_mismatches 0 line_mismatches 0 read_mismatches 0 vram_mismatches 0  | 8568/intr: 8568_vs_8563_mismatches 0 intr_mismatches 0
+MISSED  8563 R37               sync_mismatches 0 line_mismatches 0 read_mismatches 0 vram_mismatches 0  | 8568/intr: 8568_vs_8563_mismatches 0 intr_mismatches 0
+CAUGHT  8568 /INTR             sync_mismatches 0 line_mismatches 0 read_mismatches 0 vram_mismatches 0  | 8568/intr: 8568_vs_8563_mismatches 0 intr_mismatches 1731
+MISSED  start-address latch    sync_mismatches 0 line_mismatches 0 read_mismatches 0 vram_mismatches 0  | 8568/intr: 8568_vs_8563_mismatches 0 intr_mismatches 0
+13 / 16 mutants caught

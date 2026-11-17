@@ -1,0 +1,281 @@
+# Variant normalized-md5 (T65 ALU MCode Pack; CR and trailing blanks stripped): 4e6983be b0938ca0 c36fa6cc dd210429
+# Representative: Arcade-Exidy2_MiSTer (modules/cpu-t65)
+# Members: Arcade-Exidy2_MiSTer Arcade-Victory_MiSTer 
+# diff -u --strip-trailing-cr  REF(Ver 315 galaxian copy) -> Arcade-Exidy2_MiSTer
+
+--- ref/T65.vhd
++++ Arcade-Exidy2_MiSTer/modules/cpu-t65/T65.vhd
+@@ -134,14 +134,16 @@
+ entity T65 is
+   port(
+     Mode    : in  std_logic_vector(1 downto 0);      -- "00" => 6502, "01" => 65C02, "10" => 65C816
++    BCD_en  : in  std_logic := '1';             -- '0' => 2A03/2A07, '1' => others
++
+     Res_n   : in  std_logic;
+     Enable  : in  std_logic;
+     Clk     : in  std_logic;
+-    Rdy     : in  std_logic;
+-    Abort_n : in  std_logic;
+-    IRQ_n   : in  std_logic;
+-    NMI_n   : in  std_logic;
+-    SO_n    : in  std_logic;
++    Rdy     : in  std_logic := '1';
++    Abort_n : in  std_logic := '1';
++    IRQ_n   : in  std_logic := '1';
++    NMI_n   : in  std_logic := '1';
++    SO_n    : in  std_logic := '1';
+     R_W_n   : out std_logic;
+     Sync    : out std_logic;
+     EF      : out std_logic;
+@@ -151,6 +153,7 @@
+     VP_n    : out std_logic;
+     VDA     : out std_logic;
+     VPA     : out std_logic;
++	 PH3		: out std_logic;
+     A       : out std_logic_vector(23 downto 0);
+     DI      : in  std_logic_vector(7 downto 0);
+     DO      : out std_logic_vector(7 downto 0);
+@@ -183,6 +186,7 @@
+   signal DO_r               : std_logic_vector(7 downto 0);
+ 
+   signal Mode_r             : std_logic_vector(1 downto 0);
++  signal BCD_en_r           : std_logic;
+   signal ALU_Op_r           : T_ALU_Op;
+   signal Write_Data_r       : T_Write_Data;
+   signal Set_Addr_To_r      : T_Set_Addr_To;
+@@ -191,6 +195,8 @@
+   signal RstCycle           : std_logic;
+   signal IRQCycle           : std_logic;
+   signal NMICycle           : std_logic;
++  signal IRQReq             : std_logic;
++  signal NMIReq             : std_logic;
+ 
+   signal SO_n_o             : std_logic;
+   signal IRQ_n_o            : std_logic;
+@@ -254,6 +260,7 @@
+   MF <= MF_i;
+   XF <= XF_i;
+   R_W_n <= WRn_i;
++  PH3 <= MCycle(0);
+   ML_n <= '0' when IR(7 downto 6) /= "10" and IR(2 downto 1) = "11" and MCycle(2 downto 1) /= "00" else '1';
+   VP_n <= '0' when IRQCycle = '1' and (MCycle = "101" or MCycle = "110") else '1';
+   VDA <= '1' when Set_Addr_To_r /= Set_Addr_To_PBR else '0';
+@@ -309,6 +316,7 @@
+   alu : entity work.T65_ALU
+     port map(
+       Mode => Mode_r,
++      BCD_en => BCD_en_r,
+       Op => ALU_Op_r,
+       BusA => BusA_r,
+       BusB => BusB,
+@@ -340,6 +348,7 @@
+       DBR <= (others => '0');
+ 
+       Mode_r <= (others => '0');
++      BCD_en_r <= '1';
+       ALU_Op_r <= ALU_OP_BIT;
+       Write_Data_r <= Write_Data_DL;
+       Set_Addr_To_r <= Set_Addr_To_PBR;
+@@ -349,6 +358,9 @@
+       MF_i <= '1';
+       XF_i <= '1';
+ 
++      NMICycle <= '0';
++      IRQCycle <= '0';
++
+     elsif Clk'event and Clk = '1' then  
+       if (Enable = '1') then
+         -- some instructions behavior changed by the Rdy line. Detect this at the correct cycles.
+@@ -369,17 +381,26 @@
+ 
+           if MCycle  = "000" then
+             Mode_r <= Mode;
++            BCD_en_r <= BCD_en;
+ 
+-            if IRQCycle = '0' and NMICycle = '0' then
++            if IRQReq = '0' and NMIReq = '0' then
+               PC <= PC + 1;
+             end if;
+ 
+-            if IRQCycle = '1' or NMICycle = '1' then
++            if IRQReq = '1' or NMIReq = '1' then
+               IR <= "00000000";
+             else
+               IR <= DI;
+             end if;
+ 
++            IRQCycle <= '0';
++            NMICycle <= '0';
++            if NMIReq = '1' then
++              NMICycle <= '1';
++            elsif IRQReq = '1' then
++              IRQCycle <= '1';
++            end if;
++
+             if LDS = '1' then -- LAS won't work properly if not limited to machine cycle 0
+               S(7 downto 0) <= unsigned(ALU_Q);
+             end if;
+@@ -396,7 +417,7 @@
+           if Inc_S = '1' then
+             S <= S + 1;
+           end if;
+-          if Dec_S = '1' and RstCycle = '0' then
++          if Dec_S = '1' and (RstCycle = '0' or Mode = "00") then -- Decrement during reset - 6502 only?
+             S <= S - 1;
+           end if;
+ 
+@@ -493,20 +514,12 @@
+ 
+         end if;
+ 
+-        -- detect irq even if not rdy
+-        if IR(4 downto 0)/="10000" or Jump/="01" or really_rdy = '0' then -- delay interrupts during branches (checked with Lorenz test and real 6510), not best way yet, though - but works...
+-          IRQ_n_o <= IRQ_n;
+-        end if;
+-        -- detect nmi even if not rdy
+-        if IR(4 downto 0)/="10000" or Jump/="01" then -- delay interrupts during branches (checked with Lorenz test and real 6510) not best way yet, though - but works...
+-          NMI_n_o <= NMI_n;
+-        end if;
+       end if;
+       -- act immediately on SO pin change
+       -- The signal is sampled on the trailing edge of phi1 and must be externally synchronized (from datasheet)
+       SO_n_o <= SO_n;
+-		if SO_n_o = '1' and SO_n = '0' then
+-          P(Flag_V) <= '1';
++      if SO_n_o = '1' and SO_n = '0' then
++        P(Flag_V) <= '1';
+       end if;
+ 
+     end if;
+@@ -665,29 +678,38 @@
+     if Res_n_i = '0' then
+       MCycle <= "001";
+       RstCycle <= '1';
+-      IRQCycle <= '0';
+-      NMICycle <= '0';
+       NMIAct <= '0';
++      IRQReq <= '0';
++      NMIReq <= '0';
+     elsif Clk'event and Clk = '1' then
+       if (Enable = '1') then
+         if (really_rdy = '1') then
+           if MCycle = LCycle or Break = '1' then
+             MCycle <= "000";
+             RstCycle <= '0';
+-            IRQCycle <= '0';
+-            NMICycle <= '0';
+-            if NMIAct = '1' and IR/=x"00" then -- delay NMI further if we just executed a BRK
+-              NMICycle <= '1';
+-              NMIAct <= '0'; -- reset NMI edge detector if we start processing the NMI
+-            elsif IRQ_n_o = '0' and P(Flag_I) = '0' then
+-              IRQCycle <= '1';
+-            end if;
+           else
+             MCycle <= std_logic_vector(unsigned(MCycle) + 1);
+           end if;
++
++          if (IR(4 downto 0)/="10000" or Jump/="11") then -- taken branches delay the interrupts
++            if NMIAct = '1' and IR/=x"00" then
++              NMIReq <= '1';
++            else
++              NMIReq <= '0';
++            end if;
++            if IRQ_n_o = '0' and P(Flag_I) = '0' then
++              IRQReq <= '1';
++            else
++              IRQReq <= '0';
++            end if;
++          end if;
+         end if;
++
++        IRQ_n_o <= IRQ_n;
++        NMI_n_o <= NMI_n;
++
+         --detect NMI even if not rdy    
+-        if NMI_n_o = '1' and (NMI_n = '0' and (IR(4 downto 0)/="10000" or Jump/="01")) then -- branches have influence on NMI start (not best way yet, though - but works...)
++        if NMI_n_o = '1' and NMI_n = '0' then
+           NMIAct <= '1';
+         end if;
+         -- we entered NMI during BRK instruction
+--- ref/T65_ALU.vhd
++++ Arcade-Exidy2_MiSTer/modules/cpu-t65/T65_ALU.vhd
+@@ -57,6 +57,7 @@
+ entity T65_ALU is
+   port(
+     Mode    : in std_logic_vector(1 downto 0);      -- "00" => 6502, "01" => 65C02, "10" => 65816
++    BCD_en  : in std_logic;
+     Op      : in T_ALU_OP;
+     BusA    : in std_logic_vector(7 downto 0);
+     BusB    : in std_logic_vector(7 downto 0);
+@@ -83,7 +84,7 @@
+ 
+ begin
+ 
+-  process (P_In, BusA, BusB)
++  process (P_In, BusA, BusB, BCD_en)
+     variable AL : unsigned(6 downto 0);
+     variable AH : unsigned(6 downto 0);
+     variable C : std_logic;
+@@ -102,7 +103,7 @@
+       ADC_Z <= '0';
+     end if;
+ 
+-    if AL(5 downto 1) > 9 and P_In(Flag_D) = '1' then
++    if AL(5 downto 1) > 9 and P_In(Flag_D) = '1' and BCD_en = '1' then
+       AL(6 downto 1) := AL(6 downto 1) + 6;
+     end if;
+ 
+@@ -116,7 +117,7 @@
+       if is_x(std_logic_vector(AH)) then AH := "0000000"; end if;
+ -- pragma translate_on
+ 
+-    if AH(5 downto 1) > 9 and P_In(Flag_D) = '1' then
++    if AH(5 downto 1) > 9 and P_In(Flag_D) = '1' and BCD_en = '1' then
+       AH(6 downto 1) := AH(6 downto 1) + 6;
+     end if;
+ 
+@@ -125,7 +126,7 @@
+     ADC_Q <= std_logic_vector(AH(4 downto 1) & AL(4 downto 1));
+   end process;
+ 
+-  process (Op, P_In, BusA, BusB)
++  process (Op, P_In, BusA, BusB, BCD_en)
+     variable AL : unsigned(6 downto 0);
+     variable AH : unsigned(5 downto 0);
+     variable C : std_logic;
+@@ -165,7 +166,7 @@
+ 
+     SBX_Q <= std_logic_vector(AH(4 downto 1) & AL(4 downto 1));
+ 
+-    if P_In(Flag_D) = '1' then
++    if P_In(Flag_D) = '1' and BCD_en = '1' then
+       if AL(5) = '1' then
+         AL(5 downto 1) := AL(5 downto 1) - 6;
+       end if;
+@@ -181,7 +182,7 @@
+   process (Op, P_In, BusA, BusB,
+       ADC_Z, ADC_C, ADC_V, ADC_N, ADC_Q,
+       SBC_Z, SBC_C, SBC_V, SBC_N, SBC_Q,
+-		SBX_Q)
++      SBX_Q, BCD_en)
+     variable Q_t : std_logic_vector(7 downto 0);
+     variable Q2_t : std_logic_vector(7 downto 0);
+   begin
+@@ -226,7 +227,7 @@
+         Q_t := P_In(Flag_C) & (BusA(7 downto 1) and BusB(7 downto 1));
+         P_Out(Flag_V) <= Q_t(5) xor Q_t(6);
+         Q2_t := Q_t;
+-        if P_In(Flag_D)='1' then
++        if P_In(Flag_D)='1' and BCD_en = '1' then
+           if (BusA(3 downto 0) and BusB(3 downto 0)) > "0100" then
+             Q2_t(3 downto 0) := std_logic_vector(unsigned(Q_t(3 downto 0)) + x"6");
+           end if;
+--- ref/T65_Pack.vhd
++++ Arcade-Exidy2_MiSTer/modules/cpu-t65/T65_Pack.vhd
+@@ -177,4 +177,4 @@
+     end case;
+   end CycleNext;
+ 
+-end T65_Pack;
+\ No newline at end of file
++end T65_Pack;

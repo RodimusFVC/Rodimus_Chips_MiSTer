@@ -1,0 +1,63 @@
+m68ksv 68000 test  label: (none given)
+Kickstart exec V37.175  AttnFlags 0000
+
+T1  MOVE.W (A0)+,D0 with A0 = buf+1 (odd)
+   vector 3  frame: access 3015 (R/W 1 I/N 0 FC 5) addr 0023b1e1 IR 3018 SR 2704 PC 0023a8ce
+   instr 0023a8cc next 0023a8ce buf 0023b1e0
+   D0=00000000 D1=00000000 D2=00000000 D3=0023fb74 D4=00000001 D5=00000000 D6=00090027 D7=00000001
+   A0=0023b1e1 A1=0023a8cc A2=0023a8ce A3=0023a8d0 A4=00245920 A5=0023a85a A6=002007b8
+   RESULT: A0 NOT incremented  -> fx68k / m68ksv
+
+T2  MOVE.W D0,-(A1) to buf+1 (odd), ILLEGAL next
+   vector 3  frame: access 4aed (R/W 0 I/N 1 FC 5) addr 0023b1e1 IR 4afc SR 2700 PC 0023a908
+   instr 0023a904 next 0023a906 buf 0023b1e0
+   D0=12345678 D1=00000003 D2=0000ffff D3=0023fb74 D4=00000001 D5=00000000 D6=00090027 D7=00000001
+   A0=0023b250 A1=0023b1e1 A2=0023a906 A3=0023a908 A4=00245920 A5=0023a85a A6=002007b8
+   RESULT: I/N = 1  -> fx68k / m68ksv
+
+T2b control: the same with NOP next (all models: I/N = 0)
+   vector 3  frame: access 4e65 (R/W 0 I/N 0 FC 5) addr 0023b1e1 IR 4e71 SR 2700 PC 0023a940
+   instr 0023a93c next 0023a93e buf 0023b1e0
+   D0=12345678 D1=00000003 D2=0000ffff D3=0023fb74 D4=00000001 D5=00000000 D6=00090027 D7=00000001
+   A0=0023b2b0 A1=0023b1e1 A2=0023a93e A3=0023a940 A4=00245920 A5=0023a85a A6=002007b8
+   RESULT: I/N = 0  (as expected)
+
+T3  ADDA.L overflow (V = 0), then TRAPV
+   vector 0  (no exception)  SR after 2700
+   instr 0023a97c next 0023a97e buf 0023b1e0
+   D0=12345678 D1=00000003 D2=0000ffff D3=0023fb74 D4=00000001 D5=7fffffff D6=00090027 D7=00000055
+   A0=0023b310 A1=0023a97c A2=0023a97e A3=0023a980 A4=00245920 A5=0023a85a A6=80000000
+   RESULT: no trap             -> fx68k / m68ksv
+
+T3b control: TRAPV with V = 1 (all models: trap)
+   vector 7  frame: SR 2702 PC 0023a9b0
+   instr 0023a9ae next 0023a9b0 buf 0023b1e0
+   D0=0000ffff D1=00000003 D2=0000ffff D3=0023fb74 D4=00000001 D5=7fffffff D6=00090027 D7=00000000
+   A0=0023b370 A1=0023a9ae A2=0023a9b0 A3=0023a9b2 A4=00245920 A5=0023a85a A6=80000000
+   RESULT: trapped (as expected)
+
+T4a DIVU 4(A7),D0 by zero, D0 = $80011234, CCR = 0 before
+   vector 5  frame: SR 2708 PC 0023a9ec
+   instr 0023a9e8 next 0023a9ec buf 0023b1e0
+   D0=80011234 D1=00000007 D2=0000ffff D3=0023fb74 D4=00000001 D5=7fffffff D6=00090027 D7=00000000
+   A0=0023b3d0 A1=0023a9e8 A2=0023a9ec A3=0023a9ee A4=00245920 A5=0023a85a A6=80000000
+   RESULT: stacked PC = the next instruction; N = 1 Z = 0 V = 0 C = 0
+   predictions: suite = the instruction, N 0 Z 0; MAME / fx68k / m68ksv = the next instruction, N 1 Z 0
+
+T4b DIVU 4(A7),D0 by zero, D0 = $00005678, CCR = 0 before
+   vector 5  frame: SR 2704 PC 0023aa2a
+   instr 0023aa26 next 0023aa2a buf 0023b1e0
+   D0=00005678 D1=00000005 D2=0000ffff D3=0023fb74 D4=00000001 D5=7fffffff D6=00090027 D7=00000000
+   A0=0023b430 A1=0023aa26 A2=0023aa2a A3=0023aa2c A4=00245920 A5=0023a85a A6=80000000
+   RESULT: stacked PC = the next instruction; N = 0 Z = 1 V = 0 C = 0
+   predictions: suite = the instruction, N 0 Z 0; MAME / fx68k / m68ksv = the next instruction, N 0 Z 1
+
+T5  ASR.L #40 (in D1) on D0 = -1, CCR = 0 before
+   vector 0  (no exception)  SR after 2719
+   instr 0023aa5e next 0023aa60 buf 0023b1e0
+   D0=ffffffff D1=00000028 D2=0000ffff D3=0023fb74 D4=00000001 D5=7fffffff D6=00090027 D7=00000000
+   A0=0023b490 A1=0023aa5e A2=0023aa60 A3=0023aa62 A4=00245920 A5=0023a85a A6=80000000
+   RESULT: X = 1 C = 1  -> MAME / fx68k / m68ksv
+
+done.
+

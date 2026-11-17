@@ -1,0 +1,14 @@
+t65_fleet              LUT6=89   LUT5=323  LUT<=4=317  ARITH=198  FF=169  ALM~508  | generic LUT6 count=746  depth=10
+t65sv_fleet            LUT6=116  LUT5=262  LUT<=4=295  ARITH=190  FF=169  ALM~490  | generic LUT6 count=683  depth=10
+t65sv_fleet_c00        LUT6=101  LUT5=274  LUT<=4=288  ARITH=190  FF=169  ALM~477  | generic LUT6 count=688  depth=10
+t65_full               LUT6=91   LUT5=300  LUT<=4=349  ARITH=214  FF=178  ALM~523  | generic LUT6 count=758  depth=10
+t65sv_full_nmos        LUT6=92   LUT5=261  LUT<=4=307  ARITH=206  FF=176  ALM~479  | generic LUT6 count=681  depth=10
+t65sv_full_wdc         LUT6=164  LUT5=386  LUT<=4=488  ARITH=274  FF=182  ALM~738  | generic LUT6 count=1012 depth=12
+t65sv_full_rkwl        LUT6=159  LUT5=372  LUT<=4=507  ARITH=274  FF=182  ALM~736  | generic LUT6 count=988  depth=12
+t65sv_full_sc02        LUT6=171  LUT5=356  LUT<=4=507  ARITH=273  FF=182  ALM~740  | generic LUT6 count=1004 depth=12
+t65sv_6510             LUT6=89   LUT5=308  LUT<=4=321  ARITH=190  FF=186  ALM~499  | generic LUT6 count=715  depth=10
+t65sv_6507             LUT6=98   LUT5=271  LUT<=4=276  ARITH=187  FF=160  ALM~466  | generic LUT6 count=663  depth=10
+t65sv_2A03             LUT6=117  LUT5=253  LUT<=4=284  ARITH=160  FF=168  ALM~466  | generic LUT6 count=667  depth=10
+t65sv_65C02_wdc        LUT6=103  LUT5=242  LUT<=4=383  ARITH=235  FF=158  ALM~534  | generic LUT6 count=727  depth=11
+t65sv_65C816           LUT6=280  LUT5=743  LUT<=4=1049 ARITH=434  FF=397  ALM~1393 | generic LUT6 count=2147 depth=19
+t65sv_T65_c816         LUT6=281  LUT5=778  LUT<=4=969  ARITH=388  FF=397  ALM~1349 | generic LUT6 count=2162 depth=19

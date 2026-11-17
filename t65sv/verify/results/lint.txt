@@ -1,0 +1,22 @@
+clean --top-module t65sv_T65 -GC02=0 -GNO_DECIMAL=1'b0
+clean --top-module t65sv_T65 -GC02=0 -GNO_DECIMAL=1'b1
+clean --top-module t65sv_T65 -GC02=1 -GNO_DECIMAL=1'b0
+clean --top-module t65sv_T65 -GC02=1 -GNO_DECIMAL=1'b1
+clean --top-module t65sv_T65 -GC02=2 -GNO_DECIMAL=1'b0
+clean --top-module t65sv_T65 -GC02=2 -GNO_DECIMAL=1'b1
+clean --top-module t65sv_T65 -GC02=3 -GNO_DECIMAL=1'b0
+clean --top-module t65sv_T65 -GC02=3 -GNO_DECIMAL=1'b1
+clean --top-module t65sv_T65 -GC02=0 -GC816=1'b1
+clean --top-module t65sv_T65 -GC02=1 -GC816=1'b1
+clean --top-module t65sv_T65 -GC02_FIXED=1'b1
+clean --top-module t65sv_6510
+clean --top-module t65sv_6510 -GPORT_BITS=8
+clean --top-module t65sv_6507
+clean --top-module t65sv_2A03
+clean --top-module t65sv_65C02 -GFLAVOUR=1
+clean --top-module t65sv_65C02 -GFLAVOUR=2
+clean --top-module t65sv_65C02 -GFLAVOUR=3
+clean --top-module t65sv_t65
+clean --top-module t65sv_65C816
+clean --top-module t65sv816
+clean t65sv_all.sv

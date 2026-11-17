@@ -1,0 +1,18 @@
+# Sequential equivalence: current core at VARIANT = 0 vs the pre-variant v1 core (gold).
+read_verilog -sv crtc6845sv_v1.sv
+prep -flatten -top crtc6845sv_v1
+rename crtc6845sv_v1 gold
+design -stash gold
+read_verilog -sv ../../rtl/crtc6845sv.sv
+chparam -set VARIANT 0 crtc6845sv
+prep -flatten -top crtc6845sv
+rename crtc6845sv gate
+design -stash gate
+design -copy-from gold -as gold gold
+design -copy-from gate -as gate gate
+async2sync
+equiv_make -inames gold gate equiv
+hierarchy -top equiv
+equiv_simple -seq 5
+equiv_induct -seq 5
+equiv_status -assert

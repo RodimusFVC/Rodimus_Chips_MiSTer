@@ -1,0 +1,134 @@
+== md5 of the reference sources
+9e6f96d446c7d9cfa2f8e50377515d73  sgs2650.vhd
+d1525b11fae3f1afbd0bbc4e90e576ba  sgs2650_pack.vhd
+00dc3a79bab4b6139089ab86d5c85539  base/base_pack.vhd
+0671e283d3420e12f424fd987532c6b9  s2650_cpu.vhd
+== reference netlists (GHDL -> Verilog)
+2aa00a41251b7f09ea5e97e75377b96b  ref_a.v
+fa0e27308ca0185a6ece1f2c509b2f7e  ref_b_core.v
+== lint
+lint clean: s2650sv_s2650_cpu, s2650sv (VER_B 0/1 x RAS_MLAB 0/1), s2650sv_all.sv, s2650sv_pool (fleet chip_pool_pkg)
+== build lockstep harnesses
+== exerciser
+exerciser.asm: 480 tests (pages {0: 126, 1: 127, 2: 126, 3: 101}), 18 on sgs2650-specific behaviour
+exerciser.bin: 32211 bytes used, image 32446 bytes
+[2650A] exerciser: 103434 cycles, result PASS, RESULT byte at $7FF0 = 50, 0 lockstep mismatches
+[2650A] exerciser: 103434 cycles, result PASS, RESULT byte at $7FF0 = 50, 0 lockstep mismatches
+[2650B] exerciser: 103434 cycles, result PASS, RESULT byte at $7FF0 = 50, 0 lockstep mismatches
+[2650B] exerciser: 103434 cycles, result PASS, RESULT byte at $7FF0 = 50, 0 lockstep mismatches
+[2650A-rasregs] exerciser: 103434 cycles, result PASS, RESULT byte at $7FF0 = 50, 0 lockstep mismatches
+[2650A-rasregs] exerciser: 103434 cycles, result PASS, RESULT byte at $7FF0 = 50, 0 lockstep mismatches
+[2650B-rasregs] exerciser: 103434 cycles, result PASS, RESULT byte at $7FF0 = 50, 0 lockstep mismatches
+[2650B-rasregs] exerciser: 103434 cycles, result PASS, RESULT byte at $7FF0 = 50, 0 lockstep mismatches
+== directed sweeps (irq on every cycle, reset on every cycle, ack stalls on every access)
+[2650A-rasregs] sweep: 132656 runs, 7587810 cycles, 0 mismatches
+[2650A-rasregs] sweep coverage: 576 / 576 opcode x addressing-mode classes hit, 0 missing
+[2650A-rasregs] sweep coverage: 694 / 694 opcode x mode x taken classes hit, 0 missing
+[2650A-rasregs] sweep: instrs 2678850, interrupts 42599 (indirect vec 17593), RETE taken 5364, RAS push wrap 14367, pop wrap 24968, HALT 3727 (irq wake 174), resets 281606 (mid-instr 144370), IO rd 32648 wr 34719, stalled cycles 130000
+[2650A] sweep: 132656 runs, 7587810 cycles, 0 mismatches
+[2650A] sweep coverage: 576 / 576 opcode x addressing-mode classes hit, 0 missing
+[2650A] sweep coverage: 694 / 694 opcode x mode x taken classes hit, 0 missing
+[2650A] sweep: instrs 2678850, interrupts 42599 (indirect vec 17593), RETE taken 5364, RAS push wrap 14367, pop wrap 24968, HALT 3727 (irq wake 174), resets 281606 (mid-instr 144370), IO rd 32648 wr 34719, stalled cycles 130000
+[2650B-rasregs] sweep: 132656 runs, 7587810 cycles, 0 mismatches
+[2650B-rasregs] sweep coverage: 576 / 576 opcode x addressing-mode classes hit, 0 missing
+[2650B-rasregs] sweep coverage: 694 / 694 opcode x mode x taken classes hit, 0 missing
+[2650B-rasregs] sweep: instrs 2678865, interrupts 42598 (indirect vec 17594), RETE taken 5364, RAS push wrap 14386, pop wrap 24968, HALT 3727 (irq wake 174), resets 281606 (mid-instr 144370), IO rd 32648 wr 34719, stalled cycles 130000
+[2650B] sweep: 132656 runs, 7587810 cycles, 0 mismatches
+[2650B] sweep coverage: 576 / 576 opcode x addressing-mode classes hit, 0 missing
+[2650B] sweep coverage: 694 / 694 opcode x mode x taken classes hit, 0 missing
+[2650B] sweep: instrs 2678865, interrupts 42598 (indirect vec 17594), RETE taken 5364, RAS push wrap 14386, pop wrap 24968, HALT 3727 (irq wake 174), resets 281606 (mid-instr 144370), IO rd 32648 wr 34719, stalled cycles 130000
+== random lockstep
+[2650A-rasregs] random seed 21: 25000000 cycles in 39 segments, 0 mismatches
+[2650A-rasregs] random coverage: 576 / 576 opcode x addressing-mode classes hit, 0 missing
+[2650A-rasregs] random coverage: 693 / 694 opcode x mode x taken classes hit, 1 missing: FC/v0/t0
+[2650A-rasregs] random: instrs 3429422, interrupts 3719 (indirect vec 1043), RETE taken 14642, RAS push wrap 43846, pop wrap 4640, HALT 52 (irq wake 18), resets 7275 (mid-instr 2169), IO rd 133402 wr 130990, stalled cycles 11190733
+[2650A-rasregs] random seed 22: 25000000 cycles in 44 segments, 0 mismatches
+[2650A-rasregs] random coverage: 576 / 576 opcode x addressing-mode classes hit, 0 missing
+[2650A-rasregs] random coverage: 694 / 694 opcode x mode x taken classes hit, 0 missing
+[2650A-rasregs] random: instrs 3357647, interrupts 3350 (indirect vec 1227), RETE taken 11818, RAS push wrap 31284, pop wrap 2858, HALT 174 (irq wake 29), resets 6697 (mid-instr 2324), IO rd 151291 wr 101802, stalled cycles 7566968
+[2650A] random seed 1: 25000000 cycles in 43 segments, 0 mismatches
+[2650A] random coverage: 576 / 576 opcode x addressing-mode classes hit, 0 missing
+[2650A] random coverage: 694 / 694 opcode x mode x taken classes hit, 0 missing
+[2650A] random: instrs 2741742, interrupts 5502 (indirect vec 1261), RETE taken 10266, RAS push wrap 35081, pop wrap 4242, HALT 189 (irq wake 34), resets 7867 (mid-instr 2559), IO rd 121594 wr 115280, stalled cycles 11719518
+[2650A] random seed 2: 25000000 cycles in 42 segments, 0 mismatches
+[2650A] random coverage: 576 / 576 opcode x addressing-mode classes hit, 0 missing
+[2650A] random coverage: 694 / 694 opcode x mode x taken classes hit, 0 missing
+[2650A] random: instrs 3179608, interrupts 2802 (indirect vec 789), RETE taken 8852, RAS push wrap 44926, pop wrap 7236, HALT 242 (irq wake 112), resets 6425 (mid-instr 2166), IO rd 138747 wr 167462, stalled cycles 8883112
+[2650A] random seed 3: 25000000 cycles in 40 segments, 0 mismatches
+[2650A] random coverage: 576 / 576 opcode x addressing-mode classes hit, 0 missing
+[2650A] random coverage: 694 / 694 opcode x mode x taken classes hit, 0 missing
+[2650A] random: instrs 3512294, interrupts 20033 (indirect vec 17032), RETE taken 24118, RAS push wrap 54555, pop wrap 5251, HALT 323 (irq wake 196), resets 7184 (mid-instr 2187), IO rd 138342 wr 130805, stalled cycles 10834888
+[2650A] random seed 4: 25000000 cycles in 44 segments, 0 mismatches
+[2650A] random coverage: 576 / 576 opcode x addressing-mode classes hit, 0 missing
+[2650A] random coverage: 692 / 694 opcode x mode x taken classes hit, 2 missing: DD/v1/t0 FE/v1/t0
+[2650A] random: instrs 2393396, interrupts 4376 (indirect vec 718), RETE taken 7446, RAS push wrap 17941, pop wrap 6032, HALT 141 (irq wake 16), resets 8853 (mid-instr 2834), IO rd 95154 wr 62785, stalled cycles 9419841
+[2650A] random seed 5: 25000000 cycles in 43 segments, 0 mismatches
+[2650A] random coverage: 576 / 576 opcode x addressing-mode classes hit, 0 missing
+[2650A] random coverage: 694 / 694 opcode x mode x taken classes hit, 0 missing
+[2650A] random: instrs 3265992, interrupts 5365 (indirect vec 1355), RETE taken 19180, RAS push wrap 39940, pop wrap 5307, HALT 82 (irq wake 27), resets 6972 (mid-instr 2189), IO rd 157873 wr 92470, stalled cycles 9718896
+[2650A] random seed 6: 25000000 cycles in 49 segments, 0 mismatches
+[2650A] random coverage: 576 / 576 opcode x addressing-mode classes hit, 0 missing
+[2650A] random coverage: 694 / 694 opcode x mode x taken classes hit, 0 missing
+[2650A] random: instrs 3417111, interrupts 4877 (indirect vec 1033), RETE taken 15644, RAS push wrap 60863, pop wrap 7779, HALT 180 (irq wake 18), resets 8767 (mid-instr 2806), IO rd 161006 wr 168526, stalled cycles 10397042
+[2650A] random seed 7: 25000000 cycles in 40 segments, 0 mismatches
+[2650A] random coverage: 576 / 576 opcode x addressing-mode classes hit, 0 missing
+[2650A] random coverage: 694 / 694 opcode x mode x taken classes hit, 0 missing
+[2650A] random: instrs 3091979, interrupts 2569 (indirect vec 1095), RETE taken 7017, RAS push wrap 42519, pop wrap 5183, HALT 66 (irq wake 25), resets 7691 (mid-instr 2285), IO rd 116749 wr 127164, stalled cycles 11172399
+[2650A] random seed 8: 25000000 cycles in 44 segments, 0 mismatches
+[2650A] random coverage: 576 / 576 opcode x addressing-mode classes hit, 0 missing
+[2650A] random coverage: 694 / 694 opcode x mode x taken classes hit, 0 missing
+[2650A] random: instrs 3283593, interrupts 5834 (indirect vec 1313), RETE taken 63839, RAS push wrap 44231, pop wrap 10851, HALT 87 (irq wake 23), resets 7435 (mid-instr 2340), IO rd 123922 wr 93483, stalled cycles 10191792
+[2650B-rasregs] random seed 31: 25000000 cycles in 43 segments, 0 mismatches
+[2650B-rasregs] random coverage: 576 / 576 opcode x addressing-mode classes hit, 0 missing
+[2650B-rasregs] random coverage: 694 / 694 opcode x mode x taken classes hit, 0 missing
+[2650B-rasregs] random: instrs 3426935, interrupts 19271 (indirect vec 1160), RETE taken 99457, RAS push wrap 44746, pop wrap 13895, HALT 177 (irq wake 97), resets 8203 (mid-instr 2578), IO rd 214068 wr 108810, stalled cycles 9596734
+[2650B] random seed 11: 25000000 cycles in 41 segments, 0 mismatches
+[2650B] random coverage: 576 / 576 opcode x addressing-mode classes hit, 0 missing
+[2650B] random coverage: 694 / 694 opcode x mode x taken classes hit, 0 missing
+[2650B] random: instrs 3174463, interrupts 3749 (indirect vec 1391), RETE taken 6348, RAS push wrap 39909, pop wrap 4035, HALT 166 (irq wake 73), resets 7082 (mid-instr 2291), IO rd 163606 wr 102048, stalled cycles 10937461
+[2650B] random seed 12: 25000000 cycles in 41 segments, 0 mismatches
+[2650B] random coverage: 576 / 576 opcode x addressing-mode classes hit, 0 missing
+[2650B] random coverage: 694 / 694 opcode x mode x taken classes hit, 0 missing
+[2650B] random: instrs 2937173, interrupts 6676 (indirect vec 1379), RETE taken 7342, RAS push wrap 28034, pop wrap 4841, HALT 202 (irq wake 149), resets 9080 (mid-instr 3042), IO rd 106239 wr 99630, stalled cycles 9759990
+[2650B] random seed 13: 25000000 cycles in 40 segments, 0 mismatches
+[2650B] random coverage: 576 / 576 opcode x addressing-mode classes hit, 0 missing
+[2650B] random coverage: 694 / 694 opcode x mode x taken classes hit, 0 missing
+[2650B] random: instrs 2691719, interrupts 6185 (indirect vec 1502), RETE taken 13394, RAS push wrap 26337, pop wrap 10490, HALT 265 (irq wake 108), resets 7267 (mid-instr 2339), IO rd 143555 wr 107457, stalled cycles 12869207
+[2650B] random seed 14: 25000000 cycles in 42 segments, 0 mismatches
+[2650B] random coverage: 576 / 576 opcode x addressing-mode classes hit, 0 missing
+[2650B] random coverage: 694 / 694 opcode x mode x taken classes hit, 0 missing
+[2650B] random: instrs 2844512, interrupts 3322 (indirect vec 818), RETE taken 8006, RAS push wrap 30302, pop wrap 10344, HALT 94 (irq wake 53), resets 7476 (mid-instr 2289), IO rd 107614 wr 100013, stalled cycles 11729854
+== GHDL simulation of the original VHDL vs the converted netlist
+xcheck stim_101.txt: cycles 150000, output bits compared 4799864, undefined in VHDL (U/X) 136, mismatches 0
+xcheck stim_102.txt: cycles 150000, output bits compared 4799711, undefined in VHDL (U/X) 289, mismatches 0
+xcheck stim_103.txt: cycles 150000, output bits compared 4799912, undefined in VHDL (U/X) 88, mismatches 0
+xcheck stim_104.txt: cycles 150000, output bits compared 4799912, undefined in VHDL (U/X) 88, mismatches 0
+== yosys Cyclone V area / depth
+== ref
+  LUTs 1064  arith 302  (LUT+arith 1366)  FFs 170  MLAB bits-cells 15
+  in->out    11.00 LUT levels
+  in->reg    11.10 LUT levels
+  reg->out   11.00 LUT levels
+  reg->reg   11.10 LUT levels
+== sv_m1
+  LUTs 622  arith 143  (LUT+arith 765)  FFs 181  MLAB bits-cells 15
+  in->out     9.00 LUT levels
+  in->reg     9.00 LUT levels
+  reg->out   10.00 LUT levels
+  reg->reg   10.00 LUT levels
+== sv_m0
+  LUTs 680  arith 143  (LUT+arith 823)  FFs 301  MLAB bits-cells 0
+  in->out     9.00 LUT levels
+  in->reg     9.00 LUT levels
+  reg->out   10.00 LUT levels
+  reg->reg   10.00 LUT levels
+== formal bounded equivalence (all inputs free, from power-up)
+N=6: SAT proof finished - no model found: SUCCESS!
+== MAME s2650.cpp vs sgs2650
+== MAME s2650.cpp vs sgs2650
+==> results/mame_directed.log <==
+==== directed: 394657 instructions compared (4846 cross an 8K page boundary)
+
+==> results/mame_random.log <==
+==== random: 3010976 instructions compared (68952 cross an 8K page boundary)
+done (MAME stage rerun separately after the 30-minute job limit)

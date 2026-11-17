@@ -1,0 +1,22 @@
+`verilator_config
+// Lint waivers for `verilator --lint-only -Wall` (see REPORT.md, "Lint")
+// several modules per file by design (t48sv_all.sv concatenates everything)
+lint_off -rule DECLFILENAME
+// outputs a variant does not use are left open on purpose
+lint_off -rule PINCONNECTEMPTY
+// variant-dependent ports / control lines and harness taps (accu, pc, sp, mb, istrobe):
+// constant-folded or removed by synthesis
+lint_off -rule UNUSED -file "*t48sv_core.sv"
+lint_off -rule UNUSED -file "*t48sv_cores.sv"
+// PSW ignores data bit 3 (T48 psw.vhd); RAM / ROM use the low address bits only
+lint_off -rule UNUSED -file "*t48sv_blocks.sv" -match "*'data_i'[3]*"
+lint_off -rule UNUSED -file "*t48sv_t8039_notri_extrom.sv"
+lint_off -rule UNUSED -file "*t48sv_system.sv"
+// RAMSTYLE is only consumed by the ramstyle synthesis attribute
+lint_off -rule UNUSED -file "*t48sv_cores.sv" -match "*RAMSTYLE*"
+// 8243: CS high is an asynchronous preset of the instruction latch (T48 t8243_core.vhd)
+lint_off -rule SYNCASYNCNET -file "*t48sv_t8243.sv"
+// the same waivers for the concatenated t48sv_all.sv
+lint_off -rule UNUSED -file "*t48sv_all.sv"
+lint_off -rule UNUSED -file "*t48sv_all.sv" -match "*RAMSTYLE*"
+lint_off -rule SYNCASYNCNET -file "*t48sv_all.sv"

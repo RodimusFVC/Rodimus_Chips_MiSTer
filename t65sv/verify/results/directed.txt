@@ -1,0 +1,27 @@
+WAI (I=1): stalled before IRQ                              got 00 want 00 ok
+WAI: no bus writes while waiting                           got 00 want 00 ok
+WAI (I=1) + IRQ: execution continues after WAI             got 01 want 01 ok
+WAI (I=1) + IRQ: handler not entered                       got 00 want 00 ok
+WAI (I=0) + IRQ: handler entered once                      got 01 want 01 ok
+IRQ entry: D clear, I set in handler (P & $0C)             got 04 want 04 ok
+after RTI: D restored (P & $08)                            got 08 want 08 ok
+WAI + NMI: NMI handler entered                             got 01 want 01 ok
+WAI + NMI: execution continues after WAI                   got 02 want 02 ok
+STP: instruction after STP never runs                      got 03 want 03 ok
+STP: no interrupt taken                                    got 00 want 00 ok
+STP: reset restarts the CPU                                got 05 want 05 ok
+NMI entry: D clear in handler                              got 00 want 00 ok
+PASS
+after reset: DDR                             got 00 want 00 ok
+after reset: data latch                      got 00 want 00 ok
+DDR=$FF data=$A5: read $01                   got A5 want A5 ok
+read $00 returns DDR                         got FF want FF ok
+DDR=$0F pins=$30: read $01 (bit7 held 1)     got B5 want B5 ok
+DDR=$00: read $01 = pins | held b7/b6        got B0 want B0 ok
+bits 7/6 re-driven 0/1 then floated          got 70 want 70 ok
+P_DDR output                                 got 00 want 00 ok
+P_O output (data latch)                      got 40 want 40 ok
+Bus_En follows AEC                           got 01 want 01 ok
+port writes seen on the external bus: 7 (want 7)
+PASS
+6507 lockstep: cycles=5000000 mismatches=0

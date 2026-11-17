@@ -1,0 +1,175 @@
+<title>t65sv</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+/* Layout: a data-sheet — sticky index rail on the left, one reading column, source files open in a drawer */
+:root {
+  --paper: #f3f5f4; --sheet: #fbfcfb; --ink: #17212a; --muted: #56636c; --rule: #d3dbdc;
+  --accent: #0d5b6e; --accent-soft: #dcebee; --copper: #9c4f22; --code-bg: #e8edec;
+  --ok: #24744a; --ok-bg: #dcefe3; --bad: #a3271d; --bad-bg: #f6dfdc;
+  --f-display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #0f1518; --sheet: #141c20; --ink: #e2e8ea; --muted: #9ba9b0; --rule: #27343b;
+  --accent: #6cc0d4; --accent-soft: #173039; --copper: #e09a6a; --code-bg: #1a252b;
+  --ok: #73c995; --ok-bg: #16301f; --bad: #ff8f84; --bad-bg: #3a1c19; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #0f1518; --sheet: #141c20; --ink: #e2e8ea; --muted: #9ba9b0; --rule: #27343b;
+  --accent: #6cc0d4; --accent-soft: #173039; --copper: #e09a6a; --code-bg: #1a252b;
+  --ok: #73c995; --ok-bg: #16301f; --bad: #ff8f84; --bad-bg: #3a1c19; color-scheme: dark }
+
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font: 15px/1.6 var(--f-body); }
+a { color: var(--accent); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.top { border-bottom: 1px solid var(--rule); background: var(--sheet); }
+.top-in { max-width: 1240px; margin: 0 auto; padding-block: 28px 22px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 14px; }
+.part { font: 500 12px/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.name { font: 600 clamp(40px, 7vw, 64px)/0.95 var(--f-display); letter-spacing: .01em; margin: 0; }
+.name span { color: var(--accent); }
+.lede { max-width: 68ch; margin: 0; color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { display: inline-flex; gap: 8px; align-items: baseline; padding: 5px 10px; border: 1px solid var(--rule);
+  border-radius: 3px; background: var(--paper); font: 500 12.5px/1.3 var(--f-mono); }
+.chip b { font-weight: 500; }
+.chip i { font-style: normal; color: var(--ok); }
+
+.wrap { max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 40px;
+  padding-block: 28px 80px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+nav.rail { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); align-self: start; display: grid; gap: 2px;
+  font: 500 15px/1.25 var(--f-display); letter-spacing: .03em; }
+nav.rail .lbl { font: 500 11px/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+  margin-bottom: 8px; }
+nav.rail a { color: var(--ink); text-decoration: none; padding: 5px 8px; border-left: 2px solid var(--rule); }
+nav.rail a:hover { border-left-color: var(--accent); color: var(--accent); }
+
+main { min-width: 0; max-width: 900px; }
+main h2 { font: 600 28px/1.1 var(--f-display); letter-spacing: .02em; text-transform: uppercase; margin: 48px 0 14px;
+  padding-top: 10px; border-top: 2px solid var(--ink); text-wrap: balance; }
+main h2:first-child { margin-top: 0; }
+main h3 { font: 600 20px/1.2 var(--f-display); letter-spacing: .02em; margin: 30px 0 10px; text-wrap: balance; }
+main p, main li { max-width: 72ch; }
+main ul, main ol { padding-left: 22px; }
+main li { margin: 4px 0; }
+code { font: 13px/1.4 var(--f-mono); background: var(--code-bg); padding: 1px 4px; border-radius: 2px; }
+pre { font: 13px/1.5 var(--f-mono); background: var(--code-bg); padding: 12px 14px; overflow-x: auto; border-radius: 3px; }
+pre code { background: none; padding: 0; }
+.tw { overflow-x: auto; margin: 14px 0 18px; border: 1px solid var(--rule); background: var(--sheet); }
+table { border-collapse: collapse; font-size: 13.5px; line-height: 1.45; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; vertical-align: top; padding: 7px 10px; border-bottom: 1px solid var(--rule); }
+th { font: 600 12px/1.3 var(--f-mono); letter-spacing: .04em; text-transform: uppercase; color: var(--muted);
+  background: var(--paper); white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+td code { white-space: nowrap; }
+a.fl { text-decoration: none; }
+a.fl code { color: var(--accent); border-bottom: 1px dotted var(--accent); }
+
+#files { scroll-margin-top: 16px; }
+.files { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px 28px; margin-top: 10px; }
+.fg { min-width: 0; }
+.fg h3 { font: 500 13px/1.3 var(--f-mono); margin: 0 0 6px; color: var(--copper); }
+.fg ul { list-style: none; padding: 0; margin: 0; }
+.fg li { display: flex; justify-content: space-between; gap: 10px; padding: 3px 0; border-bottom: 1px dotted var(--rule);
+  font: 13px/1.4 var(--f-mono); max-width: none; margin: 0; }
+.fg li a { color: var(--ink); overflow-wrap: anywhere; }
+.fg li a:hover { color: var(--accent); }
+.sz { color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+/* file drawer */
+.drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(900px, 100%); background: var(--sheet);
+  border-left: 1px solid var(--rule); box-shadow: -12px 0 30px rgba(0,0,0,.12); display: grid;
+  grid-template-rows: auto minmax(0, 1fr); z-index: 20;
+  padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-right: env(safe-area-inset-right, 0px); }
+.dh { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--rule); }
+.dh .p { font: 500 13.5px/1.3 var(--f-mono); overflow-wrap: anywhere; flex: 1 1 260px; min-width: 0; }
+.dh .m { color: var(--muted); font: 12px/1 var(--f-mono); }
+.dh button { font: 500 13px/1 var(--f-body); padding: 7px 12px; border: 1px solid var(--rule); background: var(--paper);
+  color: var(--ink); border-radius: 3px; cursor: pointer; }
+.dh button:hover { border-color: var(--accent); color: var(--accent); }
+.db { overflow: auto; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start; }
+.db pre { margin: 0; border-radius: 0; background: none; overflow: visible; padding: 10px 14px; }
+.db .ln { color: var(--muted); text-align: right; user-select: none; border-right: 1px solid var(--rule);
+  background: var(--paper); min-height: 100%; }
+.db .tx { white-space: pre; }
+.note { color: var(--muted); font-size: 13.5px; }
+
+@media (max-width: 860px) {
+  .wrap { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  nav.rail { position: static; display: flex; flex-wrap: wrap; gap: 6px; }
+  nav.rail .lbl { width: 100%; margin: 0; }
+  nav.rail a { border: 1px solid var(--rule); border-radius: 3px; padding: 4px 8px; }
+}
+@media (prefers-reduced-motion: no-preference) { nav.rail a, .dh button { transition: color .15s, border-color .15s; } }
+</style>
+
+<header class="top"><div class="top-in">
+  <div class="part">6502-family CPU core &middot; SystemVerilog &middot; Cyclone V / Quartus 17</div>
+  <h1 class="name">t65<span>sv</span></h1>
+  <p class="lede">One synthesizable core. Mode "00" is cycle-for-cycle and pin-for-pin T65 Ver 315 (NMOS with the
+  undocumented opcodes); parameters add the 6510, 6507, 2A03, three 65C02 flavours and the 65C816.</p>
+  <div class="chips">@@CHIPS@@</div>
+</div></header>
+
+<div class="wrap">
+  <nav class="rail" aria-label="Sections"><div class="lbl">Contents</div>@@NAV@@</nav>
+  <main>
+    @@BODY@@
+    <h2 id="files">Files</h2>
+    <p class="note">@@NFILES@@ files, each served on its own at its path (for example <code>rtl/t65sv_all.sv</code>).
+    Select one to read it here; the drawer shows the path to fetch it directly.</p>
+    <div class="files">@@FILES@@</div>
+  </main>
+</div>
+
+<aside class="drawer" id="drawer" hidden aria-label="File viewer">
+  <div class="dh">
+    <span class="p" id="dpath"></span><span class="m" id="dmeta"></span>
+    <button type="button" id="dcopy">Copy</button>
+    <button type="button" id="dclose">Close</button>
+  </div>
+  <div class="db" id="dbody"><pre class="ln" id="dln"></pre><pre class="tx" id="dtx"></pre></div>
+</aside>
+
+<script>
+(function () {
+  var drawer = document.getElementById('drawer'), dpath = document.getElementById('dpath'),
+      dmeta = document.getElementById('dmeta'), dln = document.getElementById('dln'), dtx = document.getElementById('dtx'),
+      dcopy = document.getElementById('dcopy'), dbody = document.getElementById('dbody'), current = '';
+  function open(path) {
+    current = path; dpath.textContent = path; dmeta.textContent = 'loading'; dtx.textContent = ''; dln.textContent = '';
+    drawer.hidden = false; dcopy.textContent = 'Copy';
+    fetch(encodeURI(path)).then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.text();
+    }).then(function (t) {
+      if (current !== path) return;
+      var n = t.split('\n').length; if (t.endsWith('\n')) n--;
+      var nums = []; for (var i = 1; i <= n; i++) nums.push(i);
+      dln.textContent = nums.join('\n'); dtx.textContent = t; dbody.scrollTop = 0;
+      dmeta.textContent = n + ' lines';
+    }).catch(function (e) { dmeta.textContent = ''; dtx.textContent = 'Could not load ' + path + ' (' + e.message + ').'; });
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[data-file]');
+    if (!a) return;
+    e.preventDefault(); open(a.getAttribute('data-file'));
+  });
+  document.getElementById('dclose').addEventListener('click', function () { drawer.hidden = true; current = ''; });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !drawer.hidden) { drawer.hidden = true; current = ''; } });
+  dcopy.addEventListener('click', function () {
+    var t = dtx.textContent;
+    function sel() { var r = document.createRange(); r.selectNodeContents(dtx); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); dcopy.textContent = 'Selected'; }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(t).then(function () { dcopy.textContent = 'Copied'; }, sel);
+    } else sel();
+  });
+})();
+</script>
