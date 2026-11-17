@@ -268,6 +268,7 @@ always_comb begin
 			case (MCycle)
 			3'd1: begin
 				Set_Addr_To = aBC;
+				SetWZ = 2'b01;             // MEMPTR = rr + 1
 			end
 			3'd2: begin
 				Read_To_Acc = 1'b1;
@@ -280,6 +281,7 @@ always_comb begin
 			case (MCycle)
 			3'd1: begin
 				Set_Addr_To = aDE;
+				SetWZ = 2'b01;             // MEMPTR = rr + 1
 			end
 			3'd2: begin
 				Read_To_Acc = 1'b1;
@@ -309,6 +311,7 @@ always_comb begin
 				end
 				3'd3: begin
 					Set_Addr_To = aZI;
+					SetWZ = 2'b01;             // LD A,(nn): MEMPTR = nn + 1
 					Inc_PC = 1'b1;
 				end
 				3'd4: begin
@@ -1360,6 +1363,7 @@ always_comb begin
 				3'd3: begin
 					Jump = 1'b1;
 					IncDec_16 = 4'b0111;
+					LDW = 1'b1;                // MEMPTR = return address
 				end
 				default: ;
 				endcase
@@ -1464,6 +1468,7 @@ always_comb begin
 					3'd3: begin
 						Jump = 1'b1;
 						IncDec_16 = 4'b0111;
+						LDW = 1'b1;                // MEMPTR = return address
 					end
 					default: ;
 					endcase
@@ -1538,6 +1543,7 @@ always_comb begin
 				3'd2: begin
 					Inc_PC = 1'b1;
 					Set_Addr_To = aIOA;
+					SetWZ = 2'b10;             // OUT (n),A: MEMPTR = A, n + 1 (no carry)
 					Set_BusB_To = 4'b0111;
 				end
 				3'd3: begin
@@ -2060,6 +2066,7 @@ always_comb begin
 			case (MCycle)
 			3'd1: begin
 				Set_Addr_To = aXY;
+				SetWZ = 2'b01;             // RLD / RRD: MEMPTR = HL + 1
 			end
 			3'd2: begin
 				Read_To_Reg = 1'b1;
@@ -2086,6 +2093,7 @@ always_comb begin
 			case (MCycle)
 			3'd1: begin
 				Set_Addr_To = aXY;
+				SetWZ = 2'b01;             // RLD / RRD: MEMPTR = HL + 1
 			end
 			3'd2: begin
 				Read_To_Reg = 1'b1;

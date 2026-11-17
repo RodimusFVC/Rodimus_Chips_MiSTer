@@ -1,0 +1,280 @@
+diff --git a/vhdl/T80.vhd b/vhdl/T80.vhd
+index 641ed7a..83cc795 100644
+--- a/vhdl/T80.vhd
++++ b/vhdl/T80.vhd
+@@ -261,6 +261,15 @@ architecture rtl of T80 is
+ 	signal XYbit_undoc          : std_logic;
+ 	signal No_PC                : std_logic;
+ 	signal DOR                  : std_logic_vector(127 downto 0);
++	-- Q (see the process after Save_Mux)
++	signal QF                   : std_logic;
++	signal Fw                   : std_logic;
++	signal fw_now               : std_logic;
++	signal fw_late              : std_logic;
++	signal QZ80                 : std_logic;
++	signal BlkRep               : std_logic; -- MCycle 4 of a repeating LDIR / CPIR / INIR / OTIR (and the D forms)
++	signal BTR_B                : std_logic_vector(3 downto 0); -- INIR / OTIR family: B after the decrement
++	signal BTR_Bm, BTR_Bp       : std_logic_vector(2 downto 0);
+ 
+ begin
+ 
+@@ -383,6 +392,49 @@ begin
+ 		DI_Reg when Save_ALU_r = '0' else
+ 		ALU_Q;
+ 
++	---------------------------------------------------------------------------
++	-- Q (Zilog Z80): SCF / CCF take flag bits 5 and 3 from (Q xor F) or A, where Q = F if the previous
++	-- instruction changed the flags and Q = 0 if it did not (POP AF and EX AF,AF' do not count; a prefix is
++	-- an instruction of its own). One bit is enough: QF = "the previous instruction wrote F", so Q xor F is 0
++	-- when QF = 1 and F when QF = 0. Fw collects the flag writes of the instruction in progress. An
++	-- instruction's last flag writes happen in T1 / T2 of the next opcode fetch (the ALU result of the last
++	-- M-cycle, and the block-instruction P/V, X, Y updates, while IR still holds the old opcode), so Fw passes
++	-- to QF at T3 of the opcode fetch, and SCF / CCF read QF at T4.
++	-- fw_now lists every write to F in the main process except POP AF (Read_To_Reg_r 11011), EX AF,AF'
++	-- and DIRSet. SET / RES write F back unchanged and do not count.
++	---------------------------------------------------------------------------
++	QZ80 <= '1' when Mode <= 1 else '0';
++	BlkRep <= '1' when ISet = "10" and IR(7 downto 4) = x"B" and IR(2) = '0' and MCycle = "100" else '0';
++	BTR_Bm <= BTR_B(2 downto 0) - "001";
++	BTR_Bp <= BTR_B(2 downto 0) + "001";
++	fw_late <= '0' when MCycle = "001" and TState(2) = '0' else '1';
++	fw_now <= '1' when (LDHLSP = '1' and MCycle = "011" and TState = 1) or
++		(ADDSPdd = '1' and TState = 1) or
++		(fw_late = '1' and T_Res = '1' and (I_CPL = '1' or I_CCF = '1' or I_SCF = '1')) or
++		(fw_late = '1' and ((TState = 2 and I_BTR = '1' and IR(0) = '1') or (TState = 1 and I_BTR = '1' and IR(0) = '0'))) or
++		(TState = 3 and Special_LD(2) = '1' and Special_LD(1) = '0') or
++		((I_DJNZ = '0' and Save_ALU_r = '1' and ALU_Op_r(3 downto 1) /= "101") or ALU_Op_r = "1001") or
++		(T_Res = '1' and I_INRC = '1') or
++		I_BT = '1' or I_BC = '1' or
++		(BlkRep = '1' and T_Res = '1') else '0';
++
++	process (RESET_n, CLK_n)
++	begin
++		if RESET_n = '0' then
++			QF <= '0';
++			Fw <= '0';
++		elsif rising_edge(CLK_n) then
++			if ClkEn = '1' and DIRSet = '0' then
++				if MCycle = "001" and TState = 3 then
++					QF <= Fw;
++					Fw <= fw_now;
++				elsif fw_now = '1' then
++					Fw <= '1';
++				end if;
++			end if;
++		end if;
++	end process;
++
+ 	process (RESET_n, CLK_n)
+ 		variable n : std_logic_vector(7 downto 0);
+ 		variable ioq : std_logic_vector(8 downto 0);
+@@ -423,6 +475,7 @@ begin
+ 			PreserveC_r <= '0';
+ 			XY_Ind <= '0';
+ 			I_RXDD <= '0';
++			BTR_B <= (others => '0');
+ 
+ 		elsif rising_edge(CLK_n) then
+ 
+@@ -562,6 +615,9 @@ begin
+ 							when aXY =>
+ 								if XY_State = "00" then
+ 									A <= RegBusC;
++									if SetWZ = "01" then
++										WZ <= RegBusC + "1"; -- RLD / RRD
++									end if;
+ 								else
+ 									if NextIs_XY_Fetch = '1' then
+ 										A <= std_logic_vector(PC);
+@@ -580,7 +636,11 @@ begin
+ 									A(15 downto 8) <= ACC;
+ 								end if;
+ 								A(7 downto 0) <= DI_Reg;
+-								WZ <= (ACC & DI_Reg) + "1";
++								if SetWZ = "10" then
++									WZ <= ACC & (DI_Reg + "1"); -- OUT (n),A
++								else
++									WZ <= (ACC & DI_Reg) + "1";
++								end if;
+ 							when aSP =>
+ 								A <= std_logic_vector(SP);
+ 							when aBC =>
+@@ -600,6 +660,9 @@ begin
+ 								end if;
+ 							when aDE =>
+ 								A <= RegBusC;
++								if SetWZ = "01" then
++									WZ <= RegBusC + "1"; -- LD A,(DE)
++								end if;
+ 								if SetWZ = "10" then
+ 									WZ(7 downto 0) <= RegBusC(7 downto 0) + "1";
+ 									WZ(15 downto 8) <= ACC;
+@@ -607,9 +670,13 @@ begin
+ 							when aZI =>
+ 								if Inc_WZ = '1' then
+ 									A <= std_logic_vector(unsigned(WZ) + 1);
++									WZ <= WZ + "1"; -- LD (nn),rr / LD rr,(nn): MEMPTR = nn + 1
+ 								else
+ 									A(15 downto 8) <= DI_Reg;
+ 									A(7 downto 0) <= WZ(7 downto 0);
++									if SetWZ = "01" then
++										WZ <= (DI_Reg & WZ(7 downto 0)) + "1"; -- LD A,(nn)
++									end if;
+ 									if SetWZ = "10" then
+ 										WZ(7 downto 0) <= WZ(7 downto 0) + "1";
+ 										WZ(15 downto 8) <= ACC;
+@@ -629,6 +696,39 @@ begin
+ 							WZ <= std_logic_vector(ID16);
+ 						end if;
+ 
++						-- CPI / CPD (and CPIR / CPDR when they stop): MEMPTR + 1 / - 1, at the end of the (HL) read.
++						-- A repeating CPIR / CPDR then sets MEMPTR = PC + 1 in MCycle 3 (I_BC, below).
++						if ISet = "10" and IR(7 downto 5) = "101" and IR(2 downto 0) = "001" and MCycle = "010" then
++							if IR(3) = '1' then
++								WZ <= WZ - "1";
++							else
++								WZ <= WZ + "1";
++							end if;
++						end if;
++
++						-- A repeating block instruction (MCycle 4 only runs when it repeats; PC is back at the
++						-- instruction): flag bits 5 / 3 = PC bits 13 / 11. INIR / INDR / OTIR / OTDR also change H and
++						-- P/V by the carry and B, and set MEMPTR = PC + 1 (LDIR / CPIR set it in MCycle 3, below).
++						-- N = bit 7 of the byte transferred, C = H = carry of the INI / OUTI sum (set in MCycle 3).
++						if BlkRep = '1' and QZ80 = '1' then
++							F(Flag_Y) <= PC(13);
++							F(Flag_X) <= PC(11);
++							if IR(1) = '1' then
++								WZ <= std_logic_vector(PC + 1);
++								if F(Flag_C) = '1' then
++									if F(Flag_N) = '1' then
++										F(Flag_P) <= F(Flag_P) xor BTR_Bm(2) xor BTR_Bm(1) xor BTR_Bm(0);
++										if BTR_B(3 downto 0) = "0000" then F(Flag_H) <= '1'; else F(Flag_H) <= '0'; end if;
++									else
++										F(Flag_P) <= F(Flag_P) xor BTR_Bp(2) xor BTR_Bp(1) xor BTR_Bp(0);
++										if BTR_B(3 downto 0) = "1111" then F(Flag_H) <= '1'; else F(Flag_H) <= '0'; end if;
++									end if;
++								else
++									F(Flag_P) <= F(Flag_P) xor BTR_B(2) xor BTR_B(1) xor BTR_B(0);
++								end if;
++							end if;
++						end if;
++
+ 						Save_ALU_r <= Save_ALU;
+ 						ALU_Op_r <= ALU_Op;
+ 
+@@ -661,19 +761,19 @@ begin
+ 								F(Flag_N) <= '1';
+ 							end if;
+ 							if I_CCF = '1' then
+-								-- CCF
++								-- CCF: bits 5 / 3 = (Q xor F) or A
+ 								F(Flag_C) <= not F(Flag_C);
+-								F(Flag_Y) <= ACC(5);
++								F(Flag_Y) <= ACC(5) or (QZ80 and not QF and F(Flag_Y));
+ 								F(Flag_H) <= F(Flag_C);
+-								F(Flag_X) <= ACC(3);
++								F(Flag_X) <= ACC(3) or (QZ80 and not QF and F(Flag_X));
+ 								F(Flag_N) <= '0';
+ 							end if;
+ 							if I_SCF = '1' then
+-								-- SCF
++								-- SCF: bits 5 / 3 = (Q xor F) or A
+ 								F(Flag_C) <= '1';
+-								F(Flag_Y) <= ACC(5);
++								F(Flag_Y) <= ACC(5) or (QZ80 and not QF and F(Flag_Y));
+ 								F(Flag_H) <= '0';
+-								F(Flag_X) <= ACC(3);
++								F(Flag_X) <= ACC(3) or (QZ80 and not QF and F(Flag_X));
+ 								F(Flag_N) <= '0';
+ 							end if;
+ 						end if;
+@@ -686,6 +786,7 @@ begin
+ 						F(Flag_H) <= ioq(8);
+ 						ioq := (ioq and "000000111") xor ('0'&BusA);
+ 						F(Flag_P) <= not (ioq(0) xor ioq(1) xor ioq(2) xor ioq(3) xor ioq(4) xor ioq(5) xor ioq(6) xor ioq(7));
++						BTR_B <= BusA(3 downto 0);
+ 					end if;
+ 
+ 					if TState = 2 and Wait_n = '1' then
+@@ -978,9 +1079,10 @@ begin
+ 	end process;
+ 
+ 	RegAddrA <=
+-			-- 16 bit increment/decrement
++			-- 16 bit increment/decrement. With DD / FD the prefix only replaces HL: INC / DEC BC, DE keep their pair.
+ 			Alternate & IncDec_16(1 downto 0) when (TState = 2 or
+-				(TState = 3 and MCycle = "001" and IncDec_16(2) = '1')) and XY_State = "00" else
++				(TState = 3 and MCycle = "001" and IncDec_16(2) = '1')) and
++				(XY_State = "00" or IncDec_16(1) = '0') else
+ 			XY_State(1) & "11" when (TState = 2 or
+ 				(TState = 3 and MCycle = "001" and IncDec_16(2) = '1')) and IncDec_16(1 downto 0) = "10" else
+ 			-- EX HL,DL
+diff --git a/vhdl/T80_MCode.vhd b/vhdl/T80_MCode.vhd
+index 554ec9b..9f16687 100644
+--- a/vhdl/T80_MCode.vhd
++++ b/vhdl/T80_MCode.vhd
+@@ -337,6 +337,7 @@ begin
+ 			case to_integer(unsigned(MCycle)) is
+ 			when 1 =>
+ 				Set_Addr_To <= aBC;
++				SetWZ <= "01"; -- MEMPTR = rr + 1
+ 			when 2 =>
+ 				Read_To_Acc <= '1';
+ 			when others => null;
+@@ -347,6 +348,7 @@ begin
+ 			case to_integer(unsigned(MCycle)) is
+ 			when 1 =>
+ 				Set_Addr_To <= aDE;
++				SetWZ <= "01"; -- MEMPTR = rr + 1
+ 			when 2 =>
+ 				Read_To_Acc <= '1';
+ 			when others => null;
+@@ -372,6 +374,7 @@ begin
+ 					LDZ <= '1';
+ 				when 3 =>
+ 					Set_Addr_To <= aZI;
++					SetWZ <= "01"; -- MEMPTR = nn + 1
+ 					Inc_PC <= '1';
+ 				when 4 =>
+ 					Read_To_Acc <= '1';
+@@ -1357,6 +1360,7 @@ begin
+ 				when 3 =>
+ 					Jump <= '1';
+ 					IncDec_16 <= "0111";
++					LDW <= '1'; -- MEMPTR = return address
+ 				when others => null;
+ 				end case;
+ 			end if;
+@@ -1447,6 +1451,7 @@ begin
+ 					when 3 =>
+ 						Jump <= '1';
+ 						IncDec_16 <= "0111";
++						LDW <= '1'; -- MEMPTR = return address
+ 					when others => null;
+ 					end case;
+ 				end if;
+@@ -1514,6 +1519,7 @@ begin
+ 				when 2 =>
+ 					Inc_PC <= '1';
+ 					Set_Addr_To <= aIOA;
++					SetWZ <= "10"; -- MEMPTR = A, n + 1 (no carry)
+ 					Set_BusB_To	<= "0111";
+ 				when 3 =>
+ 					Write <= '1';
+@@ -2040,6 +2046,7 @@ begin
+ 				case to_integer(unsigned(MCycle)) is
+ 				when 1 =>
+ 					Set_Addr_To <= aXY;
++					SetWZ <= "01"; -- MEMPTR = HL + 1
+ 				when 2 =>
+ 					Read_To_Reg <= '1';
+ 					Set_BusB_To(2 downto 0) <= "110";
+@@ -2062,6 +2069,7 @@ begin
+ 				case to_integer(unsigned(MCycle)) is
+ 				when 1 =>
+ 					Set_Addr_To <= aXY;
++					SetWZ <= "01"; -- MEMPTR = HL + 1
+ 				when 2 =>
+ 					Read_To_Reg <= '1';
+ 					Set_BusB_To(2 downto 0) <= "110";

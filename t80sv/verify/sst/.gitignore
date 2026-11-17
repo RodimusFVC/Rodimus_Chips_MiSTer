@@ -1,0 +1,5 @@
+vectors/
+obj_*/
+gen_vhdl/
+results/bin/
+results/build_*.log
